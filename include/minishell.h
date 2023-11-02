@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 22:09:52 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 09:09:27 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 09:33:50 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,20 @@ int	bin_echo(int fd, char *input);
  */
 int	bin_exit(char *input, int *exit_code);
 
+/**
+ * @brief The pwd builtin command. This command doesn't
+ * accept any type of arguments nor flags.
+ * 
+ * @return 1 on failure, 0 on success.
+ */
 int	bin_pwd(void);
+
+/**
+ * @brief The env builtin command. This command doesn't
+ * accept any type of arguments nor flags.
+ * 
+ * @return Currently always 0.
+ */
+int	bin_env(void);
 
 #endif
