@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 04:12:22 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 09:41:37 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 09:44:50 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	main(void)
 		cmd = readline("minishell > ");
 		add_history(cmd);
 		stop = process_builtins(cmd, &exit_code);
+		free(cmd);
 	}
 	return (exit_code);
 }
