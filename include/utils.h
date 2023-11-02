@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 20:47:37 by iortego-          #+#    #+#             */
-/*   Updated: 2023/11/02 05:15:51 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 09:06:15 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 typedef enum s_boolean {FALSE, TRUE}	t_bool;
 
 /**
- * @brief Gets the length of a string.
+ * @brief Gets the length of a string. If str is
+ * NULL, 0 will be returned.
  * 
  * @param str the string to use.
  * @return the length of the string.
@@ -40,5 +41,23 @@ size_t	ft_strlen(const	char *str);
  * prefix, false otherwise.
  */
 t_bool	startswith(char *str, char *prefix);
+
+/**
+ * @brief Gets a substring of the supplied
+ * string until ch is found, so for example
+ * ft_substr("Hello 42", ' ') will return
+ * "Hello". If ch isn't found on str, a copy
+ * of str will be returned. Yes, that means
+ * that using '\0' as the delimiting character
+ * will result in a method that copies strings.
+ * 
+ * @param str The main string to get the 
+ * substring from.
+ * @param ch The delimiting character for
+ * the new substring, this character will
+ * not be included.
+ * @return A substring of str until ch is found.
+ */
+char	*ft_substrchr(char *str, char ch);
 
 #endif

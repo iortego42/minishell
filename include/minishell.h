@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 22:09:52 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 08:06:05 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 09:09:27 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@
 // Builtins
 
 /**
- * @brief The echo builtin command.
+ * @brief The echo builtin command. Supports the "-n"
+ * flag and env variables such as $PATH.
  * 
  * @param fd The fd to use.
- * @param input The input to use, the "-n" flag
- * is supported, which removes the "\\n" added by
- * echo at the end of the input.
+ * @param input The command input to use.
  * @return Currently always 0.
  */
 int	bin_echo(int fd, char *input);
