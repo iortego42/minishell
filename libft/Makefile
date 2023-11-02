@@ -3,13 +3,11 @@ NAME= libft.a
 CC = gcc
 AR = ar
 ARFLAGS = -rc
-RM = rm -rf 
+RM = rm -rf
 OBJDIR = build
 SRCDIR = src
 INCDIR = include
 
-
-# CFLAGS = -Wall -Wextra -Werror  -I $(INCDIR) -fsanitize=address
 CFLAGS = -Wall -Wextra -Werror  -I $(INCDIR)
 
 SRCS =	\
@@ -70,8 +68,6 @@ SRCS =	\
 		ft_matrixcpy.c \
 		path.c
 
-
-
 OBJS := $(addprefix $(OBJDIR)/,$(SRCS:%.c=%.o))
 
 all: $(NAME)
@@ -80,7 +76,7 @@ sanitize: CFLAGS += -fsanitize=address -g3
 sanitize: $(OBJS) $(LFT) 
 	@echo "[libFT]->>\033[34m [◊] SANITIZE MODE ON [◊]\033[0m"
 	$(AR) $(ARFLAGS) $(NAME) $^
-	
+
 debug: CFLAGS += -g3
 debug: $(OBJS) $(LFT) 
 	@echo "[libFT]->> \033[33m [∆] DEBUG MODE ON [∆]\033[0m"
