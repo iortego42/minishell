@@ -1,34 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/19 04:12:22 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 05:22:27 by danimart         ###   ########.fr       */
+/*   Created: 2023/11/02 05:04:13 by danimart          #+#    #+#             */
+/*   Updated: 2023/11/02 05:26:31 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-int	process_input(char *input, int *exit_code)
+int	bin_exit(char *input, int *exit_code)
 {
-	if (startswith(input, "exit"))
-		return (bin_exit(input + 5, exit_code));
-	else if (startswith(input, "echo "))
-		*exit_code = bin_echo(0, input + 5);
-	return (0);
-}
-
-int	main(void)
-{
-	int	exit_code;
-	int	stop;
-
-	exit_code = 0;
-	stop = 0;
-	while (!stop)
-		stop = process_input(readline("minishell > "), &exit_code);
-	return (exit_code);
+	(void) input; // Optionally get exit code from 0 to 255.
+	*exit_code = 0;
+	return (1);
 }

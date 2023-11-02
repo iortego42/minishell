@@ -6,43 +6,37 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 22:09:52 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 04:49:12 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 05:22:48 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "utils.h"
 # include <readline/readline.h>
 
+// Builtins
+
+/**
+ * @brief The echo builtin command.
+ * 
+ * @param fd The fd to use.
+ * @param input The input to use, the "-n" flag
+ * is supported, which removes the "\\n" added by
+ * echo at the end of the input.
+ * @return Currently always 0.
+ */
 int	bin_echo(int fd, char *input);
 
-# include <limits.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-
-typedef enum s_boolean {FALSE, TRUE}	t_bool;
-
 /**
- * @brief Gets the length of a string.
+ * @brief The exit builtin command.
  * 
- * @param str the string to use.
- * @return the length of the string.
+ * @param input The input to use, generally just an exit code.
+ * @param exit_code An integer pointer that will be set
+ * with the corresponding exit code, if any.
+ * @return Always 1, as this is used to exit the minishell.
  */
-size_t	ft_strlen(const	char *str);
-
-/**
- * @brief Checks if a string starts with a
- * specific prefix. If prefix is longer than
- * str or any of the parameters is NULL, FALSE
- * will be returned directly.
- * 
- * @param str the string to check.
- * @param prefix the prefix to check.
- * @return TRUE if str starts with the specified
- * prefix, false otherwise.
- */
-t_bool	startswith(char *str, char *prefix);
+int	bin_exit(char *input, int *exit_code);
 
 #endif

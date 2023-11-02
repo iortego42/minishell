@@ -6,7 +6,7 @@
 #    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2023/11/02 04:53:13 by danimart         ###   ########.fr        #
+#    Updated: 2023/11/02 05:26:13 by danimart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,13 @@ CFLAGS = -Wall -Wextra -Werror -I include
 
 SRCS = minishell.c
 
-SRCS += builtins/echo.c
+SRCS += \
+		builtins/echo.c \
+		builtins/exit.c
 
-SRCS += utils/ft_strlen.c utils/startswith.c
+SRCS += \
+		utils/ft_strlen.c \
+		utils/startswith.c
 
 OBJS := $(addprefix $(OBJDIR)/,$(SRCS:%.c=%.o))
 
