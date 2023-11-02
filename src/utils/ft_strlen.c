@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 03:19:51 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 04:51:00 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 08:36:45 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ size_t	ft_strlen(const	char *str)
 {
 	int	i;
 
+	if (str == NULL)
+		return (0);
 	i = 0;
 	while (str[i] != '\0')
 		i++;
