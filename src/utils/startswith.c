@@ -1,27 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   realloc.c                                          :+:      :+:    :+:   */
+/*   startswith.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/06 19:32:45 by iortego-          #+#    #+#             */
-/*   Updated: 2023/11/02 02:03:46 by danimart         ###   ########.fr       */
+/*   Created: 2023/11/02 03:08:28 by danimart          #+#    #+#             */
+/*   Updated: 2023/11/02 04:50:52 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "utils.h"
 
-void	*ft_realloc(void *ptr, size_t newsize, size_t size)
+t_bool	startswith(char *str, char *prefix)
 {
-	void	*amem;
+	int	str_len;
+	int	prefix_len;
+	int	i;
 
-	amem = (void *)malloc(newsize);
-	if (ptr && amem && size != 0)
+	if (str == NULL || prefix == NULL)
+		return (FALSE);
+	str_len = ft_strlen(str);
+	prefix_len = ft_strlen(prefix);
+	if (str_len < prefix_len)
+		return (FALSE);
+	i = 0;
+	while (i < prefix_len)
 	{
-		ft_memcpy(amem, ptr, size);
-		free(ptr);
-		ptr = NULL;
+		if (str[i] != prefix[i])
+			return (FALSE);
+		i++;
 	}
-	return (amem);
+	return (TRUE);
 }

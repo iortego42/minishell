@@ -6,27 +6,24 @@
 #    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2023/11/02 02:57:43 by danimart         ###   ########.fr        #
+#    Updated: 2023/11/02 04:53:13 by danimart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME= minishell
 
 CC = gcc
-AR = ar
-ARFLAGS = -rc
 RM = rm -rf
 OBJDIR = build
 SRCDIR = src
-INCDIR = include
 
-CFLAGS = -Wall -Wextra -Werror -I $(INCDIR)
-LFTPATH = libft
-LFTNAME = ft
-LFT = $(LFTPATH)/lib$(LFTNAME).a
-CFLAGS += -I $(LFTPATH)/include
+CFLAGS = -Wall -Wextra -Werror -I include
 
 SRCS = minishell.c
+
+SRCS += builtins/echo.c
+
+SRCS += utils/ft_strlen.c utils/startswith.c
 
 OBJS := $(addprefix $(OBJDIR)/,$(SRCS:%.c=%.o))
 
@@ -38,30 +35,22 @@ sanitize: $(OBJS) $(LFTNAME)sanitize
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 debug: CFLAGS += -g3
-debug: $(OBJS) $(LFTNAME)debug
+debug: $(OBJS)
 	@echo "[$(NAME)]->>\033[33m [∆] DEBUG MODE ON [∆]\033[0m"
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-$(NAME): $(OBJS) $(LFT)
+$(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -lreadline $(OBJS) -o $(NAME)
 
-$(LFTNAME)debug:
-	make -C $(LFTPATH) debug
-
-$(LFTNAME)sanitize:
-	make -C $(LFTPATH) sanitize
-
-$(LFT): 
-	make -C $(LFTPATH)
-
 $(OBJDIR):
-	mkdir $@
+	mkdir build
+	mkdir build/builtins
+	mkdir build/utils
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	make fclean -C $(LFTPATH)
 	$(RM) $(OBJDIR)
 
 fclean: clean

@@ -1,21 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/21 22:09:52 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 04:49:12 by danimart         ###   ########.fr       */
+/*   Created: 2022/06/16 20:47:37 by iortego-          #+#    #+#             */
+/*   Updated: 2023/11/02 04:38:08 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <readline/readline.h>
-
-int	bin_echo(int fd, char *input);
+#ifndef UTILS_H
+# define UTILS_H
 
 # include <limits.h>
 # include <stdlib.h>

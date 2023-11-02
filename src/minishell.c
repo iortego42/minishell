@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 04:12:22 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 03:00:37 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 04:50:16 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	process_input(char *input)
 {
-	printf("Input was: %s\n", input);
+	if (startswith(input, "echo "))
+		bin_echo(0, input + 5);
 }
 
 int	main(void)

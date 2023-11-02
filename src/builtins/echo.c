@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iortego- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/16 20:22:08 by iortego-          #+#    #+#             */
-/*   Updated: 2022/06/16 20:22:08 by iortego-         ###   ########.fr       */
+/*   Created: 2023/11/02 03:02:26 by danimart          #+#    #+#             */
+/*   Updated: 2023/11/02 04:56:48 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_isalpha(int c)
+int	bin_echo(int fd, char *input)
 {
-	return ((unsigned) c - 97 < 26 || (unsigned) c - 65 < 26);
+	write(fd, input, sizeof(input));
+	write(fd, "\n", 1);
+	return (0);
 }
