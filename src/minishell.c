@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 04:12:22 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 08:06:35 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 08:12:01 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	process_builtins(char *input, int *exit_code)
 		*exit_code = bin_echo(0, input + 5);
 	else if (startswith(input, "pwd"))
 		bin_pwd();
+	else if (startswith(input, "cd "))
+		chdir(input + 3);
 	return (0);
 }
 
