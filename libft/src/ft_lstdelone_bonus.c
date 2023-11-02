@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iortego- <iortego-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/21 22:09:52 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 01:56:14 by danimart         ###   ########.fr       */
+/*   Created: 2022/07/06 10:48:57 by iortego-          #+#    #+#             */
+/*   Updated: 2023/05/14 19:22:10 by iortego-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft/include/libft.h"
-# include <stdio.h>
-
-#endif
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
+{
+	if (lst == NULL || del == NULL)
+		return ;
+	if (lst->content != NULL)
+	{
+		(*del)(lst->content);
+		lst->content = NULL;
+	}
+	free(lst);
+}

@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iortego- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/21 22:09:52 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 01:56:14 by danimart         ###   ########.fr       */
+/*   Created: 2022/06/16 20:22:10 by iortego-          #+#    #+#             */
+/*   Updated: 2022/06/16 20:22:10 by iortego-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft/include/libft.h"
-# include <stdio.h>
+size_t	ft_strlen(const char *s)
+{
+	size_t	count;
 
-#endif
+	count = 0;
+	while (*(s + count++) != 0)
+		;
+	return (--count);
+}
