@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   startswith.c                                       :+:      :+:    :+:   */
+/*   ft_strstartswith.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 03:08:28 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 04:50:52 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 10:04:28 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-t_bool	startswith(char *str, char *prefix)
+t_bool	ft_strstartswith(char *str, char *prefix)
 {
 	int	str_len;
 	int	prefix_len;

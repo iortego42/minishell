@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 20:47:37 by iortego-          #+#    #+#             */
-/*   Updated: 2023/11/02 09:06:15 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 10:05:27 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ size_t	ft_strlen(const	char *str);
  * @return TRUE if str starts with the specified
  * prefix, false otherwise.
  */
-t_bool	startswith(char *str, char *prefix);
+t_bool	ft_strstartswith(char *str, char *prefix);
 
 /**
  * @brief Gets a substring of the supplied

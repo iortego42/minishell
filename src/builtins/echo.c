@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 03:02:26 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 08:59:56 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 10:05:40 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	write_input(int fd, char *input, t_bool nl)
 
 int	bin_echo(int fd, char *input)
 {
-	if (startswith(input, "-n"))
+	if (ft_strstartswith(input, "-n"))
 		write_input(fd, input + 3, FALSE);
 	else
 		write_input(fd, input, TRUE);

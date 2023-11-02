@@ -6,7 +6,7 @@
 #    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2023/11/02 09:30:14 by danimart         ###   ########.fr        #
+#    Updated: 2023/11/02 10:04:36 by danimart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ SRCS += \
 SRCS += \
 		utils/ft_strlen.c \
 		utils/ft_substrchr.c \
-		utils/startswith.c
+		utils/ft_strstartswith.c
 
 OBJS := $(addprefix $(OBJDIR)/,$(SRCS:%.c=%.o))
 
