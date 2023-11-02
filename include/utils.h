@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 20:47:37 by iortego-          #+#    #+#             */
-/*   Updated: 2023/11/02 10:16:51 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:55:58 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 
 typedef enum s_boolean {FALSE, TRUE}	t_bool;
 
+void	*ft_calloc(size_t count, size_t size);
+
 /**
  * @brief Checks if a string is equal to another.
  * This will return TRUE if both stings are
@@ -32,6 +34,8 @@ typedef enum s_boolean {FALSE, TRUE}	t_bool;
  * @return TRUE if both strings are considered equal, FALSE otherwise.
  */
 t_bool	ft_strequals(char *a, char *b);
+
+char	*ft_strjoin(char const *s1, char const *s2);
 
 /**
  * @brief Gets the length of a string. If str is

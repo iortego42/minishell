@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 04:12:22 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 10:18:01 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:56:26 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,28 @@ void	sig_cancel(int signal)
 	ioctl(0, TIOCSTI, "\n");
 }
 
+char	*get_prompt(char *suff)
+{
+	return (ft_strjoin(getenv("USER"), suff));
+}
+
 int	main(void)
 {
 	int		exit_code;
 	int		stop;
 	char	*cmd;
+	char	*prompt;
 
 	exit_code = 0;
 	stop = 0;
 	signal(SIGINT, sig_cancel);
 	while (!stop)
 	{
-		cmd = readline("minishell > ");
+		prompt = get_prompt("$ ");
+		cmd = readline(prompt);
 		add_history(cmd);
 		stop = process_builtins(cmd, &exit_code);
+		free(prompt);
 		free(cmd);
 	}
 	return (exit_code);
