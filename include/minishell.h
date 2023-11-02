@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 22:09:52 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 05:22:48 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 08:06:05 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,7 @@ int	bin_echo(int fd, char *input);
  * @return Always 1, as this is used to exit the minishell.
  */
 int	bin_exit(char *input, int *exit_code);
+
+int	bin_pwd(void);
 
 #endif

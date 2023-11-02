@@ -6,7 +6,7 @@
 #    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2023/11/02 05:26:13 by danimart         ###   ########.fr        #
+#    Updated: 2023/11/02 08:05:31 by danimart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ SRCS = minishell.c
 
 SRCS += \
 		builtins/echo.c \
-		builtins/exit.c
+		builtins/exit.c \
+		builtins/pwd.c
 
 SRCS += \
 		utils/ft_strlen.c \
