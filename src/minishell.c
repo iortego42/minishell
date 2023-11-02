@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 04:12:22 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 09:30:38 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 09:41:37 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,18 @@ void	sig_cancel(int signal)
 
 int	main(void)
 {
-	int	exit_code;
-	int	stop;
+	int		exit_code;
+	int		stop;
+	char	*cmd;
 
 	exit_code = 0;
 	stop = 0;
 	signal(SIGINT, sig_cancel);
 	while (!stop)
-		stop = process_builtins(readline("minishell > "), &exit_code);
+	{
+		cmd = readline("minishell > ");
+		add_history(cmd);
+		stop = process_builtins(cmd, &exit_code);
+	}
 	return (exit_code);
 }
