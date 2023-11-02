@@ -6,7 +6,7 @@
 #    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2023/11/02 08:05:31 by danimart         ###   ########.fr        #
+#    Updated: 2023/11/02 08:35:08 by danimart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,12 +37,12 @@ all: $(NAME)
 sanitize: CFLAGS += -fsanitize=address -g3
 sanitize: $(OBJS) $(LFTNAME)sanitize
 	@echo "[$(NAME)]->>\033[34m [◊] SANITIZE MODE ON [◊]\033[0m"
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) -lreadline $(OBJS) -o $(NAME)
 
 debug: CFLAGS += -g3
 debug: $(OBJS)
 	@echo "[$(NAME)]->>\033[33m [∆] DEBUG MODE ON [∆]\033[0m"
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) -lreadline $(OBJS) -o $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -lreadline $(OBJS) -o $(NAME)
