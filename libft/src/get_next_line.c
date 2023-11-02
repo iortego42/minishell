@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iortego- <iortego-@student.42madrid>       +#+  +:+       +#+        */
+/*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:29:56 by iortego-          #+#    #+#             */
-/*   Updated: 2023/06/07 18:16:30 by iortego-         ###   ########.fr       */
+/*   Updated: 2023/11/02 02:02:51 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 
 static	int	ft_strncpy(char *dst, char *src, size_t size)
 {
