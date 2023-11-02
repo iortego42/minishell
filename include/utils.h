@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 20:47:37 by iortego-          #+#    #+#             */
-/*   Updated: 2023/11/02 10:05:27 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/02 10:16:51 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,19 @@
 # include <stdio.h>
 
 typedef enum s_boolean {FALSE, TRUE}	t_bool;
+
+/**
+ * @brief Checks if a string is equal to another.
+ * This will return TRUE if both stings are
+ * the same size and have the same content or are NULL.
+ * Note that characters after a '\0' character are
+ * completely ignored.
+ * 
+ * @param a the first string.
+ * @param b the second string.
+ * @return TRUE if both strings are considered equal, FALSE otherwise.
+ */
+t_bool	ft_strequals(char *a, char *b);
 
 /**
  * @brief Gets the length of a string. If str is
