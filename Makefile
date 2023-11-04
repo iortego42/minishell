@@ -3,21 +3,30 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
+#    By: iortego- <iortego-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2023/11/02 12:55:31 by danimart         ###   ########.fr        #
+#    Updated: 2023/11/04 12:45:36 by iortego-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME= minishell
 
-CC = gcc
-RM = rm -rf
+CC  = gcc
+AR = ar
+ARFLAGS = -rc
+RM = rm -rf 
 OBJDIR = build
 SRCDIR = src
+INCDIR = include
 
-CFLAGS = -Wall -Wextra -Werror -I include
+
+LDFLAGS += -L $(LFTPATH) -l$(LFTNAME),readline
+CFLAGS = -I $(INCDIR)
+LFTPATH = libft
+LFTNAME = ft
+LFT = $(LFTPATH)/lib$(LFTNAME).a
+CFLAGS += -I $(LFTPATH)/include
 
 SRCS = minishell.c
 
@@ -35,32 +44,44 @@ SRCS += \
 		utils/ft_substrchr.c \
 		utils/ft_strstartswith.c
 
+SRCS += \
+		parser/parser_main.c \
+		parser/lexer.c
+
 OBJS := $(addprefix $(OBJDIR)/,$(SRCS:%.c=%.o))
 
 all: $(NAME)
 
-sanitize: CFLAGS += -fsanitize=address -g3
+sanitize: CFLAGS += -fsanitize=address -g3 
 sanitize: $(OBJS) $(LFTNAME)sanitize
 	@echo "[$(NAME)]->>\033[34m [◊] SANITIZE MODE ON [◊]\033[0m"
-	$(CC) $(CFLAGS) -lreadline $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS) 
 
 debug: CFLAGS += -g3
-debug: $(OBJS)
+debug: $(OBJS) $(LFTNAME)debug
 	@echo "[$(NAME)]->>\033[33m [∆] DEBUG MODE ON [∆]\033[0m"
-	$(CC) $(CFLAGS) -lreadline $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)  
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -lreadline $(OBJS) -o $(NAME)
+$(NAME): $(OBJS) $(LFT)
+	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LDFLAGS)
 
-$(OBJDIR):
-	mkdir build
-	mkdir build/builtins
-	mkdir build/utils
+$(LFTNAME)debug:
+	make -C $(LFTPATH) debug
+
+$(LFTNAME)sanitize:
+	make -C $(LFTPATH) sanitize
+
+$(LFT): 
+	make -C $(LFTPATH)	
+
+$(OBJDIR): 
+	mkdir $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ 
 
 clean:
+	make fclean -C $(LFTPATH)
 	$(RM) $(OBJDIR)
 
 fclean: clean
