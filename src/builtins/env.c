@@ -6,12 +6,11 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 09:24:31 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 09:32:58 by danimart         ###   ########.fr       */
+/*   Updated: 2023/11/15 19:15:07 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	bin_env(void)
 {
