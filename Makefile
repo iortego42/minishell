@@ -6,7 +6,7 @@
 #    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2023/11/15 19:02:22 by danimart         ###   ########.fr        #
+#    Updated: 2023/11/15 20:05:08 by danimart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ INCDIR = include
 
 
 LDFLAGS += -lreadline -L $(LFTPATH) -l$(LFTNAME)
-CFLAGS = -I $(INCDIR)
+CFLAGS = -Wall -Wextra -Werror -I $(INCDIR)
 LFTPATH = libft
 LFTNAME = ft
 LFT = $(LFTPATH)/lib$(LFTNAME).a
