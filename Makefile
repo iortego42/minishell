@@ -6,7 +6,7 @@
 #    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2023/11/15 18:34:28 by danimart         ###   ########.fr        #
+#    Updated: 2023/11/15 19:02:22 by danimart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRCDIR = src
 INCDIR = include
 
 
-LDFLAGS += -L $(LFTPATH) -l$(LFTNAME),readline
+LDFLAGS += -lreadline -L $(LFTPATH) -l$(LFTNAME)
 CFLAGS = -I $(INCDIR)
 LFTPATH = libft
 LFTNAME = ft
@@ -46,15 +46,15 @@ all: $(NAME)
 sanitize: CFLAGS += -fsanitize=address -g3
 sanitize: $(OBJS) $(LFTNAME)sanitize
 	@echo "[$(NAME)]->>\033[34m [◊] SANITIZE MODE ON [◊]\033[0m"
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS) 
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $(NAME)
 
 debug: CFLAGS += -g3
 debug: $(OBJS) $(LFTNAME)debug
 	@echo "[$(NAME)]->>\033[33m [∆] DEBUG MODE ON [∆]\033[0m"
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $(NAME)
 
 $(NAME): $(OBJS) $(LFT)
-	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $@
 
 $(LFTNAME)debug:
 	make -C $(LFTPATH) debug
