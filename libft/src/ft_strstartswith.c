@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substrchr.c                                     :+:      :+:    :+:   */
+/*   ft_strstartswith.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 09:00:21 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 09:00:34 by danimart         ###   ########.fr       */
+/*   Created: 2023/11/02 03:08:28 by danimart          #+#    #+#             */
+/*   Updated: 2023/11/15 18:25:10 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "libft.h"
 
-char	*ft_substrchr(char *str, char ch)
+t_bool	ft_strstartswith(char *str, char *prefix)
 {
-	char	*substr;
-	int		end;
-	int		i;
+	int	str_len;
+	int	prefix_len;
+	int	i;
 
-	if (str == NULL)
-		return (NULL);
-	end = 0;
+	if (str == NULL || prefix == NULL)
+		return (FALSE);
+	str_len = ft_strlen(str);
+	prefix_len = ft_strlen(prefix);
+	if (str_len < prefix_len)
+		return (FALSE);
 	i = 0;
-	while (str[end] != ch && str[end] != '\0')
-		end++;
-	substr = malloc(end);
-	while (i < end)
+	while (i < prefix_len)
 	{
-		substr[i] = str[i];
+		if (str[i] != prefix[i])
+			return (FALSE);
 		i++;
 	}
-	return (substr);
+	return (TRUE);
 }

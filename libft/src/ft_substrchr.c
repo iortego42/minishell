@@ -1,33 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_substrchr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 12:54:04 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 12:54:32 by danimart         ###   ########.fr       */
+/*   Created: 2023/11/02 09:00:21 by danimart          #+#    #+#             */
+/*   Updated: 2023/11/15 18:26:02 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "libft.h"
 
-void	ft_bzero(void	*str, size_t n)
+char	*ft_substrchr(char *str, char ch)
 {
-	unsigned int	i;
+	char	*substr;
+	int		end;
+	int		i;
 
-	i = 0;
-	while (i < n)
-		((unsigned char *) str)[i++] = '\0';
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*str;
-
-	str = malloc(size * count);
-	if (!str)
+	if (str == NULL)
 		return (NULL);
-	ft_bzero(str, size * count);
-	return (str);
+	end = 0;
+	i = 0;
+	while (str[end] != ch && str[end] != '\0')
+		end++;
+	substr = malloc(end);
+	if (substr == NULL)
+		return (NULL);
+	while (i < end)
+	{
+		substr[i] = str[i];
+		i++;
+	}
+	return (substr);
 }

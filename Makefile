@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iortego- <iortego-@student.42.fr>          +#+  +:+       +#+         #
+#    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2023/11/04 12:45:36 by iortego-         ###   ########.fr        #
+#    Updated: 2023/11/15 18:34:28 by danimart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,22 +37,13 @@ SRCS += \
 		builtins/env.c
 
 SRCS += \
-		utils/ft_calloc.c \
-		utils/ft_strequals.c \
-		utils/ft_strjoin.c \
-		utils/ft_strlen.c \
-		utils/ft_substrchr.c \
-		utils/ft_strstartswith.c
-
-SRCS += \
-		parser/parser_main.c \
 		parser/lexer.c
 
 OBJS := $(addprefix $(OBJDIR)/,$(SRCS:%.c=%.o))
 
 all: $(NAME)
 
-sanitize: CFLAGS += -fsanitize=address -g3 
+sanitize: CFLAGS += -fsanitize=address -g3
 sanitize: $(OBJS) $(LFTNAME)sanitize
 	@echo "[$(NAME)]->>\033[34m [◊] SANITIZE MODE ON [◊]\033[0m"
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS) 
@@ -60,7 +51,7 @@ sanitize: $(OBJS) $(LFTNAME)sanitize
 debug: CFLAGS += -g3
 debug: $(OBJS) $(LFTNAME)debug
 	@echo "[$(NAME)]->>\033[33m [∆] DEBUG MODE ON [∆]\033[0m"
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)  
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
 
 $(NAME): $(OBJS) $(LFT)
 	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LDFLAGS)
@@ -71,11 +62,13 @@ $(LFTNAME)debug:
 $(LFTNAME)sanitize:
 	make -C $(LFTPATH) sanitize
 
-$(LFT): 
-	make -C $(LFTPATH)	
+$(LFT):
+	make -C $(LFTPATH)
 
-$(OBJDIR): 
-	mkdir $@
+$(OBJDIR):
+	mkdir build
+	mkdir build/builtins
+	mkdir build/parser
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ 
