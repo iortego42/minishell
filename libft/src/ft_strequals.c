@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strstartswith.c                                 :+:      :+:    :+:   */
+/*   ft_strequals.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 03:08:28 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 10:04:28 by danimart         ###   ########.fr       */
+/*   Created: 2023/11/02 10:06:20 by danimart          #+#    #+#             */
+/*   Updated: 2023/11/15 18:24:48 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "libft.h"
 
-t_bool	ft_strstartswith(char *str, char *prefix)
+t_bool	ft_strequals(char *a, char *b)
 {
-	int	str_len;
-	int	prefix_len;
-	int	i;
+	size_t	i;
+	size_t	len;
 
-	if (str == NULL || prefix == NULL)
-		return (FALSE);
-	str_len = ft_strlen(str);
-	prefix_len = ft_strlen(prefix);
-	if (str_len < prefix_len)
-		return (FALSE);
 	i = 0;
-	while (i < prefix_len)
+	if (a == NULL || b == NULL)
+		return (a == NULL && b == NULL);
+	len = ft_strlen(a);
+	if (len != ft_strlen(b))
+		return (FALSE);
+	while (i < len)
 	{
-		if (str[i] != prefix[i])
+		if (a[i] != b[i])
 			return (FALSE);
 		i++;
 	}

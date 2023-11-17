@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iortego- <iortego-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 20:47:37 by iortego-          #+#    #+#             */
-/*   Updated: 2023/09/23 17:36:30 by iortego-         ###   ########.fr       */
+/*   Updated: 2023/11/15 18:36:52 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 # define UC unsigned char
-# define INT_MAX 2147483647
-# define INT_MIN -2147483648 
 
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <limits.h>
 
-typedef enum s_boolean {FALSE,TRUE}	t_bool;
+typedef enum s_boolean {FALSE, TRUE}	t_bool;
+
 typedef struct s_list
 {
 	void			*content;
@@ -77,8 +77,52 @@ void		ft_lstdelone(t_list *lst, void (*del)(void *));
 void		ft_lstclear(t_list **lst, void (*del)(void *));
 void		ft_lstiter(t_list *lst, void (*f)(void *));
 t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+
 /*--MIS FUNCIONES--*/
 t_list		*ft_lstfirst(t_list *lst);
+/**
+ * @brief Checks if a string is equal to another.
+ * This will return TRUE if both stings are
+ * the same size and have the same content or are NULL.
+ * Note that characters after a '\0' character are
+ * completely ignored.
+ * 
+ * @param a the first string.
+ * @param b the second string.
+ * @return TRUE if both strings are considered equal, FALSE otherwise.
+ */
+t_bool		ft_strequals(char *a, char *b);
+
+/**
+ * @brief Checks if a string starts with a
+ * specific prefix. If prefix is longer than
+ * str or any of the parameters is NULL, FALSE
+ * will be returned directly.
+ * 
+ * @param str the string to check.
+ * @param prefix the prefix to check.
+ * @return TRUE if str starts with the specified
+ * prefix, false otherwise.
+ */
+t_bool		ft_strstartswith(char *str, char *prefix);
+
+/**
+ * @brief Gets a substring of the supplied
+ * string until ch is found, so for example
+ * ft_substr("Hello 42", ' ') will return
+ * "Hello". If ch isn't found on str, a copy
+ * of str will be returned. Yes, that means
+ * that using '\0' as the delimiting character
+ * will result in a method that copies strings.
+ * 
+ * @param str The main string to get the 
+ * substring from.
+ * @param ch The delimiting character for
+ * the new substring, this character will
+ * not be included.
+ * @return A substring of str until ch is found.
+ */
+char		*ft_substrchr(char *str, char ch);
 
 int			ft_isspace(char c);
 void		ft_switch_int_values(int *a, int *b);

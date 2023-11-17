@@ -48,6 +48,7 @@ SRCS =	\
 		ft_split.c \
 		ft_strchr.c \
 		ft_strdup.c \
+		ft_strequals.c \
 		ft_striteri.c \
 		ft_strjoin.c \
 		ft_strlcat.c \
@@ -58,7 +59,9 @@ SRCS =	\
 		ft_strnstr.c \
 		ft_strtrim.c \
 		ft_strrchr.c \
+		ft_strstartswith.c \
 		ft_substr.c \
+		ft_substrchr.c \
 		ft_switch.c \
 		ft_tolower.c \
 		ft_toupper.c \
