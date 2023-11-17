@@ -6,7 +6,7 @@
 /*   By: iortego- <iortego-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 11:48:58 by iortego-          #+#    #+#             */
-/*   Updated: 2023/11/09 13:44:13 by iortego-         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:23:52 by iortego-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	count_symbols(const char	*sequence)
 		{
 			q_end = is_quote_terminated(&sequence[index]);
 			if (q_end == FALSE)
-				return (-1);
+				return (NONE);
 			index += q_end;
 		}
 		index++;
@@ -41,14 +41,11 @@ int	count_symbols(const char	*sequence)
 t_symbol	*lexer(const char	*sequence)
 {
 	t_symbol	*sym_l;
-	int			index;
 	int			symbol_c;
-	t_types		symbol;
 
 	symbol_c = count_symbols(sequence);
-	if (symbol_c == -1)
+	if (symbol_c == NONE)
 		return (NULL);
-	index = 0;
 	sym_l = malloc(sizeof(t_symbol) * (symbol_c + 1));
 	if (sym_l == NULL)
 		return (NULL);
@@ -69,7 +66,7 @@ int	get_symbols(const char	*sequence, t_symbol	**s)
 	while (sequence[index] != 0)
 	{
 		symbol = is_symbol(&sequence[index]);
-		if (symbol != -1)
+		if (symbol != NONE)
 		{
 			s[0][symbol_i] = (t_symbol){.type = symbol, .pos = index};
 			symbol_i++;
@@ -83,17 +80,17 @@ int	get_symbols(const char	*sequence, t_symbol	**s)
 
 t_types	is_symbol(const	char	*sequence)
 {
-	t_types	index;
+	t_types	s_index;
 
-	index = 0;
-	while (index < T_SIZE)
+	s_index = 0;
+	while (s_index < T_SIZE)
 	{
-		if (ft_strnstr(sequence, g_symbol[index],
-				ft_strlen(g_symbol[index])) != NULL)
-			return (index);
-		index++;
+		if (ft_strnstr(sequence, g_symbol[s_index],
+				ft_strlen(g_symbol[s_index])) != NULL)
+			return (s_index);
+		s_index++;
 	}
-	return (-1);
+	return (NONE);
 }
 
 int	is_quote_terminated(const char	*sequence)

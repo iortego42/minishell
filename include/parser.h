@@ -6,7 +6,7 @@
 /*   By: iortego- <iortego-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 17:30:07 by iortego-          #+#    #+#             */
-/*   Updated: 2023/11/09 13:33:33 by iortego-         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:21:21 by iortego-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "libft.h"
 
 typedef enum s_type {
+	NONE = -1,
 	SIMPLE_QUOTES,
 	DOUBLE_QUOTES,
 	OUTPUT_RED,
