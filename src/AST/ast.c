@@ -75,10 +75,11 @@ t_bool free_ast_node(t_Ast    **node) {
         ptr->u_d.Literal.freezer(&ptr->u_d.Literal);
         ptr->u_d.Literal.data = NULL;
     }
-    else if (ptr->tag == Operator){
-        if (!free_ast_node(&ptr->u_d.Operator.left)) return false;
-        if (!free_ast_node(&ptr->u_d.Operator.right)) return false;
-    }
+    else if (ptr->tag == Operator)
+        if (!free_ast_node(&ptr->u_d.Operator.left)
+            || !free_ast_node(&ptr->u_d.Operator.right))
+                return FALSE;
+    
     else
         return FALSE;
     free(*node);
