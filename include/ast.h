@@ -28,44 +28,78 @@
 |
 |
 */
-
+# include "dfa.h"
 # include "minishell.h"
 # include "libft.h"
-# define AST_NODE(tag, ...)\
-        new_ast_node((t_Ast){tag, {.tag=(struct s_##tag){__VA_ARGS__}}})
+
+# define NEW_AST(tag, ...)\
+        new_ast_node((t_Ast){tag, {.tag=(struct s_ ## tag){__VA_ARGS__}}})
+# define AST_SWITCH(tag, ...)\
+        (t_Ast){tag, {.tag=(struct s_ ## tag){__VA_ARGS__}}}
+# define GET_RESOLVER(op)\
+        op.Resolve = g_resolver[op.mask]
+# define MAX_PRIORITY 4
+typedef void *(*t_Resolver)(void *, void *);
 typedef struct s_Ast t_Ast;
 typedef enum {
     Operator,
-    Literal
+    Literal,
+    Command,
+    Expression
 } t_tag;
 typedef struct s_Operator t_O;
 struct s_Operator {
     t_Ast   *left;
     t_Ast   *right;
-    char    mask;
-    void    *(*Resolve) (void *l_d, void *r_d);
-    // void    *resolved_data;
+    t_types mask;
+    int     pos;
+    t_Resolver Resolve;
 };
 typedef struct s_Literal t_L;
 struct s_Literal {
-    // int     num;
     void    *data;
     void    (*freezer)(t_L *);
+};
+typedef struct s_Command t_C;
+struct s_Command {
+    int     start;
+    int     end;
+    int     pid;
+    
+};
+typedef struct s_Expression t_E;
+struct s_Expression {
+    int     start;
+    int     end;
 };
 struct s_Ast {
     t_tag tag;
     union {
         t_O Operator;
         t_L Literal;
-        // struct s_Expression {} Espression;
+        t_C Command;
+        t_E Expression;
     } u_d;
 };
 
-t_Ast   *new_ast_node(t_Ast tree);
-t_bool    free_ast_node(t_Ast    **node);
-void    asign_resolver(t_O *this);
-void    *operate(t_Ast  **this);
-void    *solve_ast(t_Ast    *this);
-int     *mult(int *a, int *b);
-int     *add(int *a, int *b);
+
+typedef struct s_data {
+    t_Ast   *tree;
+    char    *cmd;
+    t_sym   *sym;
+} t_data;
+t_data Data;
+
+
+void            constructor(t_Ast   *this);
+void            to_operator(t_Ast   *this, t_sym    op);
+void            to_literal(t_Ast    *this);
+t_Ast           *new_ast_node(t_Ast tree);
+t_bool          free_ast_node(t_Ast    **node);
+void            *operate(t_Ast  **this);
+void            *solve_ast(t_Ast    *this);
+const static t_Resolver g_resolver[SYM_NUM + 1] = {
+   [SYM_NUM] = NULL
+};
+
 #endif

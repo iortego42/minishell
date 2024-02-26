@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iortego- <iortego-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nachh <nachh@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 12:01:42 by iortego-          #+#    #+#             */
-/*   Updated: 2023/11/17 18:44:35 by iortego-         ###   ########.fr       */
+/*   Updated: 2024/02/22 19:56:51 by nachh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "dfa.h"
 
 
 char	*get_var_value(char	*env_entry)

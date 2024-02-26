@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iortego- <iortego-@student.42.fr>          +#+  +:+       +#+         #
+#    By: nachh <nachh@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2023/11/17 17:30:16 by iortego-         ###   ########.fr        #
+#    Updated: 2024/02/02 19:01:39 by nachh            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,15 @@ SRCDIR = src
 INCDIR = include
 
 
-LDFLAGS += -lreadline -L $(LFTPATH) -l$(LFTNAME)
 CFLAGS = -Wall -Wextra -Werror -I $(INCDIR)
 LFTPATH = libft
 LFTNAME = ft
 LFT = $(LFTPATH)/lib$(LFTNAME).a
-CFLAGS += -I $(LFTPATH)/include
+LSTRINGSPATH = libstrings
+LSTRINGSNAME = strings
+LSTRINGS = $(LSTRINGSPATH)/lib$(LSTRINGSNAME).a
+CFLAGS += -I $(LFTPATH)/include -I $(LSTRINGSPATH)/include
+LDFLAGS += -lreadline -L $(LFTPATH) -l$(LFTNAME) -L $(LSTRINGSPATH) -l$(LSTRINGSNAME) 
 
 SRCS = minishell.c
 
@@ -39,25 +42,25 @@ SRCS = minishell.c
 # SRCS += \
 # 		parser/lexer.c
 
-SRCS += parser/*.c builtins/*.c
+SRCS += parser/*.c builtins/*.c AST/*.c
 
 OBJS := $(addprefix $(OBJDIR)/,$(SRCS:%.c=%.o))
 
 all: $(NAME)
 
 sanitize: CFLAGS += -fsanitize=address -g3
-sanitize: $(OBJS) $(LFTNAME)sanitize banner
+sanitize: $(OBJS) $(LFTNAME)sanitize $(LSTRINGS)sanitize banner
 	@echo "[$(NAME)]->>\033[34m [◊] SANITIZE MODE ON [◊]\033[0m"
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $(NAME)
 
 debug: CFLAGS += -g3
-debug: $(OBJS) $(LFTNAME)debug banner
+debug: $(OBJS) $(LFTNAME)debug $(LSTRINGS)debug banner
 	@echo "[$(NAME)]->>\033[33m [∆] DEBUG MODE ON [∆]\033[0m"
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $(NAME)
 
 banner:
 	@echo "\033[1;33m [!] WARNING [!]\033[0m\n\tWildcards are enabled\n\n\n"
-$(NAME): banner $(OBJS) $(LFT) banner
+$(NAME): banner $(OBJS) $(LFT) $(LSTRINGS) banner
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $@
 
 $(LFTNAME)debug:
@@ -69,6 +72,15 @@ $(LFTNAME)sanitize:
 $(LFT):
 	make -C $(LFTPATH)
 
+$(LSTRINGSNAME)debug:
+	make -C $(LSTRINGSPATH) debug
+
+$(LSTRINGSNAME)sanitize:
+	make -C $(LSTRINGSPATH) sanitize
+
+$(LSTRINGS):
+	make -C $(LSTRINGSPATH)
+
 $(OBJDIR):
 	mkdir build
 	mkdir build/builtins
@@ -79,6 +91,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 
 clean:
 	make fclean -C $(LFTPATH)
+	make fclean -C $(LSTRINGSPATH)
 	$(RM) $(OBJDIR)
 
 fclean: clean

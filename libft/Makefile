@@ -80,12 +80,12 @@ OBJS := $(addprefix $(OBJDIR)/,$(SRCS:%.c=%.o))
 all: $(NAME)
 
 sanitize: CFLAGS += -fsanitize=address -g3 
-sanitize: $(OBJS) $(LFT) 
+sanitize: $(OBJS)
 	@echo "[libFT]->>\033[34m [◊] SANITIZE MODE ON [◊]\033[0m"
 	$(AR) $(ARFLAGS) $(NAME) $^
 	
 debug: CFLAGS += -g3
-debug: $(OBJS) $(LFT) 
+debug: $(OBJS) 
 	@echo "[libFT]->> \033[33m [∆] DEBUG MODE ON [∆]\033[0m"
 	$(AR) $(ARFLAGS) $(NAME) $^
 

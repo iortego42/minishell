@@ -1,112 +1,109 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: iortego- <iortego-@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/04 11:48:58 by iortego-          #+#    #+#             */
-/*   Updated: 2023/11/17 17:23:52 by iortego-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "ast.h"
 
-#include "parser.h"
-
-int	count_symbols(const char	*sequence)
+int which_alphabet(char    **str,   char c)
 {
-	int		index;
-	int		q_end;
-	int		symbol_c;
-	t_types	symbol;
-
-	symbol_c = 0;
-	index = 0;
-	while (sequence[index] != 0)
-	{
-		symbol = is_symbol(&sequence[index]);
-		if (symbol != -1)
-			symbol_c++;
-		if (symbol == SIMPLE_QUOTES || symbol == DOUBLE_QUOTES)
-		{
-			q_end = is_quote_terminated(&sequence[index]);
-			if (q_end == FALSE)
-				return (NONE);
-			index += q_end;
-		}
-		index++;
-	}
-	return (index);
+    int i;
+    int b;
+    
+    i = 0;
+    if (!str || !*str) 
+        return -1;
+    while (str[i] != NULL)
+    {
+        b = 0;
+        while (str[i][b])
+        {
+            if (str[i][b] == c)
+                return (i);
+            b++;
+        }
+        i++;
+    }
+    return (i);
 }
 
-t_symbol	*lexer(const char	*sequence)
+void    sym_count()
 {
-	t_symbol	*sym_l;
-	int			symbol_c;
-
-	symbol_c = count_symbols(sequence);
-	if (symbol_c == NONE)
-		return (NULL);
-	sym_l = malloc(sizeof(t_symbol) * (symbol_c + 1));
-	if (sym_l == NULL)
-		return (NULL);
-	if (get_symbols(sequence, &sym_l))
-		return (sym_l);
-	free(sym_l);
-	return (NULL);
+    g_sh.lexer.syms_c++;
 }
 
-int	get_symbols(const char	*sequence, t_symbol	**s)
-{
-	int		index;
-	int		symbol_i;
-	t_types	symbol;
+t_types    asign_sym(char mask) {
+    t_types var;
+    int         len;
 
-	index = 0;
-	symbol_i = 0;
-	while (sequence[index] != 0)
-	{
-		symbol = is_symbol(&sequence[index]);
-		if (symbol != NONE)
-		{
-			s[0][symbol_i] = (t_symbol){.type = symbol, .pos = index};
-			symbol_i++;
-		}
-		if (symbol == SIMPLE_QUOTES && symbol == DOUBLE_QUOTES)
-			index += is_quote_terminated(&sequence[index]);
-		index++;
-	}
-	return (symbol_i);
+    var = 0;
+    while (g_sh.lexer.alphabets[var] != NULL)
+    {
+        if (ft_strchr(g_sh.lexer.alphabets[var], mask))
+            return (var);
+        var++;
+    }
+    return NONE;
 }
 
-t_types	is_symbol(const	char	*sequence)
+void    eval(char    *str)
 {
-	t_types	s_index;
-
-	s_index = 0;
-	while (s_index < T_SIZE)
-	{
-		if (ft_strnstr(sequence, g_symbol[s_index],
-				ft_strlen(g_symbol[s_index])) != NULL)
-			return (s_index);
-		s_index++;
-	}
-	return (NONE);
+    int index;
+    
+    index = 0;
+    if (!str) 
+        return ;
+    while (str[index] != 0)
+    {
+        g_sh.lexer.state = g_state[g_sh.lexer.state][which_alphabet(g_sh.lexer.alphabets, str[index])];    
+        if (g_sh.lexer.action[g_sh.lexer.state])
+            g_sh.lexer.action[g_sh.lexer.state](&str[index]);
+        if (g_sh.lexer.transaction[g_sh.lexer.prev_state][g_sh.lexer.state])
+            g_sh.lexer.transaction[g_sh.lexer.prev_state][g_sh.lexer.state](&str[index]);
+        g_sh.lexer.prev_state = g_sh.lexer.state;
+        index++;
+    }
 }
 
-int	is_quote_terminated(const char	*sequence)
+void    append_sym(int c[2])
 {
-	int		index;
-	t_types	symbol;
-	char	quote;
+    t_types mask;
 
-	symbol = is_symbol(sequence);
-	quote = g_symbol[symbol][0];
-	index = 1;
-	while (sequence[index] != '\0')
-	{
-		if (sequence[index] == quote)
-			return (index);
-		index++;
-	}
-	return (FALSE);
+    mask = asign_op(c[0]);
+    if (mask == NONE)
+        return ((void)"42Madrid");
+    g_sh.lexer.syms[g_sh.lexer.syms_c] = g_sym[mask];
+    g_sh.lexer.syms[g_sh.lexer.syms_c].pos = c[1];
+    g_sh.lexer.syms_c++;
+}
+t_bool    get_syms(char   *str)
+// REVISAR
+{
+    int         c[2];
+
+    c[1] = 0;
+    c[0] = str[c[1]];
+    g_sh.lexer.state = 0;
+    g_sh.lexer.prev_state = 0;
+    g_sh.lexer.action[SPACE] = (t_Action)append_sym;
+    while(c[0] != 0) 
+    {
+        g_sh.lexer.state = g_state[g_sh.lexer.state][which_alphabet(g_sh.lexer.alphabet, c[0])];
+        if (g_sh.lexer.state == SPACE)
+            g_sh.lexer.action[SPACE](c);
+        c[1]++;
+        c[0] = str[c[1]];
+    }
+    Data.sym = g_sh.lexer.syms;
+    return (TRUE);
+}
+
+t_bool	lexer(char    *str)
+{
+	g_sh.lexer = (t_DFA){ .alphabets = g_alphabets, .prev_state = 0,
+		.state = 0, .syms_c = 0, };
+    eval(str);
+    if (g_sh.lexer.state == INVALID_INPUT)
+        return (FALSE);
+    g_sh.lexer.syms = malloc(sizeof(t_sym) * (g_sh.lexer.syms_c + 1));
+    if (g_sh.lexer.syms == NULL)
+        return (FALSE);
+    g_sh.lexer.syms[g_sh.lexer.syms_c].mask = NONE;
+    g_sh.lexer.syms_c = 0;
+    return (get_syms(str));
 }
