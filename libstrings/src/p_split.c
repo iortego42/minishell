@@ -66,6 +66,8 @@ void	p_printlist(t_string *this, char *separator)
 	size_t	i;
 	size_t	sep_len;
 
+	if (!this)
+		return ;
 	i = 0;
 	sep_len = p_len(separator);
 	while (this[i] != NULL)
@@ -82,6 +84,8 @@ char	**strlstocharls(t_string *list)
 	size_t	list_size;
 	char	**strlist;
 
+	if (!list)
+		return ;
 	list_size = 0;
 	while (list[list_size] != NULL)
 		list_size++;

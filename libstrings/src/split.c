@@ -65,6 +65,8 @@ void	printlist(t_string *this, t_string separator)
 {
 	size_t	i;
 
+	if (!this)
+		return ;
 	i = 0;
 	while (this[i] != NULL)
 	{
