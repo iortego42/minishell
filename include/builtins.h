@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 22:00:31 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/15 22:00:41 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:54:16 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /**
  * @brief The echo builtin command. Supports the "-n"
- * flag and env variables such as $PATH.
+ * flag.
  * 
  * @param fd The fd to use.
  * @param input The command input to use.

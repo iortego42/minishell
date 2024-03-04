@@ -6,12 +6,22 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 04:12:22 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 12:56:26 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:57:52 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Executes builtins with the specified input.
+ * 
+ * @param input terminal input, this may change.
+ * @param exit_code a pointer to an integer that will
+ * be assigned to the exit code of the executed builtin.
+ * 
+ * @return 1 if minishell should exit (exit builtin),
+ * 0 otherwise.
+ */
 int	process_builtins(char *input, int *exit_code)
 {
 	if (ft_strstartswith(input, "exit"))
@@ -19,12 +29,11 @@ int	process_builtins(char *input, int *exit_code)
 	else if (ft_strstartswith(input, "echo "))
 		*exit_code = bin_echo(0, input + 5);
 	else if (ft_strequals(input, "pwd"))
-		bin_pwd();
+		*exit_code = bin_pwd();
 	else if (ft_strstartswith(input, "cd "))
-		chdir(input + 3);
+		*exit_code = chdir(input + 3);
 	else if (ft_strequals(input, "env"))
-		bin_env();
-	return (0);
+		*exit_code = bin_env();
 }
 
 void	sig_cancel(int signal)
