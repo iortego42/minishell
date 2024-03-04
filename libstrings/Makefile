@@ -24,6 +24,7 @@ SRCS =	\
 		p_split.c \
 		nsplit.c \
 		rm.c \
+		get_set.c \
 		strings.c 
 
 MAIN = main.c
