@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nachh <nachh@student.42.fr>                +#+  +:+       +#+        */
+/*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 03:02:26 by danimart          #+#    #+#             */
-/*   Updated: 2024/02/22 19:02:18 by nachh            ###   ########.fr       */
+/*   Updated: 2024/03/04 18:51:57 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	write_env(int fd, char *env)
-{
-	char	*name;
-	char	*val;
-
-	name = ft_substrchr(env, ' ');
-	val = getenv(name);
-	write(fd, val, ft_strlen(val));
-	free(name);
-	return (ft_strlen(name) + 1);
-}
 
 void	write_input(int fd, char *input, t_bool nl)
 {
@@ -30,12 +18,7 @@ void	write_input(int fd, char *input, t_bool nl)
 
 	i = 0;
 	while (input[i] != '\0')
-	{
-		if (input[i] == '$')
-			i += write_env(fd, input + i + 1);
-		write(fd, &input[i], 1);
-		i++;
-	}
+		i += write(fd, &input[i], 1);
 	if (nl)
 		write(fd, "\n", 1);
 }
