@@ -12,9 +12,10 @@ typedef enum {
 	SPACE,
 	DOUBLE_QUOTES,
 	SIMPLE_QUOTES,
-    OP,
-	REDIRECTION,
 	DOLLAR,
+    OP,
+	REDIN,
+	REDOUT,
 	NON_SYM,
 	SYM_NUM
 } t_types;
@@ -46,15 +47,17 @@ typedef enum {
 	OPEN_DOUBLE_QUOTES,
 	OPEN_SIMPLE_QUOTES,
 	OP_AWAIT,
-	REDIR_AWAIT,
+	REDIR_IN_AWAIT,
+	REDIR_OUT_AWAIT,
+    FILE_AWAIT, // HEREDOC/APPEND AWAIT
     S_B_STR, // SPACE BETWEEN STRINGS 
+    S_B_TOK, // SPACE BETWEEN TOKEN
 	INVALID_INPUT,
 	STATES
 } t_state;
 
 struct s_DFA {
     t_Action    action[STATES];
-    t_Action    transaction[STATES][STATES];
     char        *alphabets[SYM_NUM];
     t_sym       *syms;
     int         syms_c;
@@ -70,17 +73,21 @@ const static char	g_state[STATES][SYM_NUM] = {
 \S = Single Quote
 \D = Double Quote
 \O = Operator
-\R = Redirection
-          \s,\C,\$,\S,\D,\O,\R */
-	[0] = {0, 0, 0, 0, 0, 0, 0}, // DONE
-	[1] = {1, 2, 2, 3, 4, 8, 6}, // EMPTY_INPUT
-	[2] = {7, 2, 2, 3, 4, 5, 6}, // WORD_AWAIT
-	[3] = {3, 3, 3, 7, 3, 3, 3}, // OPEN_SINGLE_QUOTES
-	[4] = {4, 4, 4, 4, 7, 4, 4}, // OPEN_DOUBLE_QUOTES
-	[5] = {5, 2, 2, 3, 4, 8, 6}, // OP_AWAIT
-	[6] = {6, 2, 2, 3, 4, 8, 8}, // REDIR_AWAIT
-	[7] = {7, 2, 2, 3, 4, 5, 6}, // S_B_STR
-	[8] = {8, 8, 8, 8, 8, 8, 8}, // INVALID_INPUT
+\< = Redirection In
+\> = Redirection Out
+            \s, \$, \S, \D, \O, \<, \>, \C */
+	[0]  = { 0,  0,  0,  0,  0,  0,  0,  0}, // DONE
+	[1]  = { 1,  2,  3,  4, 11,  6,  7,  2}, // EMPTY_INPUT
+	[2]  = { 9,  2,  3,  4,  5,  6,  7,  2}, // WORD_AWAIT
+	[3]  = { 3,  3,  9,  3,  3,  3,  3,  3}, // OPEN_SINGLE_QUOTES
+	[4]  = { 4,  4,  4,  9,  4,  4,  4,  4}, // OPEN_DOUBLE_QUOTES
+	[5]  = { 5,  2,  3,  4, 11,  6,  7,  2}, // OP_AWAIT
+	[6]  = {10,  2,  3,  4, 11,  8, 11,  2}, // REDIR_IN_AWAIT
+	[7]  = {10,  2,  3,  4, 11, 11,  8,  2}, // REDIR_OUT_AWAIT
+	[8]  = {10,  9,  9,  9,  9,  9,  9,  9}, // HA_AWAIT
+	[9]  = { 9,  2,  3,  4,  5,  6,  7,  2}, // S_B_STR
+	[10] = {10,  2,  3,  4,  5,  6,  7,  2}, // S_B_TOK
+	[11] = {11, 11, 11, 11, 11, 11, 11, 11}, // INVALID_INPUT
 
 };
 
@@ -92,13 +99,16 @@ void            eval(char  *str);
 t_bool          lexer(char  *str);
 const static char	*g_alphabets[SYM_NUM] = {
 [SPACE] = " \t",
-// [QUOTES] = "'\"",
-[DOUBLE_QUOTES] = "\"",
-[SIMPLE_QUOTES] = "'",
-[REDIRECTION] = ">><<",
-[OP] = "|",
 [DOLLAR] = "$",
+// [QUOTES] = "'\"",
+[SIMPLE_QUOTES] = "'",
+[DOUBLE_QUOTES] = "\"",
+[OP] = "|",
+[REDIN] = "<",
+[REDOUT] = ">",
+[NON_SYM] = NULL
 };
+
 const static t_sym g_sym[OPS_NUM + 1] = 
 {
     [PIPE] = {
