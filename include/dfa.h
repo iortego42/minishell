@@ -57,9 +57,7 @@ typedef enum {
 } t_state;
 
 struct s_DFA {
-    t_Action    action[STATES];
-    char        *alphabets[SYM_NUM];
-    t_sym       *syms;
+    size_t         *syms_pos;
     int         syms_c;
     int         state;
     int         prev_state;

@@ -6,7 +6,7 @@
 #    By: nachh <nachh@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2024/02/02 19:01:39 by nachh            ###   ########.fr        #
+#    Updated: 2024/03/05 09:15:42 by nachh            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -88,6 +88,7 @@ $(OBJDIR):
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ 
+
 
 clean:
 	make fclean -C $(LFTPATH)
