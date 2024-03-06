@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 05:04:13 by danimart          #+#    #+#             */
-/*   Updated: 2023/11/02 06:11:27 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/06 18:41:31 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ unsigned char	get_exit_code(const char *str)
 	return (res);
 }
 
-int	bin_exit(char *in, int *exit_code)
+int	bin_exit(char *input, int *exit_code)
 {
 	int	i;
 
 	i = 0;
-	while (in[i] == ' ')
+	while (input[i] == ' ')
 		i++;
-	*exit_code = get_exit_code(in + i);
+	*exit_code = get_exit_code(input + i);
 	return (1);
 }

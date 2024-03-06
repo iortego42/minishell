@@ -3,23 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nachh <nachh@student.42.fr>                +#+  +:+       +#+         #
+#    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2024/03/06 06:58:29 by nachh            ###   ########.fr        #
+#    Updated: 2024/03/06 18:43:15 by danimart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME= minishell
 
-CC  = gcc
+CC = gcc
 AR = ar
 ARFLAGS = -rc
 RM = rm -rf 
 OBJDIR = build
 SRCDIR = src
 INCDIR = include
-
 
 CFLAGS = -Wall -Wextra -Werror -I $(INCDIR)
 LFTPATH = libft
@@ -31,21 +30,20 @@ LSTRINGS = $(LSTRINGSPATH)/lib$(LSTRINGSNAME).a
 CFLAGS += -I $(LFTPATH)/include -I $(LSTRINGSPATH)/include
 LDFLAGS += -lreadline -L $(LFTPATH) -l$(LFTNAME) -L $(LSTRINGSPATH) -l$(LSTRINGSNAME) 
 
-
 CPPUTEST_HOME = test/cpputest
 
 SRCS = minishell.c
 
-# SRCS += \
-# 		builtins/echo.c \
-# 		builtins/exit.c \
-# 		builtins/pwd.c \
-# 		builtins/env.c
+SRCS += \
+		builtins/echo.c \
+		builtins/env.c \
+		builtins/exit.c \
+		builtins/pwd.c
 
 # SRCS += \
 # 		parser/lexer.c
 
-SRCS += parser/*.c builtins/*.c AST/*.c
+SRCS += parser/*.c
 
 OBJS := $(addprefix $(OBJDIR)/,$(SRCS:%.c=%.o))
 

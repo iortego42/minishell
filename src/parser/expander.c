@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nachh <nachh@student.42.fr>                +#+  +:+       +#+        */
+/*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 12:01:42 by iortego-          #+#    #+#             */
-/*   Updated: 2024/02/22 19:56:51 by nachh            ###   ########.fr       */
+/*   Updated: 2024/03/06 18:15:34 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 
 char	*get_var_value(char	*env_entry)
 {
-	char	*value;
+	int		i;
 
-	while (*env_entry != '=' && *env_entry != 0)
-		env_entry++;
-	if (env_entry != '=')
+	i = 0;
+	while (env_entry[i] != '=' && env_entry[i] != 0)
+		i++;
+	if (env_entry[i] != '=')
 		return (NULL);
-	env_entry++;
-	value = ft_strdup(env_entry);
-	return (value);
+	env_entry += i;
+	return (ft_strdup(env_entry));
 }
 
 char	*expander(char	*sequence, int len, char	**env)
@@ -31,6 +31,7 @@ char	*expander(char	*sequence, int len, char	**env)
 	int		count;
 	char	*var;
 
+	count = 0;
 	var = malloc(sizeof(char) * (len + 1));
 	ft_strlcpy(var, sequence, len);
 	var[len] = 0;
