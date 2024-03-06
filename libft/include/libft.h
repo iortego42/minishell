@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nachh <nachh@student.42.fr>                +#+  +:+       +#+        */
+/*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 20:47:37 by iortego-          #+#    #+#             */
-/*   Updated: 2024/03/06 06:15:09 by nachh            ###   ########.fr       */
+/*   Updated: 2024/03/06 21:32:53 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 /*--MIS FUNCIONES--*/
 t_list		*ft_lstfirst(t_list *lst);
+
 /**
  * @brief Checks if a string is equal to another.
  * This will return TRUE if both stings are
@@ -123,6 +124,24 @@ t_bool		ft_strstartswith(char *str, char *prefix);
  * @return A substring of str until ch is found.
  */
 char		*ft_substrchr(char *str, char ch);
+
+/**
+ * @brief Gets the index of the specified char
+ * on a string, starting at a certain index.
+ * 
+ * @param str The string to search at
+ * @param start The string index where we will
+ * start looking for the character, this method
+ * does NOT check if this index is higher than
+ * the length of the string for optimization
+ * purposes.
+ * @param ch The character to search.
+ * 
+ * @return The index of the specified character
+ * on the string, -1 if the character isn't found
+ * or str is NULL.
+ */
+int			ft_strchrindex(const char *str, int start, char ch);
 
 int			ft_isspace(char c);
 void		ft_switch_int_values(int *a, int *b);
