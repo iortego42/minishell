@@ -85,7 +85,7 @@ char	**strlstocharls(t_string *list)
 	char	**strlist;
 
 	if (!list)
-		return ;
+		return (NULL);
 	list_size = 0;
 	while (list[list_size] != NULL)
 		list_size++;

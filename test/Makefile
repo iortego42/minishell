@@ -16,14 +16,35 @@ CPPUTEST_LIB_DIR=$(TEST_DIR)/lib
 CXXFLAGS += -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorNewMacros.h
 CFLAGS += -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorMallocMacros.h
 
-TEST_SRC_DIRS=$(TEST_DIR)
+TEST_SRC_DIRS=$(TEST_DIR)/test_srcs
 
-lexer: 
+
+#
+# --- LIBSTRINGS ---
+#
+LSTRINGSPATH = $(PROJECT_DIR)/libstrings
+LSTRINGSNAME = strings
+LSTRINGS = $(LSTRINGSPATH)/lib$(LSTRINGSNAME).a
+
+$(LSTRINGS):
+	make -C $(LSTRINGSPATH)
+
+#
+# --- LIBFT ---
+#
+LFTPATH = $(PROJECT_DIR)/libft
+LFTNAME = ft
+LFT = $(LFTPATH)/lib$(LFTNAME).a
+$(LFT):
+	make -C $(LFTPATH)
+
+CPPUTEST_CFLAGS+=-I $(LSTRINGSPATH)/include
+CPPUTEST_LDFLAGS+=-L $(LSTRINGSPATH) -l$(LSTRINGSNAME)
+
+lexer: $(LSTRINGS)
 	# CREACION DE LAS VARIABLES 
-	$(eval COMPONENT_NAME=lexer)
-	$(eval SRC_FILES=../src/parser/lexer.c)
-	@echo "Testing Lexer. $(COMPONENT_NAME)"
-	$(MAKE) run COMPONENT_NAME=lexer SRC_FILES=../src/parser/lexer.c
+	@echo "Testing Lexer."
+	$(MAKE) run COMPONENT_NAME=lexer SRC_FILES=../src/parser/lexer.c CPPUTEST_CFLAGS="$(CPPUTEST_CFLAGS)" CPPUTEST_LDFLAGS="$(CPPUTEST_LDFLAGS)"
 	
 init:
 	cd cpputest
@@ -34,11 +55,11 @@ init:
 
 
 run: start $(TEST_TARGET) 
-	$(RUN_TEST_TARGET)
+	$(RUN_TEST_TARGET) -c
 
 cleantest:
 	rm -rf objs lib .a src
 
-.PHONY: run lexer cleantest init
+.PHONY: run lexer cleantest init libstrings
 
 include $(CPPUTEST_HOME)/build/MakefileWorker.mk
