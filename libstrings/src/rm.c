@@ -1,12 +1,12 @@
 #include "libstrings.h"
 
-void	clearlist(t_string *this)
+void	clearlist(t_string *string)
 {
 	size_t	i;
 
 	i = 0;
-	while (this[i])
-		dtor(&this[i]);
-	free(this);
-	this = NULL;
+	while (string[i])
+		dtor(&string[i]);
+	free(string);
+	string = NULL;
 }

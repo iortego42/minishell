@@ -1,20 +1,20 @@
 #include "libstrings.h"
 
-t_string	str_cpy(t_string this)
+t_string	str_cpy(t_string string)
 {
 	char		*str;
 	size_t		i;
 	size_t		length;
 	t_string	new;
 
-	length = len(this);
+	length = len(string);
 	str = malloc(length + 1);
 	if (!str)
 		return (NULL);
-	i = this->start;
-	while (i < this->end)
+	i = string->start;
+	while (i < string->end)
 	{
-		str[i - this->start] = this->data[i];
+		str[i - string->start] = string->data[i];
 		i++;
 	}
 	str[length] = 0;
@@ -23,23 +23,23 @@ t_string	str_cpy(t_string this)
 	return (new);
 }
 
-t_string	str_ncpy(t_string this, size_t size)
+t_string	str_ncpy(t_string string, size_t size)
 {
 	char		*str;
 	size_t		i;
 	size_t		length;
 	t_string	new;
 
-	i = this->start;
-	length = len(this);
+	i = string->start;
+	length = len(string);
 	if (length > size)
 		length = size;
 	str = malloc(length + 1);
 	if (!str)
 		return (NULL);
-	while (i < this->end && (i - this->start) < length)
+	while (i < string->end && (i - string->start) < length)
 	{
-		str[i - this->start] = this->data[i];
+		str[i - string->start] = string->data[i];
 		i++;
 	}
 	str[length] = 0;
@@ -48,8 +48,8 @@ t_string	str_ncpy(t_string this, size_t size)
 	return (new);
 }
 
-// void    getfunc_cp(t_string this)
+// void    getfunc_cp(t_string string)
 // {
-//     this->strcpy = strcpy;
-//     this->strncpy = strncpy;
+//     string->strcpy = strcpy;
+//     string->strncpy = strncpy;
 // }

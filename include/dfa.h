@@ -57,10 +57,10 @@ typedef enum {
 } t_state;
 
 struct s_DFA {
-    size_t         *syms_pos;
-    int         syms_c;
-    int         state;
-    int         prev_state;
+    size_t  *syms_pos;
+    size_t  syms_c;
+    t_state state;
+    t_state prev_state;
 };
 
 const static char	g_state[STATES][SYM_NUM] = {
@@ -89,12 +89,11 @@ const static char	g_state[STATES][SYM_NUM] = {
 
 };
 
-int             which_alphabet(char    **str, char c);
-void            append_sym(int c[2]);
-t_types         asign_sym(char mask);
-void            sym_count();
-void            eval(char  *str);
-t_bool          lexer(char  *str);
+t_types             which_sym(char token);
+t_state             eval_char(t_DFA l, char c);
+void                syntax_error(void);
+t_bool              eval(t_DFA l, t_string s);
+t_string            *lexer(t_string sentence);
 const static char	*g_alphabets[SYM_NUM] = {
 [SPACE] = " \t",
 [DOLLAR] = "$",

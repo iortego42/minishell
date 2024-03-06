@@ -1,40 +1,40 @@
 #include "libstrings.h"
 
-// static int wordcount(t_string   this, char  *delimitator)
+// static int wordcount(t_string   string, char  *delimitator)
 
-static int	checkranges(t_string this, size_t splits, size_t *positions)
+static int	checkranges(t_string string, size_t splits, size_t *positions)
 {
 	size_t i;
 
 	i = 0;
 	while (i < splits)
 	{
-		if (this->end < positions[i])
+		if (string->end < positions[i])
 			return (0);
 		i++;
 	}
 	i--;
-	if (this->end < positions[i])
+	if (string->end < positions[i])
 		return (0);
 	return (1);
 }
-static void	rclearlist(t_string *this, size_t	size)
+static void	rclearlist(t_string *string, size_t	size)
 {
 	while (size-- > 0)
-		dtor(&this[size]);
-	free(this);
-	this = NULL;
+		dtor(&string[size]);
+	free(string);
+	string = NULL;
 }
 
-t_string	*nsplit(t_string this, size_t splits, size_t *position)
+t_string	*nsplit(t_string string, size_t splits, size_t *position)
 {
 	size_t		w;
 	t_string	*list;
 	t_string	str;
 
 	w = 0;
-	str = str_cpy(this);
-	if (!str || !checkranges(this, splits, position))
+	str = str_cpy(string);
+	if (!str || !checkranges(string, splits, position))
 		return (NULL);
 	splits++;
 	list = malloc(sizeof(t_string) * (splits + 1));
@@ -43,7 +43,7 @@ t_string	*nsplit(t_string this, size_t splits, size_t *position)
 	while (w++ < splits)
 	{
 		if (w == splits)
-			str->end = this->end;
+			str->end = string->end;
 		else
 			str->end = position[w - 1];
 		list[w - 1] = str_cpy(str);

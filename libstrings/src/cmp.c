@@ -91,28 +91,28 @@ long int	p_str_ncmp(t_string one, char *two, size_t max)
 		return (ione - one->start);
 	return (-1);
 }
-long int	endswith(t_string this, t_string s_suffix, char *p_suffix)
+long int	endswith(t_string string, t_string s_suffix, char *p_suffix)
 {
 	size_t	start;
 	size_t	pos;
 	size_t	len;
 
-	start = this->start;
+	start = string->start;
 	if (s_suffix && s_suffix->data)
 	{
-		this->start = this->end - s_suffix->start;
-		pos = str_cmp(this, s_suffix);
+		string->start = string->end - s_suffix->start;
+		pos = str_cmp(string, s_suffix);
 	}
 	else if (p_suffix)
 	{
 		len = 0;
 		while (p_suffix[len] != 0)
 			len++;
-		this->start = this->end - len;
-		pos = p_str_cmp(this, p_suffix);
+		string->start = string->end - len;
+		pos = p_str_cmp(string, p_suffix);
 	}
 	else
 		pos = 0;
-	this->start = start;
+	string->start = start;
 	return (pos);
 }

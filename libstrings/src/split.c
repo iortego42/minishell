@@ -1,38 +1,38 @@
 #include "libstrings.h"
 
-// static int wordcount(t_string   this, char  *delimitator)
-static int	wordcount(t_string this, t_string delimitator)
+// static int wordcount(t_string   string, char  *delimitator)
+static int	wordcount(t_string string, t_string delimitator)
 {
 	int			words;
 	size_t		init_start;
 	t_string	next;
 
 	words = 0;
-	next = str_cpy(this);
+	next = str_cpy(string);
 	if (!next)
 		return (0);
-	init_start = this->start;
+	init_start = string->start;
 	while (next->start < next->end)
 	{
 		findword(next, delimitator);
 		words++;
 		next->start = next->end;
-		next->end = this->end;
+		next->end = string->end;
 	}
-	this->start = init_start;
+	string->start = init_start;
 	dtor(&next);
 	return (words);
 }
 
-static void	rclearlist(t_string *this, size_t	size)
+static void	rclearlist(t_string *string, size_t	size)
 {
 	while (size-- > 0)
-		dtor(&this[size]);
-	free(this);
-	this = NULL;
+		dtor(&string[size]);
+	free(string);
+	string = NULL;
 }
 
-t_string	*split(t_string this, t_string delimitator)
+t_string	*split(t_string string, t_string delimitator)
 {
 	size_t		w;
 	size_t		list_size;
@@ -40,11 +40,11 @@ t_string	*split(t_string this, t_string delimitator)
 	t_string	*list;
 
 	w = 0;
-	list_size = wordcount(this, delimitator);
+	list_size = wordcount(string, delimitator);
 	list = malloc(sizeof(t_string) * (list_size + 1));
 	if (!list)
 		return (NULL);
-	str = str_cpy(this);
+	str = str_cpy(string);
 	if (!str)
 		return (NULL);
 	while (w++ < list_size)
@@ -54,25 +54,25 @@ t_string	*split(t_string this, t_string delimitator)
 		if (list[w - 1] == NULL)
 			return (dtor(&str), rclearlist(list, --w), NULL);
 		str->start = str->end;
-		str->end = this->end;
+		str->end = string->end;
 	}
 	list[w - 1] = NULL;
 	dtor(&str);
 	return (list);
 }
 
-void	printlist(t_string *this, t_string separator)
+void	printlist(t_string *string, t_string separator)
 {
 	size_t	i;
 
-	if (!this)
+	if (!string)
 		return ;
 	i = 0;
-	while (this[i] != NULL)
+	while (string[i] != NULL)
 	{
-		print(this[i]);
+		print(string[i]);
 		i++;
-		if (this[i] != NULL)
+		if (string[i] != NULL)
 			print(separator);
 	}
 }

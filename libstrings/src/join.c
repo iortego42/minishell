@@ -1,13 +1,13 @@
 #include "libstrings.h"
 
-t_string				str_joinfront(t_string this, t_string preffix)
+t_string				str_joinfront(t_string string, t_string preffix)
 {
     size_t      length;
     size_t      i;
     t_string    new;
     char        *data;
 
-    new = str_cpy(this);
+    new = str_cpy(string);
     if (new == NULL)
         return (new);
     length = len(new) + len(preffix);
@@ -27,7 +27,7 @@ t_string				str_joinfront(t_string this, t_string preffix)
     return (new);
 }
 
-t_string				p_str_joinfront(t_string this, char *preffix)
+t_string				p_str_joinfront(t_string string, char *preffix)
 {
     size_t      length;
     size_t      i;
@@ -35,7 +35,7 @@ t_string				p_str_joinfront(t_string this, char *preffix)
     t_string    new;
     char        *data;
 
-    new = str_cpy(this);
+    new = str_cpy(string);
     if (new == NULL)
         return (new);
     length = len(new) + p_len(preffix);
@@ -56,14 +56,14 @@ t_string				p_str_joinfront(t_string this, char *preffix)
     return (new);
 }
 
-t_string				str_joinback(t_string this, t_string suffix)
+t_string				str_joinback(t_string string, t_string suffix)
 {
     size_t      length;
     size_t      i;
     t_string    new;
     char        *data;
 
-    new = str_cpy(this);
+    new = str_cpy(string);
     if (new == NULL)
         return (new);
     length = len(new) + len(suffix);
@@ -83,14 +83,14 @@ t_string				str_joinback(t_string this, t_string suffix)
     return (new);
 }
 
-t_string				p_str_joinback(t_string this, char *suffix)
+t_string				p_str_joinback(t_string string, char *suffix)
 {
     size_t      length;
     size_t      i;
     t_string    new;
     char        *data;
 
-    new = str_cpy(this);
+    new = str_cpy(string);
     if (new == NULL)
         return (new);
     length = len(new) + p_len(suffix);

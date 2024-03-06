@@ -1,20 +1,20 @@
 # include "libstrings.h"
 
-char    get(t_string this, size_t index)
+char    get(t_string string, size_t index)
 {
-    if (this->start + index > this->end)
+    if (string->start + index > string->end)
         return ('\0');
     else
-        return (this->data[this->start + index]);
+        return (string->data[string->start + index]);
 }
 
-char   set(t_string this, size_t index, char value)
+char   set(t_string string, size_t index, char value)
 {
-    if (this->start + index > this->end)
+    if (string->start + index > string->end)
         return ('\0');
     else
     {
-        this->data[this->start + index] = value; 
-        return (this->data[this->start + index]);
+        string->data[string->start + index] = value; 
+        return (string->data[string->start + index]);
     }
 }

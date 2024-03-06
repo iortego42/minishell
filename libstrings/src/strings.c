@@ -1,44 +1,44 @@
 #include "libstrings.h"
 
-// static void getfunc(t_string this)
+// static void getfunc(t_string string)
 // {
-//     if (!this)
+//     if (!string)
 //         return ((void)"");
-//     getfunc_io(this);
-//     getfunc_cp(this);
+//     getfunc_io(string);
+//     getfunc_cp(string);
 // }
 
-void	dtor(t_string *this)
+void	dtor(t_string *string)
 {
-	if (!this || !(*this))
+	if (!string || !(*string))
 		return ((void)"");
-	free((*this)->data);
-	(*this)->data = NULL;
-	free(*this);
-	*this = NULL;
+	free((*string)->data);
+	(*string)->data = NULL;
+	free(*string);
+	*string = NULL;
 }
 
-void	ctor(t_string *this, char *data)
+void	ctor(t_string *string, char *data)
 {
-	if (!this)
+	if (!string)
 		return ((void)"");
-	*this = malloc(sizeof(struct s_str));
-	if (*this)
+	*string = malloc(sizeof(struct s_str));
+	if (*string)
 	{
-		(*this)->start = 0;
-		(*this)->end = 0;
-		(*this)->data_len = 0;
+		(*string)->start = 0;
+		(*string)->end = 0;
+		(*string)->data_len = 0;
 		if (data)
 		{
-			while (data[(*this)->end])
-				(*this)->end++;
-			(*this)->data = malloc(sizeof(char) * ((*this)->end + 1));
-			while ((*this)->data && data[(*this)->data_len])
+			while (data[(*string)->end])
+				(*string)->end++;
+			(*string)->data = malloc(sizeof(char) * ((*string)->end + 1));
+			while ((*string)->data && data[(*string)->data_len])
 			{
-				(*this)->data[(*this)->data_len] = data[(*this)->data_len];
-				(*this)->data_len++;
+				(*string)->data[(*string)->data_len] = data[(*string)->data_len];
+				(*string)->data_len++;
 			}
-			(*this)->data[(*this)->data_len] = 0;
+			(*string)->data[(*string)->data_len] = 0;
 		}
 	}
 }

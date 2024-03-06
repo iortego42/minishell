@@ -19,13 +19,13 @@ t_types which_sym(char token)
 t_state eval_char(t_DFA l, char c)
 {
     l.prev_state = l.state;
-    l.state = g_state[l.state][which_sym(c)];
+    l.state = (t_state)g_state[l.state][which_sym(c)];
     if (l.state == INVALID_INPUT)
         syntax_error();
     return (l.state);
 }
 
-void    syntax_error()
+void    syntax_error(void)
 {
     char    message[] = "minishell: error sintáctico.\n";
 

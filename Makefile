@@ -6,7 +6,7 @@
 #    By: nachh <nachh@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2024/03/05 09:15:42 by nachh            ###   ########.fr        #
+#    Updated: 2024/03/06 06:58:29 by nachh            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,9 @@ LSTRINGSNAME = strings
 LSTRINGS = $(LSTRINGSPATH)/lib$(LSTRINGSNAME).a
 CFLAGS += -I $(LFTPATH)/include -I $(LSTRINGSPATH)/include
 LDFLAGS += -lreadline -L $(LFTPATH) -l$(LFTNAME) -L $(LSTRINGSPATH) -l$(LSTRINGSNAME) 
+
+
+CPPUTEST_HOME = test/cpputest
 
 SRCS = minishell.c
 
@@ -89,6 +92,14 @@ $(OBJDIR):
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ 
 
+# ---- Test Rules ----
+# Use the variable FILE to specify a file to test
+# Example file relative path is src/parsers/lexer.c:
+# 	$ make test FILE=parser/lexer.c
+#
+
+test:
+	make -f
 
 clean:
 	make fclean -C $(LFTPATH)

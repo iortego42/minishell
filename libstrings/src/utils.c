@@ -1,14 +1,14 @@
 #include "libstrings.h"
 
-size_t	len(t_string this)
+size_t	len(t_string string)
 {
 	size_t	length;
 
-	if (this == NULL || this->data == NULL)
+	if (string == NULL || string->data == NULL)
 		return (0);
-	if (this->end > this->start)
+	if (string->end > string->start)
 	{
-		length = this->end - this->start;
+		length = string->end - string->start;
 		return (length);
 	}
 	else
@@ -27,33 +27,33 @@ size_t	p_len(char	*str)
 	return (length);
 }
 
-void	p_findword(t_string this, char *delimitator)
+void	p_findword(t_string string, char *delimitator)
 {
 	size_t	new_start;
 	size_t	del_len;
 
 	del_len = p_len(delimitator);
-	while (p_str_ncmp(this, delimitator, del_len) == -1)
-		this->start += del_len;
-	new_start = this->start;
-	while (this->start < this->end && p_str_ncmp(this, delimitator,
+	while (p_str_ncmp(string, delimitator, del_len) == -1)
+		string->start += del_len;
+	new_start = string->start;
+	while (string->start < string->end && p_str_ncmp(string, delimitator,
 			del_len) >= 0)
-		this->start++;
-	this->end = this->start;
-	this->start = new_start;
+		string->start++;
+	string->end = string->start;
+	string->start = new_start;
 }
 
-void	findword(t_string this, t_string delimitator)
+void	findword(t_string string, t_string delimitator)
 {
 	size_t	del_len;
 	size_t	new_start;
 
 	del_len = len(delimitator);
-	while (str_ncmp(this, delimitator, del_len) == -1)
-		this->start += del_len;
-	new_start = this->start;
-	while (this->start < this->end && str_ncmp(this, delimitator, del_len) >= 0)
-		this->start++;
-	this->end = this->start;
-	this->start = new_start;
+	while (str_ncmp(string, delimitator, del_len) == -1)
+		string->start += del_len;
+	new_start = string->start;
+	while (string->start < string->end && str_ncmp(string, delimitator, del_len) >= 0)
+		string->start++;
+	string->end = string->start;
+	string->start = new_start;
 }

@@ -1,72 +1,72 @@
 #include "libstrings.h"
 
-void	print(t_string this)
+void	print(t_string string)
 {
 	size_t	i;
 	
-	if (this && this->data)
+	if (string && string->data)
 	{
-		i = this->start;
-		while (i < this->end)
+		i = string->start;
+		while (i < string->end)
 		{
-			write(1, &this->data[i], 1);
+			write(1, &string->data[i], 1);
 			i++;
 		}
 	}
 }
 
-void	printe(t_string this)
+void	printe(t_string string)
 {
 	size_t	i;
 
-	if (this && this->data)
+	if (string && string->data)
 	{
-		i = this->start;
-		while (i < this->end)
+		i = string->start;
+		while (i < string->end)
 		{
-			write(2, &this->data[i], 1);
+			write(2, &string->data[i], 1);
 			i++;
 		}
 	}
 }
 
-void	printfd(t_string this, int fd)
+void	printfd(t_string string, int fd)
 {
 	size_t	i;
 
-	if (this && this->data)
+	if (string && string->data)
 	{
-		i = this->start;
-		while (i < this->end)
+		i = string->start;
+		while (i < string->end)
 		{
-			write(fd, &this->data[i], 1);
+			write(fd, &string->data[i], 1);
 			i++;
 		}
 	}
 }
 
-void	printnl(t_string this)
+void	printnl(t_string string)
 {
 	size_t	i;
 
-	if (this && this->data)
+	if (string && string->data)
 	{
-		i = this->start;
-		while (i < this->end)
+		i = string->start;
+		while (i < string->end)
 		{
-			write(1, &this->data[i], 1);
+			write(1, &string->data[i], 1);
 			i++;
 		}
 	}
 	write(1, "\n", 1);
 }
 
-// void    getfunc_io(t_string this)
+// void    getfunc_io(t_string string)
 // {
-//     this->print = print;
-//     this->printe = printe;
-//     this->printfd = printfd;
-//     // this->f[PRINT] = (void *(*)(t_string))print;
-//     // this->f[PRINTE] = (void *(*)(t_string))printe;
-//     // this->f[PRINTFD] = (void *(*)(t_string))printfd;
+//     string->print = print;
+//     string->printe = printe;
+//     string->printfd = printfd;
+//     // string->f[PRINT] = (void *(*)(t_string))print;
+//     // string->f[PRINTE] = (void *(*)(t_string))printe;
+//     // string->f[PRINTFD] = (void *(*)(t_string))printfd;
 // }
