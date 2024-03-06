@@ -60,3 +60,9 @@ dkms.conf
 
 # Project subject
 *.pdf
+
+# Test files
+test/src
+test/objs
+test/lib
+test/*_tests
