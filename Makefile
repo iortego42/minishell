@@ -6,7 +6,7 @@
 #    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2024/03/06 18:43:15 by danimart         ###   ########.fr        #
+#    Updated: 2024/03/06 20:43:28 by danimart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ CPPUTEST_HOME = test/cpputest
 SRCS = minishell.c
 
 SRCS += \
+		builtins/builtins.c \
 		builtins/echo.c \
 		builtins/env.c \
 		builtins/exit.c \

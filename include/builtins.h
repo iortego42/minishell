@@ -6,12 +6,24 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 22:00:31 by danimart          #+#    #+#             */
-/*   Updated: 2024/03/04 18:54:16 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/06 20:41:54 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
+
+/**
+ * @brief Executes builtins with the specified input.
+ * 
+ * @param input terminal input, this may change.
+ * @param exit_code a pointer to an integer that will
+ * be assigned to the exit code of the executed builtin.
+ * 
+ * @return 1 if minishell should exit (exit builtin),
+ * 0 otherwise.
+ */
+int	process_builtins(char *input, int *exit_code);
 
 /**
  * @brief The echo builtin command. Supports the "-n"
