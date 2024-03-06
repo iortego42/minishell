@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 04:12:22 by danimart          #+#    #+#             */
-/*   Updated: 2024/03/04 18:57:52 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/06 17:18:23 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	process_builtins(char *input, int *exit_code)
 		*exit_code = chdir(input + 3);
 	else if (ft_strequals(input, "env"))
 		*exit_code = bin_env();
+	return (0);
 }
 
 void	sig_cancel(int signal)
