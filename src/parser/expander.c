@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 12:01:42 by iortego-          #+#    #+#             */
-/*   Updated: 2024/03/07 17:13:41 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/07 18:16:59 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ int	get_expanded_size(char *input)
 	}
 	return (size);
 }
-
-// echo Hi ",  world"
 
 char	*get_next_arg(t_sh *shell, char *input, int *i)
 {
@@ -59,20 +57,20 @@ char	*get_next_arg(t_sh *shell, char *input, int *i)
 
 char	**expand(t_sh *shell, char *input)
 {
-	char	**cmds;
-	int		cmds_size;
-	int		cmds_i;
+	char	**args;
+	int		args_size;
+	int		args_i;
 	int		in_i;
 
-	cmds_size = (get_expanded_size(input) + 1);
-	cmds = malloc(cmds_size * sizeof(char));
-	cmds_i = 0;
+	args_size = (get_expanded_size(input));
+	args = malloc((args_size + 1) * sizeof(char));
+	args_i = 0;
 	in_i = 0;
-	while (cmds_i < cmds_size)
+	while (args_i < args_size)
 	{
-		cmds[cmds_i] = get_next_arg(shell, input, &in_i);
-		cmds_i++;
+		args[args_i] = get_next_arg(shell, input, &in_i);
+		args_i++;
 	}
-	cmds[cmds_i] = NULL;
-	return (cmds);
+	args[args_i] = NULL;
+	return (args);
 }
