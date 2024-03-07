@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 20:47:37 by iortego-          #+#    #+#             */
-/*   Updated: 2024/03/06 21:32:53 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:18:51 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,21 +109,24 @@ t_bool		ft_strstartswith(char *str, char *prefix);
 
 /**
  * @brief Gets a substring of the supplied
- * string until ch is found, so for example
- * ft_substr("Hello 42", ' ') will return
- * "Hello". If ch isn't found on str, a copy
+ * string until ch is found, starting at a certain
+ * index, so, for example ft_substr("Hello 42", ' ', 0)
+ * will return "Hello". If ch isn't found on str, a copy
  * of str will be returned. Yes, that means
  * that using '\0' as the delimiting character
- * will result in a method that copies strings.
+ * and 0 as the start index will result in a method
+ * that copies strings.
  * 
  * @param str The main string to get the 
  * substring from.
  * @param ch The delimiting character for
  * the new substring, this character will
  * not be included.
+ * @param start the starting index of str to
+ * get the substring from.
  * @return A substring of str until ch is found.
  */
-char		*ft_substrchr(char *str, char ch);
+char		*ft_substrchr(char *str, char ch, int start);
 
 /**
  * @brief Gets the index of the specified char
