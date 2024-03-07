@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 12:01:42 by iortego-          #+#    #+#             */
-/*   Updated: 2024/03/07 18:16:59 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/07 18:32:23 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*get_next_arg(t_sh *shell, char *input, int *i)
 	t_bool	quote;
 	char	limit;
 
-	quote = input[0] == '\"';
+	quote = input[*i] == '\"';
 	limit = ' ';
 	if (quote)
 	{
@@ -69,6 +69,7 @@ char	**expand(t_sh *shell, char *input)
 	while (args_i < args_size)
 	{
 		args[args_i] = get_next_arg(shell, input, &in_i);
+		in_i++;
 		args_i++;
 	}
 	args[args_i] = NULL;

@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:01:54 by danimart          #+#    #+#             */
-/*   Updated: 2024/03/07 18:06:30 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/07 18:33:11 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ char	*add_envs(t_sh *shell, char *cmd)
 	char	*env;
 
 	i = 0;
-	printf("Adding envs to %s\n", cmd);
 	expanded = malloc(sizeof(char));
 	while (cmd[i] != '\0')
 	{
