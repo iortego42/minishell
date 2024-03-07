@@ -6,9 +6,11 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 05:04:13 by danimart          #+#    #+#             */
-/*   Updated: 2024/03/06 18:41:31 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:50:52 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 unsigned char	get_exit_code(const char *str)
 {
@@ -33,13 +35,18 @@ unsigned char	get_exit_code(const char *str)
 	return (res);
 }
 
-int	bin_exit(char *input, int *exit_code)
+int	bin_exit(char **input, int *exit_code)
 {
-	int	i;
-
-	i = 0;
-	while (input[i] == ' ')
-		i++;
-	*exit_code = get_exit_code(input + i);
+	if (input[0] == NULL)
+	{
+		*exit_code = 0;
+		return (1);
+	}
+	else if (input[1] != NULL)
+	{
+		write(1, "exit: Too many arguments.\n", 27);
+		return (0);
+	}
+	*exit_code = get_exit_code(input[0]);
 	return (1);
 }

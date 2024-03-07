@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 04:12:22 by danimart          #+#    #+#             */
-/*   Updated: 2024/03/07 17:14:11 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/07 17:57:30 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,14 @@ char	*get_prompt(char *suff)
 t_bool	process_input(t_sh	*shell, char *prompt, int *exit_code)
 {
 	char	*input;
-	char	**cmds;
-	int		i;
+	t_bool	res;
 
 	input = readline(prompt);
 	add_history(input);
-	cmds = expand(shell, input);
-	i = 0;
-	while (cmds[i] != NULL)
-	{
-		if (process_builtins(cmds[i], exit_code) == 1)
-		{
-			free(prompt);
-			free(input);
-			return (TRUE);
-		}
-		i++;
-	}
+	res = process_builtins(expand(shell, input), exit_code) == 1;
 	free(prompt);
 	free(input);
-	return (FALSE);
+	return (res);
 }
 
 int	main(void)
