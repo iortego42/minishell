@@ -47,7 +47,7 @@ SRCS =	\
 		ft_putstr_fd.c \
 		ft_split.c \
 		ft_strchr.c \
-		ft_strchrindex.c
+		ft_strchrindex.c \
 		ft_strdup.c \
 		ft_strequals.c \
 		ft_striteri.c \
