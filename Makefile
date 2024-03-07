@@ -6,7 +6,7 @@
 #    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2024/03/06 20:43:28 by danimart         ###   ########.fr        #
+#    Updated: 2024/03/07 17:15:44 by danimart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,9 @@ LDFLAGS += -lreadline -L $(LFTPATH) -l$(LFTNAME) -L $(LSTRINGSPATH) -l$(LSTRINGS
 
 CPPUTEST_HOME = test/cpputest
 
-SRCS = minishell.c
+SRCS = \
+		minishell.c \
+		env.c
 
 SRCS += \
 		builtins/builtins.c \

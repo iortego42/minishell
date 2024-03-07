@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 22:09:52 by danimart          #+#    #+#             */
-/*   Updated: 2024/03/06 21:48:21 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:34:21 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,14 @@ typedef struct s_sh
 	char		*cmd;
 }	t_sh;
 
-// Expander //
+// Env //
 
 char	*get_env(t_sh *shell, char *name);
+
+char	*add_envs(t_sh *shell, char *cmd);
+
+// Expander //
+
+char	**expand(t_sh *shell, char *input);
 
 #endif
