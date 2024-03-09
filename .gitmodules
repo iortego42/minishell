@@ -4,3 +4,6 @@
 [submodule "c_strings"]
 	path = c_strings
 	url = git@github.com:iortego42/c_strings.git
+[submodule "libstrings"]
+	path = libstrings
+	url = git@github.com:iortego42/c_strings.git
