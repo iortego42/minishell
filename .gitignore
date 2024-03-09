@@ -65,4 +65,4 @@ dkms.conf
 test/src
 test/objs
 test/lib
-test/*_tests
+minishell_tests

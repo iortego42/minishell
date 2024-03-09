@@ -1,27 +1,60 @@
 #include "CppUTest/TestHarness.h"
-
 extern "C" {
     #include "libstrings.h"
+    #include "dfa.h"
 }
 
-TEST_GROUP(lexer_test)
+TEST_BASE(LexerTest)
 {
+    t_string        command;
+    t_string        *pipe_list;
+    std::string     sentence, testvalue, message;
+
+    void setup()
+    {
+        command = NULL;
+        pipe_list = NULL;
+    }
+
+    void teardown()
+    {
+        if (command) 
+            dtor(&command);
+        if (pipe_list) 
+            clearlist(pipe_list);
+    }
 };
 
-
-TEST(lexer_test, init) {
-    CHECK_EQUAL(1, 1);
-}
-
-TEST(lexer_test, checkSimple)
+TEST_GROUP_BASE(ValidCommand, LexerTest)
 {
-    t_string test, cpy;
-    ctor(&test, (char*)"hola hola");
-    cpy = str_cpy(test);
-    CHECK_COMPARE_TEXT(test->data_len, ==, cpy->data_len, "Checking data_lenght");
-    CHECK_TEXT(-1 == str_cmp(test, cpy), "Checking data with str_cmp");
-    dtor(&test);
-    dtor(&cpy);
-    
+    void setup()
+    {
+        LexerTest::setup();
+        sentence = "Valid command not lexed: ";
+    }
+    void teardown()
+    {
+        // printf("\nTesting: %s\n", testvalue.c_str());
+        ctor(&command, testvalue.c_str());
+        message = sentence + testvalue;
+        pipe_list = lexer(command);
+        CHECK_TEXT(NULL != pipe_list, message.c_str());
+        LexerTest::teardown();
+
+    }
+};
+
+TEST(ValidCommand, simpleCommand)
+{
+    testvalue = "hola hola";
 }
 
+TEST(ValidCommand, onePipe)
+{
+    testvalue = "hola | hola";
+}
+
+TEST(ValidCommand, pipeWithRed)
+{
+    testvalue = "hola >file1 file2 >>file3 <<EOF";
+}
