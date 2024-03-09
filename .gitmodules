@@ -1,3 +1,6 @@
 [submodule "test/cpputest"]
 	path = test/cpputest
 	url = https://github.com/cpputest/cpputest
+[submodule "c_strings"]
+	path = c_strings
+	url = git@github.com:iortego42/c_strings.git

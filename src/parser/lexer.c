@@ -1,5 +1,48 @@
 # include "dfa.h"
 
+
+const static char	g_state[STATES][SYM_NUM] = {
+/*		  
+\s = Space
+\C = Character
+\$ = Variable
+\S = Single Quote
+\D = Double Quote
+\O = Operator
+\< = Redirection In
+\> = Redirection Out
+            \s, \$, \S, \D, \O, \<, \>, \C */
+	[0]  = { 0,  0,  0,  0,  0,  0,  0,  0}, // DONE
+	[1]  = { 1,  2,  3,  4, 11,  6,  7,  2}, // EMPTY_INPUT
+	[2]  = { 9,  2,  3,  4,  5,  6,  7,  2}, // WORD_AWAIT
+	[3]  = { 3,  3,  9,  3,  3,  3,  3,  3}, // OPEN_SINGLE_QUOTES
+	[4]  = { 4,  4,  4,  9,  4,  4,  4,  4}, // OPEN_DOUBLE_QUOTES
+	[5]  = { 5,  2,  3,  4, 11,  6,  7,  2}, // OP_AWAIT
+	[6]  = {10,  2,  3,  4, 11,  8, 11,  2}, // REDIR_IN_AWAIT
+	[7]  = {10,  2,  3,  4, 11, 11,  8,  2}, // REDIR_OUT_AWAIT
+	[8]  = {10,  9,  9,  9,  9,  9,  9,  9}, // HA_AWAIT
+	[9]  = { 9,  2,  3,  4,  5,  6,  7,  2}, // S_B_STR
+	[10] = {10,  2,  3,  4,  5,  6,  7,  2}, // S_B_TOK
+	[11] = {11, 11, 11, 11, 11, 11, 11, 11}, // INVALID_INPUT
+
+};
+
+const static char	*g_alphabets[SYM_NUM] = {
+[SPACE] = " \t",
+[DOLLAR] = "$",
+// [QUOTES] = "'\"",
+[SIMPLE_QUOTES] = "'",
+[DOUBLE_QUOTES] = "\"",
+[OP] = "|",
+[REDIN] = "<",
+[REDOUT] = ">",
+[NON_SYM] = NULL
+};
+
+
+
+
+
 t_types which_sym(char token)
 {
     t_types i;
