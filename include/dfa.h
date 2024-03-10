@@ -9,9 +9,9 @@
 typedef void (*t_Action)(void   *);
 typedef enum {
 	SPACE,
+	DOLLAR,
 	DOUBLE_QUOTES,
 	SIMPLE_QUOTES,
-	DOLLAR,
     OP,
 	REDIN,
 	REDOUT,

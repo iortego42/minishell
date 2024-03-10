@@ -6,7 +6,7 @@
 #    By: nachh <nachh@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2024/03/09 22:56:55 by nachh            ###   ########.fr        #
+#    Updated: 2024/03/10 17:16:03 by nachh            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -132,6 +132,7 @@ CFLAGS += -fsanitize=address
 # CPPUTEST_CXXFLAGS += -fsanitize=address
 # CPPUTEST_CFLAGS += -fsanitize=address
 # MEMORY LEAK DETECTION
+CPPUTEST_USE_MEM_LEAK_DETECTION=Y
 CXXFLAGS += -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorNewMacros.h
 CFLAGS += -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorMallocMacros.h
 CPPUTEST_CXXFLAGS += -include $(CPPUTEST_HOME)/include/CppUTest/MemoryLeakDetectorNewMacros.h

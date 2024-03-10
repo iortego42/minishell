@@ -40,17 +40,23 @@ t_bool  eval(t_DFA *l, t_string s)
     while (cursor->start < cursor->end) 
     {
         eval_char(l, get(cursor, 0));
-        if (l->state == OP_AWAIT)
+        if (l->state == OP_AWAIT && l->prev_state != OP_AWAIT)
             l->syms_c++;
         else if (l->state == INVALID_INPUT) //should set erno
             return (dtor(&cursor), FALSE);
         cursor->start++;
     }
-    l->syms_pos = malloc(sizeof(int) * l->syms_c);
+    if (l->syms_c > 0)
+        l->syms_pos = malloc(sizeof(size_t) * l->syms_c);
     l->syms_c = 0;
+    cursor->start = 0;
     while (cursor->start < cursor->end)
-        if (eval_char(l, get(cursor, 0)) == OP_AWAIT)
+    {
+        eval_char(l, get(cursor, 0));
+        if (l->state == OP_AWAIT && l->prev_state != OP_AWAIT)
             l->syms_pos[l->syms_c++] = cursor->start;
+        cursor->start++;
+    }
     dtor(&cursor);
     return (TRUE);
 }
@@ -59,13 +65,17 @@ t_string    *lexer(t_string sentence)
 {
     t_string    *pipe_list;
     t_DFA       l;
+    t_bool      is_valid;
 
-    l = (t_DFA){NULL, 0, 0, 0};
+    l = (t_DFA){.syms_pos = NULL, .syms_c = 0, .state = EMPTY_INPUT, .prev_state = EMPTY_INPUT};
     if (sentence == NULL || sentence->data == NULL)
         return (NULL);
-    if (!eval(&l, sentence))
-        return (free(l.syms_pos), NULL);
-    pipe_list = nsplit(sentence, l.syms_c, l.syms_pos);
-    free(l.syms_pos);
+    is_valid = eval(&l, sentence);
+    if (is_valid)
+        pipe_list = nsplit(sentence, l.syms_c, l.syms_pos);
+    else
+        pipe_list = NULL;
+    if (l.syms_pos)
+        free(l.syms_pos);
     return (pipe_list);
 }
