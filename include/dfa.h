@@ -1,7 +1,6 @@
 #ifndef DFA_H
 # define DFA_H
 
-# include "minishell.h"
 # include "libft.h"
 # include "libstrings.h"
 # define NONE -1

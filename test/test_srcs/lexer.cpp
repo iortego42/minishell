@@ -41,7 +41,7 @@ TEST_GROUP_BASE(ValidCommand, LexerTest)
         ctor(&command, testvalue.c_str());
         message = sentence + testvalue;
         pipe_list = lexer(command);
-        p_printlist(pipe_list, (char *)"\n->");
+        // p_printlist(pipe_list, (char *)"\n->");
         CHECK_TEXT(NULL != pipe_list, message.c_str());
         LexerTest::teardown();
     }
@@ -60,8 +60,7 @@ TEST_GROUP_BASE(InvalidCommand, LexerTest)
         ctor(&command, testvalue.c_str());
         message = sentence + testvalue;
         pipe_list = lexer(command);
-        // Solo printea en caso erroneo
-        p_printlist(pipe_list, (char *)"\n->");
+        // p_printlist(pipe_list, (char *)"\n->");
         LexerTest::teardown();
         CHECK_TEXT(NULL == pipe_list, message.c_str());
     }
@@ -91,6 +90,9 @@ TEST_GROUP_BASE(NumberOfPipes, LexerTest)
     }
 };
 
+//
+//  VALID COMMANDS TESTS
+//
 TEST(ValidCommand, simpleCommand)
 {
     testvalue = "echo hola";
@@ -105,12 +107,21 @@ TEST(ValidCommand, pipeWithRed)
 {
     testvalue = "ls >file1 /route/to/list >>file3 <<EOF";
 }
-
+//
+//  INVALID COMMANDS TESTS
+//
 TEST(InvalidCommand, pipeAtBegin)
 {
     testvalue = "| exit";
 }
 
+TEST(InvalidCommand, pipeWithEmptyRedir)
+{
+    testvalue = "exit | exit >";
+}
+//
+// PIPE NUMBER ON VALID COMMANDS TESTS
+//
 TEST(NumberOfPipes, noPipe)
 {
     testvalue = "echo \"sin pipe\"";
