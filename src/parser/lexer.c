@@ -39,11 +39,10 @@ t_bool  eval(t_DFA *l, t_string s)
     cursor = str_cpy(s);
     while (cursor->start < cursor->end) 
     {
-        eval_char(l, get(cursor, 0));
-        if (l->state == OP_AWAIT && l->prev_state != OP_AWAIT)
-            l->syms_c++;
-        else if (l->state == INVALID_INPUT) //should set erno
+        if (eval_char(l, get(cursor, 0)) == INVALID_INPUT) //should set erno
             return (dtor(&cursor), FALSE);
+        else if (l->state == OP_AWAIT && l->prev_state != OP_AWAIT)
+            l->syms_c++;
         cursor->start++;
     }
     if (l->syms_c > 0)
@@ -54,11 +53,37 @@ t_bool  eval(t_DFA *l, t_string s)
     {
         eval_char(l, get(cursor, 0));
         if (l->state == OP_AWAIT && l->prev_state != OP_AWAIT)
-            l->syms_pos[l->syms_c++] = cursor->start;
+            l->syms_pos[l->syms_c - 1] = cursor->start;
         cursor->start++;
     }
     dtor(&cursor);
     return (TRUE);
+}
+
+
+t_cmd   *getcmd(t_string strcmd)
+{
+    t_cmd       *cmd;
+    t_string    cursor;
+    t_DFA       l;
+
+    l = (t_DFA){.syms_pos = NULL, .syms_c = 0, .state = EMPTY_INPUT, .prev_state = EMPTY_INPUT};
+    cursor = str_cpy(strcmd);
+    cmd = malloc(sizeof(t_cmd));
+    if (cursor == NULL || cmd == NULL)
+        return (NULL);
+    
+    while (cursor->start < cursor->end)
+    {
+        if (eval_char(&l, get(cursor, 0)) == INVALID_INPUT) //should set erno
+            return (free(cmd), dtor(&cursor), FALSE);
+        else if (l.prev_state == !)
+// Make a function which lets the lexer sym counter increment by 1
+// also set the possition of the redirection, then trim it from 
+// may be start could help us to get that
+    }
+    // ctor(&cmd->cmd, );
+
 }
 
 t_string    *lexer(t_string sentence)

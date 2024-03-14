@@ -47,7 +47,7 @@ typedef enum {
 	OP_AWAIT,
 	REDIR_IN_AWAIT,
 	REDIR_OUT_AWAIT,
-    FILE_AWAIT, // HEREDOC/APPEND AWAIT
+    HA_AWAIT, // HEREDOC/APPEND AWAIT
     S_B_STR, // SPACE BETWEEN STRINGS 
     S_B_TOK, // SPACE BETWEEN TOKEN
 	INVALID_INPUT,
@@ -61,6 +61,14 @@ struct s_DFA {
     t_state state;
     t_state prev_state;
 };
+
+typedef struct s_cmd {
+	t_string	*reds;
+	char		expand_mask;
+	t_string	cmd;
+	//int			pid;
+} t_cmd;
+
 t_types             which_sym(char token);
 void                syntax_error(void);
 t_state             eval_char(t_DFA *l, char c);
@@ -69,14 +77,14 @@ t_string            *lexer(t_string sentence);
 
 const static char	g_state[STATES][SYM_NUM] = {
 /*		  
-\s = Space
-\C = Character
-\$ = Variable
-\S = Single Quote
-\D = Double Quote
-\O = Operator
-\< = Redirection In
-\> = Redirection Out
+	\s = Space
+	\C = Character
+	\$ = Variable
+	\S = Single Quote
+	\D = Double Quote
+	\O = Operator
+	\< = Redirection In
+	\> = Redirection Out
             \s, \$, \S, \D, \O, \<, \>, \C */
 	[0]  = { 0,  0,  0,  0,  0,  0,  0,  0}, // DONE
 	[1]  = { 1,  2,  3,  4, 11,  6,  7,  2}, // EMPTY_INPUT
@@ -90,7 +98,6 @@ const static char	g_state[STATES][SYM_NUM] = {
 	[9]  = { 9,  2,  3,  4,  5,  6,  7,  2}, // S_B_STR
 	[10] = {10,  2,  3,  4,  5,  6,  7,  2}, // S_B_TOK
 	[11] = {11, 11, 11, 11, 11, 11, 11, 11}, // INVALID_INPUT
-
 };
 
 const static char	*g_alphabets[SYM_NUM] = {
