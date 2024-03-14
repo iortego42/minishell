@@ -71,7 +71,7 @@ typedef struct s_cmd {
 
 t_types             which_sym(char token);
 void                syntax_error(void);
-t_state             eval_char(t_DFA *l, char c);
+t_state             eval_char_pipe(t_DFA *l, char c);
 t_bool              eval(t_DFA *l, t_string s);
 t_string            *lexer(t_string sentence);
 

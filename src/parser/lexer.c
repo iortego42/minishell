@@ -16,12 +16,14 @@ t_types which_sym(char token)
     return (NON_SYM);
 }
 
-t_state eval_char(t_DFA *l, char c)
+t_state eval_char_pipe(t_DFA *l, char c)
 {
     l->prev_state = l->state;
     l->state = (t_state)g_state[l->state][which_sym(c)];
     if (l->state == INVALID_INPUT)
         syntax_error();
+    else if (l->state == OP_AWAIT && l->prev_state != OP_AWAIT)
+        l->syms_c++;
     return (l->state);
 }
 
@@ -41,8 +43,6 @@ t_bool  eval(t_DFA *l, t_string s)
     {
         if (eval_char(l, get(cursor, 0)) == INVALID_INPUT) //should set erno
             return (dtor(&cursor), FALSE);
-        else if (l->state == OP_AWAIT && l->prev_state != OP_AWAIT)
-            l->syms_c++;
         cursor->start++;
     }
     if (l->syms_c > 0)
@@ -60,6 +60,17 @@ t_bool  eval(t_DFA *l, t_string s)
     return (TRUE);
 }
 
+t_state eval_char_red(t_DFA *l, const char c)
+{
+    l->prev_state = l->state;
+    l->state = (t_state) g_state[l->state][which_sym(c)];
+    if (l->state == INVALID_INPUT)
+        syntax_error();
+    else if ((l->state == REDIR_IN_AWAIT && l->prev_state != REDIR_IN_AWAIT)
+        || (l->state == REDIR_OUT_AWAIT && l->prev_state != REDIR_OUT_AWAIT))
+        l->syms_c++;
+    return (l->state);
+}
 
 t_cmd   *getcmd(t_string strcmd)
 {
@@ -73,16 +84,27 @@ t_cmd   *getcmd(t_string strcmd)
     if (cursor == NULL || cmd == NULL)
         return (NULL);
     
+    // get index of redirections in string
     while (cursor->start < cursor->end)
     {
-        if (eval_char(&l, get(cursor, 0)) == INVALID_INPUT) //should set erno
+        if (eval_char_red(&l, get(cursor, 0)) == INVALID_INPUT) //should set erno
             return (free(cmd), dtor(&cursor), FALSE);
-        else if (l.prev_state == !)
+        cursor->start++;
 // Make a function which lets the lexer sym counter increment by 1
 // also set the possition of the redirection, then trim it from 
 // may be start could help us to get that
     }
-    // ctor(&cmd->cmd, );
+    cursor->start = 0;
+    cmd->reds = malloc(sizeof(t_string) * (l.syms_c + 1));
+    if (cmd->reds == NULL)
+        return (free(cmd), dtor(&cursor), NULL);
+    // fill redirections array and remove them from cmd string
+    {
+        //found redirection;
+        // copy redirection to string array;
+        // remove redirection string from array;
+    }
+    // ctor();
 
 }
 
