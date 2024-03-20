@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 20:41:21 by danimart          #+#    #+#             */
-/*   Updated: 2024/03/20 04:10:09 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/20 04:57:10 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	process_builtins(char **input, int *exit_code)
 		*exit_code = bin_pwd(input + 1);
 	else if (ft_strequals(input[0], "cd"))
 		*exit_code = bin_cd(input + 1);
-	/*else if (ft_strequals(input[0], "env"))
-		*exit_code = bin_env();*/
+	else if (ft_strequals(input[0], "env"))
+		*exit_code = bin_env();
 	return (0);
 }
