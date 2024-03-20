@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nachh <nachh@student.42.fr>                +#+  +:+       +#+         #
+#    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2024/03/10 17:16:03 by nachh            ###   ########.fr        #
+#    Updated: 2024/03/20 04:12:19 by danimart         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,11 +35,7 @@ SRCS = \
 		env.c
 
 SRCS += \
-		builtins/builtins.c \
-		builtins/echo.c \
-		builtins/env.c \
-		builtins/exit.c \
-		builtins/pwd.c
+		builtins/*.c
 
 # SRCS += \
 # 		parser/lexer.c
