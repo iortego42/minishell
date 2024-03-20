@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 03:02:26 by danimart          #+#    #+#             */
-/*   Updated: 2024/03/07 18:18:33 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/20 05:19:45 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	bin_echo(int fd, char **input)
 	i = 0;
 	while (input[i] != NULL)
 	{
+		if (i != 0)
+			write(fd, " ", 1);
 		write(fd, input[i], ft_strlen(input[i]));
 		i++;
 	}
