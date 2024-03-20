@@ -6,7 +6,7 @@
 /*   By: danimart <danimart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 22:00:31 by danimart          #+#    #+#             */
-/*   Updated: 2024/03/20 02:28:39 by danimart         ###   ########.fr       */
+/*   Updated: 2024/03/20 03:30:56 by danimart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,17 @@
  * 0 otherwise.
  */
 int	process_builtins(char **input, int *exit_code);
+
+/**
+ * @brief The cd builtin command.
+ * 
+ * @param fd The fd to use.
+ * @param input The command input to use, generally
+ * a directory.
+ * 
+ * @return Currently always 0.
+ */
+int	bin_cd(char **input);
 
 /**
  * @brief The echo builtin command. Supports the "-n"
