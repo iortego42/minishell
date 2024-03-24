@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: danimart <danimart@student.42.fr>          +#+  +:+       +#+         #
+#    By: nachh <nachh@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2024/03/20 04:12:19 by danimart         ###   ########.fr        #
+#    Updated: 2024/03/24 13:52:37 by nachh            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -114,7 +114,7 @@ LD_LIBRARIES = -L$(CPPUTEST_HOME)/lib -lCppUTest
 # PROJECT SOURCES DIR
 # SRC_DIRS=$(PROJECT_DIR)/src
 SRC_DIRS+=$(PROJECT_DIR)/libstrings/src
-SRC_FILES=$(PROJECT_DIR)/src/parser/lexer.c
+SRC_DIRS+=$(PROJECT_DIR)/src/parser/
 # COMPILING INCLUDE FLAGS
 INCLUDE_DIRS=$(PROJECT_DIR)/include
 INCLUDE_DIRS+=$(PROJECT_DIR)/libstrings/include

@@ -119,6 +119,7 @@ TEST(InvalidCommand, pipeWithEmptyRedir)
 {
     testvalue = "exit | exit >";
 }
+
 //
 // PIPE NUMBER ON VALID COMMANDS TESTS
 //
@@ -143,4 +144,10 @@ TEST(NumberOfPipes, twoPipes)
 {
     testvalue = "echo \"Hola que tal\" | ls | cat";
     expected_pipes = 2;
+}
+
+TEST(NumberOfPipes, test)
+{
+    testvalue = "echo '''''|'''";
+    expected_pipes = 0;
 }
