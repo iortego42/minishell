@@ -10,15 +10,10 @@ t_state eval_char_red(t_DFA *l, const char c)
         printf("%s `%c'\n", s,c);
     else if ((l->state == REDIR_IN_AWAIT && l->prev_state != REDIR_IN_AWAIT)
         || (l->state == REDIR_OUT_AWAIT && l->prev_state != REDIR_OUT_AWAIT))
-        l->syms_c++;
+        l->reds_c++;
     return (l->state);
 }
 
-// This function should get the file name,
-// TIP: use the lexer to identify where does the quotes end.
-// pass reference to Red struct and bitOR the EXPAND flag if $ 
-// is fetched.
-// also should check char
 size_t get_filename(t_DFA *l, t_string cur, t_redir *red)
 {
     size_t      end;
@@ -77,15 +72,15 @@ t_redir get_red(t_DFA *l, t_string   *cur)
 void get_all_reds(t_DFA *l, t_cmd    cmd, t_string   *cur)
 {
     
-    if (l->syms_c == 0)
+    if (l->reds_c == 0)
         return ;
-    cmd->reds = malloc(sizeof(t_redir) * (l->syms_c + 1));
+    cmd->reds = malloc(sizeof(t_redir) * (l->reds_c + 1));
     if (cmd->reds == NULL)
         return ;
-    l->syms_c = 0;
+    l->reds_c = 0;
     while ((*cur)->start < (*cur)->end)
     {
-        if (l->syms_c < (eval_char_red(l, get(*cur, 0)), l->syms_c))
+        if (l->reds_c < (eval_char_red(l, get(*cur, 0)), l->reds_c))
             cmd->reds[cmd->reds_c++] = get_red(l, cur);
         (*cur)->start++;
     }
@@ -93,25 +88,25 @@ void get_all_reds(t_DFA *l, t_cmd    cmd, t_string   *cur)
     cmd->cmd = *cur;
 }
 
-t_cmd   get_cmd(t_string strcmd)
+t_cmd   get_cmd(t_string strcmd, t_DFA *l)
 {
     t_cmd       cmd;
     t_string    cur;
-    t_DFA       l;
 
-    l = (t_DFA){.syms_pos = NULL, .syms_c = 0, .state = EMPTY_INPUT, .prev_state = EMPTY_INPUT};
+    *l = (t_DFA){.reds_c = 0, .sq_c = 0, .dq_c = 0,
+    .state = EMPTY_INPUT, .prev_state = EMPTY_INPUT};
     cur = str_cpy(strcmd);
     cmd = malloc(sizeof(struct s_cmd));
     if (cur == NULL || cmd == NULL)
         return (NULL); 
     while (cur->start < cur->end)
     {
-        if (eval_char_red(&l, get(cur, 0)) == INVALID_INPUT) 
+        if (eval_char_red(l, get(cur, 0)) == INVALID_INPUT) 
             return (free(cmd), dtor(&cur), NULL);
         cur->start++;
     }
     cur->start = 0;
-    get_all_reds(&l, cmd, &cur);
+    get_all_reds(l, cmd, &cur);
     // dtor(&cur);
     return (cmd);
 }

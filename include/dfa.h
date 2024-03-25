@@ -43,8 +43,11 @@ typedef enum {
 
 typedef struct s_DFA t_DFA;
 struct s_DFA {
-    size_t  *syms_pos;
-    size_t  syms_c;
+    size_t  *pipes_pos;
+    size_t  pipes_c;
+	size_t	reds_c;
+	size_t	sq_c;
+	size_t	dq_c;
     t_state state;
     t_state prev_state;
 };
@@ -74,13 +77,13 @@ typedef struct s_cmd {
 t_types             which_sym(char token);
 t_state             eval_char_pipe(t_DFA *l, char c);
 t_bool              eval(t_DFA *l, t_string s);
-t_string            *lexer(t_string sentence);
+t_cmd            *lexer(t_string sentence);
 // cmd_lexer.c
 t_state				eval_char_red(t_DFA *l, const char c);
 size_t				get_filename(t_DFA *l, t_string cur, t_redir *red);
 t_redir				get_red(t_DFA *l, t_string   *cur);
 void				get_all_reds(t_DFA *l, t_cmd    cmd, t_string   *cur);
-t_cmd				get_cmd(t_string strcmd);
+t_cmd				get_cmd(t_string strcmd, t_DFA *l);
 // clean.c
 void    			clean_red(t_redir *red);
 void    			clean_cmd(t_cmd *command);

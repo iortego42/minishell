@@ -9,9 +9,11 @@ TEST_BASE(RedsTest)
     t_string    cmdstr;
     t_cmd       cmd;
     int         files;
+    t_DFA       l;
     std::string sentence, testvalue, message;
     
     void setup() {
+        l = (t_DFA){NULL,0,0,0,0,EMPTY_INPUT, EMPTY_INPUT};
         cmdstr = NULL;
     };
     void teardown() {
@@ -38,7 +40,7 @@ TEST_GROUP_BASE(RedsCount, RedsTest)
     void teardown() {
         ctor(&cmdstr, testvalue.c_str());
         message = sentence + testvalue;
-        cmd = get_cmd(cmdstr);
+        cmd = get_cmd(cmdstr, &l);
         // for (int i = 0; i < cmd->reds_c; printnl(cmd->reds[i++].filename));
         CHECK_TEXT(cmd->reds_c == files, message.c_str());
         CHECK_TEXT(str_cmp(e_cmdstr, cmd->cmd) == -1, message.c_str());
@@ -101,7 +103,7 @@ TEST_GROUP_BASE(FilenameTest, RedsTest)
 
     void teardown() {
         ctor(&cmdstr, testvalue.c_str());
-        cmd = get_cmd(cmdstr); 
+        cmd = get_cmd(cmdstr, &l); 
         e_filename = (t_string *)malloc(sizeof(t_string) * (unsigned long)(files + 1));
         for (int i = 0; i < files; ctor(&e_filename[i], filenames[i]), i++);
         e_filename[files] = NULL;
@@ -174,7 +176,7 @@ TEST_GROUP_BASE(TypesTest, RedsTest)
     };
     void teardown() {
         ctor(&cmdstr, testvalue.c_str());
-        cmd = get_cmd(cmdstr); 
+        cmd = get_cmd(cmdstr, &l); 
         for (int i = 0; e_type[i]; i++) {
             message = sentence + typetostr(e_type[i]) + "\n" "Value obtained: " + typetostr(cmd->reds[i].type) + "\n";
             CHECK_TEXT(e_type[i] == cmd->reds[i].type, message.c_str());

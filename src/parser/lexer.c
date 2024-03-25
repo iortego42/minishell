@@ -25,7 +25,7 @@ t_state eval_char_pipe(t_DFA *l, char c)
     if (l->state == INVALID_INPUT)
         printf("%s `%c'\n", s, c);
     else if (l->state == OP_AWAIT && l->prev_state != OP_AWAIT)
-        l->syms_c++;
+        l->pipes_c++;
     return (l->state);
 }
 
@@ -40,36 +40,63 @@ t_bool  eval(t_DFA *l, t_string s)
             return (dtor(&cur), FALSE);
         cur->start++;
     }
-    if (l->syms_c > 0)
-        l->syms_pos = malloc(sizeof(size_t) * l->syms_c);
-    l->syms_c = 0;
+    if (l->pipes_c > 0)
+        l->pipes_pos = malloc(sizeof(size_t) * l->pipes_c);
+    l->pipes_c = 0;
     cur->start = 0;
     while (cur->start < cur->end)
     {
         eval_char_pipe(l, get(cur, 0));
         if (l->state == OP_AWAIT && l->prev_state != OP_AWAIT)
-            l->syms_pos[l->syms_c - 1] = cur->start;
+            l->pipes_pos[l->pipes_c - 1] = cur->start;
         cur->start++;
     }
     dtor(&cur);
     return (TRUE);
 }
 
-t_string    *lexer(t_string sentence)
+t_cmd   *get_cmd_list(t_string *pipe_list, t_DFA *l)
+{
+    t_cmd   *list;
+    int     i;
+
+    i = 0;
+    list = malloc(sizeof(t_cmd) * (1 + l->pipes_c));
+    if (list == NULL)
+        return (NULL);
+    while (pipe_list[i] != NULL)
+    {
+
+        list[i] = get_cmd(pipe_list[i], l);
+        if (list[i] == NULL)
+        {
+            clean_cmd_list_rev(&list, --i);
+            free(list);
+            return (NULL);
+        }
+        i++;
+    }
+    return (list);
+}
+
+t_cmd   *lexer(t_string sentence)
 {
     t_string    *pipe_list;
     t_DFA       l;
     t_bool      is_valid;
+    t_cmd       *cmd_list;
 
-    l = (t_DFA){.syms_pos = NULL, .syms_c = 0, .state = EMPTY_INPUT, .prev_state = EMPTY_INPUT};
+    l = (t_DFA){.pipes_pos = NULL, .pipes_c = 0,
+    .state = EMPTY_INPUT, .prev_state = EMPTY_INPUT};
     if (sentence == NULL || sentence->data == NULL)
         return (NULL);
     is_valid = eval(&l, sentence);
     if (is_valid)
-        pipe_list = nsplit(sentence, l.syms_c, l.syms_pos);
+        pipe_list = nsplit(sentence, l.pipes_c, l.pipes_pos);
     else
-        pipe_list = NULL;
-    if (l.syms_pos)
-        free(l.syms_pos);
-    return (pipe_list);
+        return (NULL);
+    if (l.pipes_pos)
+        free(l.pipes_pos);
+    cmd_list = get_cmd_list(pipe_list, &l);
+    return (cmd_list);
 }
