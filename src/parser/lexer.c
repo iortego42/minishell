@@ -98,5 +98,7 @@ t_cmd   *lexer(t_string sentence)
     if (l.pipes_pos)
         free(l.pipes_pos);
     cmd_list = get_cmd_list(pipe_list, &l);
+    if (pipe_list)
+        clearlist(&pipe_list);
     return (cmd_list);
 }
