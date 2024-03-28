@@ -31,11 +31,11 @@ typedef enum {
     WORD_AWAIT,
 	OPEN_DOUBLE_QUOTES,
 	OPEN_SIMPLE_QUOTES,
-	OP_AWAIT,
+    S_B_STR, // SPACE BETWEEN STRINGS 
 	REDIR_IN_AWAIT,
 	REDIR_OUT_AWAIT,
     HA_AWAIT, // HEREDOC/APPEND AWAIT
-    S_B_STR, // SPACE BETWEEN STRINGS 
+	OP_AWAIT,
     S_B_TOK, // SPACE BETWEEN TOKEN
 	INVALID_INPUT,
 	STATES
@@ -103,15 +103,15 @@ const static char	g_state[STATES][SYM_NUM] = {
             \s, \$, \S, \D, \O, \<, \>, \C */
 	[0]  = { 0,  0,  0,  0,  0,  0,  0,  0}, // DONE
 	[1]  = { 1,  2,  3,  4, 11,  6,  7,  2}, // EMPTY_INPUT
-	[2]  = { 9,  2,  3,  4,  5,  6,  7,  2}, // WORD_AWAIT
+	[2]  = { 5,  2,  3,  4,  9,  6,  7,  2}, // WORD_AWAIT
 	[3]  = { 3,  3,  2,  3,  3,  3,  3,  3}, // OPEN_SIMPLE_QUOTES
 	[4]  = { 4,  4,  4,  2,  4,  4,  4,  4}, // OPEN_DOUBLE_QUOTES
-	[5]  = { 5,  2,  3,  4, 11,  6,  7,  2}, // OP_AWAIT
+	[5]  = { 5,  2,  3,  4,  9,  6,  7,  2}, // S_B_STR
 	[6]  = {10,  2,  3,  4, 11,  8, 11,  2}, // REDIR_IN_AWAIT
 	[7]  = {10,  2,  3,  4, 11, 11,  8,  2}, // REDIR_OUT_AWAIT
 	[8]  = {10,  2,  3,  4, 11, 11, 11,  2}, // HA_AWAIT
-	[9]  = { 9,  2,  3,  4,  5,  6,  7,  2}, // S_B_STR
-	[10] = {10,  2,  3,  4,  5,  6,  7,  2}, // S_B_TOK
+	[9]  = { 9,  2,  3,  4, 11,  6,  7,  2}, // OP_AWAIT
+	[10] = {10,  2,  3,  4,  9,  6,  7,  2}, // S_B_TOK
 	[11] = {11, 11, 11, 11, 11, 11, 11, 11}, // INVALID_INPUT
 };
 

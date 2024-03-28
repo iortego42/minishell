@@ -40,6 +40,8 @@ t_bool  eval(t_DFA *l, t_string s)
             return (dtor(&cur), FALSE);
         cur->start++;
     }
+    if (l->state >= REDIR_IN_AWAIT)
+            return (dtor(&cur), FALSE);
     if (l->pipes_c > 0)
         l->pipes_pos = malloc(sizeof(size_t) * l->pipes_c);
     l->pipes_c = 0;
