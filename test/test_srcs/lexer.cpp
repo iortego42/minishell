@@ -7,7 +7,7 @@ extern "C" {
 TEST_BASE(LexerTest)
 {
     t_string        command;
-    t_string        *pipe_list;
+    t_cmd        *pipe_list;
     std::string     sentence, testvalue, message;
 
     void setup()
@@ -22,7 +22,7 @@ TEST_BASE(LexerTest)
             dtor(&command);
         if (pipe_list) 
         {
-            clearlist(&pipe_list);
+            clean_cmd_list(&pipe_list);
             pipe_list = NULL;
         }
     }
@@ -61,8 +61,8 @@ TEST_GROUP_BASE(InvalidCommand, LexerTest)
         message = sentence + testvalue;
         pipe_list = lexer(command);
         // p_printlist(pipe_list, (char *)"\n->");
-        LexerTest::teardown();
         CHECK_TEXT(NULL == pipe_list, message.c_str());
+        LexerTest::teardown();
     }
 };
 

@@ -61,9 +61,10 @@ t_cmd   *get_cmd_list(t_string *pipe_list, t_DFA *l)
     int     i;
 
     i = 0;
-    list = malloc(sizeof(t_cmd) * (1 + l->pipes_c));
+    list = malloc(sizeof(t_cmd) * (2 + l->pipes_c));
     if (list == NULL)
         return (NULL);
+    // printf("%zu - ", l->pipes_c);
     while (pipe_list[i] != NULL)
     {
 
@@ -76,6 +77,8 @@ t_cmd   *get_cmd_list(t_string *pipe_list, t_DFA *l)
         }
         i++;
     }
+    // printf("%d\n", i);
+    list[i] = NULL;
     return (list);
 }
 

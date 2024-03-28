@@ -73,8 +73,9 @@ void get_all_reds(t_DFA *l, t_cmd    cmd, t_string   *cur)
 {
     
     if (l->reds_c == 0)
-        return ;
+        return (cmd->cmd = *cur, (void)"");
     cmd->reds = malloc(sizeof(t_redir) * (l->reds_c + 1));
+    cmd->cmd = NULL;
     if (cmd->reds == NULL)
         return ;
     l->reds_c = 0;
