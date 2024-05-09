@@ -142,6 +142,28 @@ TEST(FilenameTest, Various)
     copyFilenames(filesn);
 }
 
+TEST(FilenameTest, SQWithWord)
+{
+    const char *filesn[] = {
+        "'hola'hola",
+        NULL
+    };
+    files = 1;
+    testvalue = "echo SQWithWord > 'hola'hola";
+    copyFilenames(filesn);
+}
+
+TEST(FilenameTest, MixedQuotes)
+{
+    const char *filesn[] = {
+        "\"hola\"hola'hola'\"'hola'\"",
+        NULL
+    };
+    files = 1;
+    testvalue = "echo MixedQuotes> \"hola\"hola'hola'\"'hola'\"";
+    copyFilenames(filesn);
+}
+
 TEST_GROUP_BASE(TypesTest, RedsTest)
 {
     char        *e_type;

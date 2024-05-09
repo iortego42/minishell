@@ -41,7 +41,8 @@ t_bool  eval(t_DFA *l, t_string s)
         cur->start++;
     }
     if (l->state >= REDIR_IN_AWAIT)
-            return (dtor(&cur), FALSE);
+        return (l->state = INVALID_INPUT, cur->start--, 
+            eval_char_pipe(l, get(cur, 0)), dtor(&cur), FALSE);
     if (l->pipes_c > 0)
         l->pipes_pos = malloc(sizeof(size_t) * l->pipes_c);
     l->pipes_c = 0;
