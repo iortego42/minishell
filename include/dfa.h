@@ -50,6 +50,7 @@ struct s_DFA {
 	size_t	dq_c;
     t_state state;
     t_state prev_state;
+	const char	(*states)[STATES][SYM_NUM];
 };
 
 typedef enum {
@@ -84,45 +85,26 @@ size_t				get_filename(t_DFA *l, t_string cur, t_redir *red);
 t_redir				get_red(t_DFA *l, t_string   *cur);
 void				get_all_reds(t_DFA *l, t_cmd    cmd, t_string   *cur);
 t_cmd				get_cmd(t_string strcmd, t_DFA *l);
+// quotes.c
+t_string			*remove_quotes(t_string	cmdstr);
+
 // clean.c
 void    			clean_red(t_redir *red);
 void    			clean_cmd(t_cmd *command);
 void    			clean_cmd_list(t_cmd **command_list);
 void    			clean_cmd_list_rev(t_cmd **command_list, int i);
 
-const static char	g_state[STATES][SYM_NUM] = {
-/*		  
-	\s = Space
-	\C = Character
-	\$ = Variable
-	\S = Single Quote
-	\D = Double Quote
-	\O = Operator
-	\< = Redirection In
-	\> = Redirection Out
-            \s, \$, \S, \D, \O, \<, \>, \C */
-	[0]  = { 0,  0,  0,  0,  0,  0,  0,  0}, // DONE
-	[1]  = { 1,  2,  3,  4, 11,  6,  7,  2}, // EMPTY_INPUT
-	[2]  = { 5,  2,  3,  4,  9,  6,  7,  2}, // WORD_AWAIT
-	[3]  = { 3,  3,  2,  3,  3,  3,  3,  3}, // OPEN_SIMPLE_QUOTES
-	[4]  = { 4,  4,  4,  2,  4,  4,  4,  4}, // OPEN_DOUBLE_QUOTES
-	[5]  = { 5,  2,  3,  4,  9,  6,  7,  2}, // S_B_STR
-	[6]  = {10,  2,  3,  4, 11,  8, 11,  2}, // REDIR_IN_AWAIT
-	[7]  = {10,  2,  3,  4, 11, 11,  8,  2}, // REDIR_OUT_AWAIT
-	[8]  = {10,  2,  3,  4, 11, 11, 11,  2}, // HA_AWAIT
-	[9]  = { 9,  2,  3,  4, 11,  6,  7,  2}, // OP_AWAIT
-	[10] = {10,  2,  3,  4,  9,  6,  7,  2}, // S_B_TOK
-	[11] = {11, 11, 11, 11, 11, 11, 11, 11}, // INVALID_INPUT
-};
+
 
 const static char	*g_alphabets[SYM_NUM] = {
 [SPACE] = " \t",
 [DOLLAR] = "$",
-[SIMPLE_QUOTES] = "'",
 [DOUBLE_QUOTES] = "\"",
+[SIMPLE_QUOTES] = "'",
 [OP] = "|",
 [REDIN] = "<",
 [REDOUT] = ">",
 [NON_SYM] = NULL
 };
+
 #endif

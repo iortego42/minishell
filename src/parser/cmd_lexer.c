@@ -5,7 +5,7 @@ t_state eval_char_red(t_DFA *l, const char c)
     char s[] = "minishell: error sintáctico cerca del elemento inesperado";
 
     l->prev_state = l->state;
-    l->state = (t_state) g_state[l->state][which_sym(c)];
+    l->state = (t_state) l->states[0][l->state][which_sym(c)];
     if (l->state == INVALID_INPUT)
         printf("%s `%c'\n", s,c);
     else if ((l->state == REDIR_IN_AWAIT && l->prev_state != REDIR_IN_AWAIT)
@@ -93,9 +93,11 @@ t_cmd   get_cmd(t_string strcmd, t_DFA *l)
 {
     t_cmd       cmd;
     t_string    cur;
+    const char  (*states)[STATES][SYM_NUM];
 
+    states = l->states;
     *l = (t_DFA){.reds_c = 0, .sq_c = 0, .dq_c = 0,
-    .state = EMPTY_INPUT, .prev_state = EMPTY_INPUT};
+    .state = EMPTY_INPUT, .prev_state = EMPTY_INPUT, .states = states};
     cur = str_cpy(strcmd);
     cmd = malloc(sizeof(struct s_cmd));
     if (cur == NULL || cmd == NULL)

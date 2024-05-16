@@ -22,6 +22,9 @@ TEST_BASE(LexerTest)
             dtor(&command);
         if (pipe_list) 
         {
+            char a = g_alphabets[0][0];
+            a = '\0';
+            printf("%c", a);
             clean_cmd_list(&pipe_list);
             pipe_list = NULL;
         }
