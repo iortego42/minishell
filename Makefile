@@ -34,9 +34,6 @@ SRCS = \
 		minishell.c \
 		env.c
 
-SRCS += \
-		builtins/*.c
-
 # SRCS += \
 # 		parser/lexer.c
 
@@ -81,7 +78,6 @@ $(LSTRINGS):
 
 $(OBJDIR):
 	mkdir build
-	mkdir build/builtins
 	mkdir build/parser
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
