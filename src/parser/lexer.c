@@ -21,7 +21,7 @@ t_state eval_char_pipe(t_DFA *l, char c)
     char s[] = "minishell: error sintáctico cerca del elemento inesperado";
 
     l->prev_state = l->state;
-    l->state = (t_state)l->states[0][l->state][which_sym(c)];
+    l->state = (t_state)(*l->states)[l->state][which_sym(c)];
     if (l->state == INVALID_INPUT)
         printf("%s `%c'\n", s, c);
     else if (l->state == OP_AWAIT && l->prev_state != OP_AWAIT)
@@ -29,32 +29,29 @@ t_state eval_char_pipe(t_DFA *l, char c)
     return (l->state);
 }
 
-t_bool  eval(t_DFA *l, t_string s)
+t_bool  eval(t_DFA *l)
 {
-    t_string    cur;
-
-    cur = str_cpy(s);
-    while (cur->start < cur->end) 
+    while (l->cursor->start < l->cursor->end)
     {
-        if (eval_char_pipe(l, get(cur, 0)) == INVALID_INPUT) //should set erno
-            return (dtor(&cur), FALSE);
-        cur->start++;
+        if (eval_char_pipe(l, get(l->cursor, 0)) == INVALID_INPUT) //should set erno
+            return (dtor(&l->cursor), FALSE);
+        l->cursor->start++;
     }
     if (l->state >= REDIR_IN_AWAIT)
-        return (l->state = INVALID_INPUT, cur->start--, 
-            eval_char_pipe(l, get(cur, 0)), dtor(&cur), FALSE);
+        return (l->state = INVALID_INPUT, l->cursor->start--,
+            eval_char_pipe(l, get(l->cursor, 0)), dtor(&l->cursor), FALSE);
     if (l->pipes_c > 0)
         l->pipes_pos = malloc(sizeof(size_t) * l->pipes_c);
     l->pipes_c = 0;
-    cur->start = 0;
-    while (cur->start < cur->end)
+    l->cursor->start = 0;
+    while (l->cursor->start < l->cursor->end)
     {
-        eval_char_pipe(l, get(cur, 0));
+        eval_char_pipe(l, get(l->cursor, 0));
         if (l->state == OP_AWAIT && l->prev_state != OP_AWAIT)
-            l->pipes_pos[l->pipes_c - 1] = cur->start;
-        cur->start++;
+            l->pipes_pos[l->pipes_c - 1] = l->cursor->start;
+        l->cursor->start++;
     }
-    dtor(&cur);
+    dtor(&l->cursor);
     return (TRUE);
 }
 
@@ -95,7 +92,7 @@ const static char	g_state[STATES][SYM_NUM] = {
         \O = Operator
         \< = Redirection In
         \> = Redirection Out
-                  \s, \$, \S, \D, \O, \<, \>, \C */
+        \s, \$, \S, \D, \O, \<, \>, \C */
     [0] = { 0,  0,  0,  0,  0,  0,  0,  0}, // DONE
     [1] = { 1,  2,  3,  4, 11,  6,  7,  2}, // EMPTY_INPUT
     [2] = { 5,  2,  3,  4,  9,  6,  7,  2}, // WORD_AWAIT
@@ -117,11 +114,11 @@ t_cmd   *lexer(t_string sentence)
     t_bool      is_valid;
     t_cmd       *cmd_list;
 
-    l = (t_DFA){.pipes_pos = NULL, .pipes_c = 0,
+    l = (t_DFA){.pipes_pos = NULL, .pipes_c = 0, .cursor = str_cpy(sentence),
     .state = EMPTY_INPUT, .prev_state = EMPTY_INPUT, .states = &g_state};
     if (sentence == NULL || sentence->data == NULL)
         return (NULL);
-    is_valid = eval(&l, sentence);
+    is_valid = eval(&l);
     if (is_valid)
         pipe_list = nsplit(sentence, l.pipes_c, l.pipes_pos);
     else

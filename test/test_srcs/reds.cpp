@@ -4,6 +4,33 @@ extern "C" {
     #include "dfa.h"
 }
 
+const static char	g_state[STATES][SYM_NUM] = {
+    /*
+        \s = Space
+        \C = Character
+        \$ = Variable
+        \S = Single Quote
+        \D = Double Quote
+        \O = Operator
+        \< = Redirection In
+        \> = Redirection Out
+                  \s, \$, \S, \D, \O, \<, \>, \C */
+   //[0] = { 0,  0,  0,  0,  0,  0,  0,  0}, // DONE
+   [0] = { 'a',  'a',  'a',  'a',  'a',  'a',  'a',  'a'}, // DONE
+    [1] = { 1,  2,  3,  4, 11,  6,  7,  2}, // EMPTY_INPUT
+    [2] = { 5,  2,  3,  4,  9,  6,  7,  2}, // WORD_AWAIT
+    [3] = { 3,  3,  2,  3,  3,  3,  3,  3}, // OPEN_SIMPLE_QUOTES
+    [4] = { 4,  4,  4,  2,  4,  4,  4,  4}, // OPEN_DOUBLE_QUOTES
+    [5] = { 5,  2,  3,  4,  9,  6,  7,  2}, // S_B_STR
+    [6] = {10,  2,  3,  4, 11,  8, 11,  2}, // REDIR_IN_AWAIT
+    [7] = {10,  2,  3,  4, 11, 11,  8,  2}, // REDIR_OUT_AWAIT
+    [8] = {10,  2,  3,  4, 11, 11, 11,  2}, // HA_AWAIT
+    [9] = { 9,  2,  3,  4, 11,  6,  7,  2}, // OP_AWAIT
+   [10] = {10,  2,  3,  4,  9,  6,  7,  2}, // S_B_TOK
+   [11] = {11, 11, 11, 11, 11, 11, 11, 11}, // INVALID_INPUT
+};
+
+
 TEST_BASE(RedsTest)
 {
     t_string    cmdstr;
@@ -11,9 +38,10 @@ TEST_BASE(RedsTest)
     int         files;
     t_DFA       l;
     std::string sentence, testvalue, message;
-    
+
     void setup() {
-        l = (t_DFA){NULL,0,0,0,0,EMPTY_INPUT, EMPTY_INPUT};
+        l = (t_DFA){NULL,0,0,0,0,EMPTY_INPUT, EMPTY_INPUT, .states = &g_state};
+        printf("%p | %p \n",&g_state, g_alphabets[0]);
         cmdstr = NULL;
     };
     void teardown() {

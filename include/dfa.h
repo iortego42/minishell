@@ -43,13 +43,15 @@ typedef enum {
 
 typedef struct s_DFA t_DFA;
 struct s_DFA {
-    size_t  *pipes_pos;
-    size_t  pipes_c;
-	size_t	reds_c;
-	size_t	sq_c;
-	size_t	dq_c;
-    t_state state;
-    t_state prev_state;
+    size_t 		*pipes_pos;
+    size_t 		pipes_c;
+	size_t		reds_c;
+	size_t		sq_c;
+	size_t		dq_c;
+    t_state		state;
+    t_state		prev_state;
+	t_string	cursor;
+	// muy guay el funcionamiento de la memoria estatica
 	const char	(*states)[STATES][SYM_NUM];
 };
 
@@ -77,13 +79,13 @@ typedef struct s_cmd {
 // lexer.c
 t_types             which_sym(char token);
 t_state             eval_char_pipe(t_DFA *l, char c);
-t_bool              eval(t_DFA *l, t_string s);
-t_cmd            *lexer(t_string sentence);
+t_bool              eval(t_DFA *l);
+t_cmd				*lexer(t_string sentence);
 // cmd_lexer.c
 t_state				eval_char_red(t_DFA *l, const char c);
-size_t				get_filename(t_DFA *l, t_string cur, t_redir *red);
-t_redir				get_red(t_DFA *l, t_string   *cur);
-void				get_all_reds(t_DFA *l, t_cmd    cmd, t_string   *cur);
+size_t				get_filename(t_DFA *l, t_redir *red);
+t_redir				get_red(t_DFA *l);
+void				get_all_reds(t_DFA *l, t_cmd    cmd);
 t_cmd				get_cmd(t_string strcmd, t_DFA *l);
 // quotes.c
 t_string			*remove_quotes(t_string	cmdstr);
@@ -95,6 +97,7 @@ void    			clean_cmd_list(t_cmd **command_list);
 void    			clean_cmd_list_rev(t_cmd **command_list, int i);
 
 
+// Para organizar el proyecto moveremos la global y las funciones que hacen uso de ella a un mismo fichero.
 
 const static char	*g_alphabets[SYM_NUM] = {
 [SPACE] = " \t",
