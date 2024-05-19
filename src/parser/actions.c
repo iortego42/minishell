@@ -1,27 +1,27 @@
 # include "dfa.h"
 
-void    sq_count(t_DFA   *lexer)
+void    sq_count(t_DFA   *l)
 {
-    lexer->sq_c++;
+    l->cmd_p->sq_c++;
 }
 
-void    dq_count(t_DFA   *lexer)
+void    dq_count(t_DFA   *l)
 {
-    lexer->dq_c++;
+    l->cmd_p->dq_c++;
 }
 
-void    red_count(t_DFA  *lexer)
+void    red_count(t_DFA  *l)
 {
-    lexer->reds_c++;
+    l->cmd_p->reds_c++;
 }
 
-void    pipe_count(t_DFA *lexer)
+void    pipe_count(t_DFA *l)
 {
-    lexer->pipes_c++;
+    l->pipes_c++;
 }
 
-void    get_pipe_pos(t_DFA *lexer)
+void    get_pipe_pos(t_DFA *l)
 {
-    lexer->pipes_pos[lexer->pipes_c] = lexer->cursor->start;
-    lexer->pipes_c++;
+    l->pipes_pos[l->pipes_c] = l->cursor->start;
+    l->pipes_c++;
 }

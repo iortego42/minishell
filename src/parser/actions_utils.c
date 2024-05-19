@@ -1,11 +1,11 @@
 #include "dfa.h"
 
-t_bool init_actions(t_DFA *l)
+void    init_transactions(t_DFA *l)
 {
     static void    (*fun[STATES][STATES])(void *);
     t_state        i;
 
-    i = DONE;
+    i = EMPTY_INPUT;
     while (i < STATES)
     {
         fun[i][REDIR_IN_AWAIT] = red_count;
@@ -18,4 +18,16 @@ t_bool init_actions(t_DFA *l)
         // fun[i][INVALID_INPUT] = print_error;
     }
     l->transactions = &fun;
+}
+
+void    update_transaction(t_DFA *l, t_state state, void    (*fun)(void *))
+{
+    t_state i;
+
+    i = EMPTY_INPUT;
+    while (i < STATES)
+    {
+        (*l->transactions)[i][STATES] = fun;
+        i++;
+    }
 }
