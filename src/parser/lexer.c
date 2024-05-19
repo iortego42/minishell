@@ -15,15 +15,7 @@ t_state eval_char_pipe(t_DFA *l, char c)
 
 t_bool  eval(t_DFA *l)
 {
-    while (l->cursor->start < l->cursor->end)
-    {
-        if (eval_char_pipe(l, get(l->cursor, 0)) == INVALID_INPUT) //should set erno
-            return (dtor(&l->cursor), FALSE);
-        l->cursor->start++;
-    }
-    if (l->state >= REDIR_IN_AWAIT)
-        return (l->state = INVALID_INPUT, l->cursor->start--,
-            eval_char_pipe(l, get(l->cursor, 0)), dtor(&l->cursor), FALSE);
+
     if (l->pipes_c > 0)
         l->pipes_pos = malloc(sizeof(size_t) * l->pipes_c);
     l->pipes_c = 0;
