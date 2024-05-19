@@ -1,5 +1,32 @@
 # include "dfa.h"
 
+t_cmd get_cmd(t_string strcmd, t_DFA *l)
+{
+    t_cmd   cmd;
+
+    cmd = malloc(sizeof(struct s_cmd));
+    if (cmd == NULL)
+        return (NULL);
+    *l = (t_DFA){.cmd_p = cmd, .state = EMPTY_INPUT, .prev_state = EMPTY_INPUT,
+        .cursor = str_cpy(strcmd)};
+    init_trans(l);
+    eval(l);
+    cmd->reds = malloc(sizeof(t_redir) * (cmd->reds_c + 1));
+    cmd->reds_c = 0;
+    if (cmd->reds == NULL)
+        return (dtor(&l->cursor), free(cmd), l->cmd_p = NULL, NULL);
+    cmd->cmd = NULL;
+    // En la segunda evaluación se deberan recopilar tanto las comillas como
+    // las diferentes variables establecidas por el usuario
+    upd_trans_prev_ne(l, REDIR_IN_AWAIT, get_red);
+    upd_trans_prev_ne(l, REDIR_OUT_AWAIT, get_red);
+    l->cursor->start = 0;
+    eval(l);
+    l->cursor->start = 0;
+    cmd->cmd = l->cursor;
+    return (cmd);
+}
+
 t_string    *get_pipe_list(t_DFA *l)
 {
     t_string    *pipe_list;
@@ -9,7 +36,7 @@ t_string    *get_pipe_list(t_DFA *l)
     if (l->pipes_c > 0)
         l->pipes_pos = malloc(sizeof(size_t) * l->pipes_c);
     l->pipes_c = 0;
-    update_transaction(l, OP_AWAIT, get_pipe_pos);
+    upd_trans_prev_ne(l, OP_AWAIT, get_pipe_pos);
     l->cursor->start = 0;
     eval(l);
     pipe_list = nsplit(l->cursor, l->pipes_c, l->pipes_pos);
@@ -50,7 +77,7 @@ t_cmd   *lexer(t_string sentence)
 
     l = (t_DFA){.pipes_pos = NULL, .pipes_c = 0, .cursor = str_cpy(sentence),
     .state = EMPTY_INPUT, .prev_state = EMPTY_INPUT};
-    init_transactions(&l);
+    init_trans(&l);
     if (sentence == NULL || sentence->data == NULL)
         return (NULL);
     pipe_list = get_pipe_list(&l);

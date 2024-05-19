@@ -2,17 +2,20 @@
 
 void    sq_count(t_DFA   *l)
 {
-    l->cmd_p->sq_c++;
+    if (l != NULL && l->cmd_p != NULL)
+        l->cmd_p->sq_c++;
 }
 
 void    dq_count(t_DFA   *l)
 {
-    l->cmd_p->dq_c++;
+    if (l != NULL && l->cmd_p != NULL)
+        l->cmd_p->dq_c++;
 }
 
 void    red_count(t_DFA  *l)
 {
-    l->cmd_p->reds_c++;
+    if (l != NULL && l->cmd_p != NULL)
+        l->cmd_p->reds_c++;
 }
 
 void    pipe_count(t_DFA *l)

@@ -6,7 +6,7 @@ void    clean_red(t_redir *red)
 }
 void    clean_cmd(t_cmd *command)
 {
-    int i;
+    size_t i;
 
     i = 0;
     dtor(&(*command)->cmd);

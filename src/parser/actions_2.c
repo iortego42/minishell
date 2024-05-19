@@ -1,5 +1,32 @@
 #include "dfa.h"
 
+size_t get_filename(t_DFA *l, t_redir *red)
+{
+    size_t      end;
+
+    end = 0;
+    if (l->state == OPEN_SIMPLE_QUOTES || l->state == OPEN_DOUBLE_QUOTES)
+        end++;
+    while (l->cursor->start + end < l->cursor->end)
+    {
+        if (S_B_TOK == eval_char(l, get(l->cursor, end)))
+            l->cursor->start++;
+        else if (l->state == WORD_AWAIT || l->state == OPEN_SIMPLE_QUOTES
+            || l->state == OPEN_DOUBLE_QUOTES)
+            end++;
+        else if (l->state == S_B_STR)
+            break;
+        if (!(red->type & EXPAND) && get(l->cursor, end - 2) == '$'
+            && (l->state == WORD_AWAIT || l->state == OPEN_DOUBLE_QUOTES))
+            red->type |= EXPAND;
+    }
+    if (l->prev_state == OPEN_SIMPLE_QUOTES
+        || l->prev_state == OPEN_DOUBLE_QUOTES)
+        end++;
+    red->filename = str_ncpy(l->cursor, end + 1);
+    return (end);
+}
+
 void    get_red(t_DFA *l)
 {
     size_t      f_start;

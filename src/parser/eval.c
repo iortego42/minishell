@@ -56,9 +56,6 @@ t_state eval_char(t_DFA *l, char c)
 {
     l->prev_state = l->state;
     l->state = (t_state)g_state[l->prev_state][which_sym(c)];
-    if ((*l->transactions)[l->prev_state][l->state])
-        // Revision pendiente por incompatibilidad de tipos en el argumento
-        (*l->transactions)[l->prev_state][l->state]((void *)l);
     return (l->state);
 }
 
@@ -68,16 +65,22 @@ t_bool  eval(t_DFA *l)
 {
     while (l->cursor->start < l->cursor->end)
     {
-        if (eval_char(l, get(l->cursor, 0)) == INVALID_INPUT) //should set erno
+        eval_char(l, get(l->cursor, 0));
+        if ((*l->transactions)[l->prev_state][l->state] != NULL)
+            (*l->transactions)[l->prev_state][l->state](l);
+        if (l->state == INVALID_INPUT) //should set erno
             return (dtor(&l->cursor), FALSE);
         l->cursor->start++;
     }
     if (l->state >= REDIR_IN_AWAIT)
-        // El estado INVALID_INPUT, redirije siempre a su propio estado,
-        // de este modo al reevaluar el caracter, mostrará el error
-        // correcto por pantalla.
-        return (l->state = INVALID_INPUT, l->cursor->start--,
-            eval_char_pipe(l, get(l->cursor, 0)), dtor(&l->cursor), FALSE);
+        return ((*l->transactions)[INVALID_INPUT][INVALID_INPUT](l), dtor(&l->cursor), FALSE);
     return (TRUE);
 }
 
+void    print_error(t_DFA *l)
+{
+    l->cursor->start--;
+    printf(
+        "minishell: error sintáctico cerca del elemento inesperado `%c'\n",
+        get(l->cursor, 0));
+}

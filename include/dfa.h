@@ -66,7 +66,7 @@ struct s_DFA {
 	t_string	cursor;
 	t_cmd		cmd_p;
 	// muy guay el funcionamiento de la memoria estatica
-	void		(*(*transactions)[STATES][STATES])(void *);
+	void		(*(*transactions)[STATES][STATES])(t_DFA *);
 };
 
 typedef enum {
@@ -78,19 +78,15 @@ typedef enum {
 } t_redtypes;
 
 // lexer.c
-t_types		which_sym(char token);
-t_state     eval_char_pipe(t_DFA *l, char c);
-t_bool      eval(t_DFA *l);
+t_cmd		get_cmd(t_string strcmd, t_DFA *l);
 t_cmd		*get_cmd_list(t_string *pipe_list, t_DFA *l);
 t_string	*get_pipe_list(t_DFA *l);
 t_cmd		*lexer(t_string sentence);
 // eval.c
+t_types		which_sym(char token);
 t_state		eval_char(t_DFA *l, char c);
-// cmd_lexer.c
-t_state		eval_char_red(t_DFA *l, const char c);
-size_t		get_filename(t_DFA *l, t_redir *red);
-void		get_all_reds(t_DFA *l, t_cmd cmd);
-t_cmd		get_cmd(t_string strcmd, t_DFA *l);
+t_bool      eval(t_DFA *l);
+void		print_error(t_DFA *l);
 // actions.c
 // se debe revisar los tipos de las funciones, puede que el compilador suelte errores
 // o warnings al intentar compilar por tener la estructura predefinida a
@@ -101,10 +97,12 @@ void		red_count(t_DFA *l);
 void		pipe_count(t_DFA *l);
 void		get_pipe_pos(t_DFA *l);
 // actions_2.c
+size_t		get_filename(t_DFA *l, t_redir *red);
 void		get_red(t_DFA *l);
 // actions_utils.c
-void		init_transactions(t_DFA *l);
-void		update_transaction(t_DFA *l, t_state state, void (*fun)(void *));
+void		init_trans(t_DFA *l);
+void		upd_trans(t_DFA *l, t_state state, void (*fun)(t_DFA *));
+void		upd_trans_prev_ne(t_DFA *l, t_state state, void (*fun)(t_DFA *));
 // quotes.c
 t_string	*remove_quotes(t_string	cmdstr);
 
