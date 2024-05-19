@@ -19,10 +19,9 @@ void    pipe_count(t_DFA *lexer)
 {
     lexer->pipes_c++;
 }
-// void    pipe_assign(void    *lexer)
-// {
-//     int index;
-//
-//     index ((t_DFA *)lexer)->pipes_c--;
-//     ((t_DFA *)lexer)->pipes_pos[index] = ;
-// }
+
+void    get_pipe_pos(t_DFA *lexer)
+{
+    lexer->pipes_pos[lexer->pipes_c] = lexer->cursor->start;
+    lexer->pipes_c++;
+}

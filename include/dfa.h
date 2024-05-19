@@ -52,7 +52,6 @@ struct s_DFA {
     t_state		prev_state;
 	t_string	cursor;
 	// muy guay el funcionamiento de la memoria estatica
-	const char	(*states)[STATES][SYM_NUM];
 	void		(*(*transactions)[STATES][STATES])(void *);
 };
 
@@ -97,6 +96,7 @@ void				sq_count(t_DFA *l);
 void				dq_count(t_DFA *l);
 void				red_count(t_DFA *l);
 void				pipe_count(t_DFA *l);
+void				get_pipe_pos(t_DFA *l);
 // actions_utils.c
 // quotes.c
 t_string			*remove_quotes(t_string	cmdstr);
