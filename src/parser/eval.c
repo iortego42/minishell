@@ -73,13 +73,13 @@ t_bool  eval(t_DFA *l)
         l->cursor->start++;
     }
     if (l->state >= REDIR_IN_AWAIT)
-        return ((*l->transactions)[INVALID_INPUT][INVALID_INPUT](l), dtor(&l->cursor), FALSE);
+        return (l->cursor->start--, (*l->transactions)[INVALID_INPUT][INVALID_INPUT](l), dtor(&l->cursor), FALSE);
     return (TRUE);
 }
 
 void    print_error(t_DFA *l)
 {
-    l->cursor->start--;
+    // l->cursor->start--;
     printf(
         "minishell: error sintáctico cerca del elemento inesperado `%c'\n",
         get(l->cursor, 0));
