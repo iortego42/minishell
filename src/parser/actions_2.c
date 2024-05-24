@@ -23,7 +23,7 @@ size_t get_filename(t_DFA *l, t_redir *red)
     if (l->prev_state == OPEN_SIMPLE_QUOTES
         || l->prev_state == OPEN_DOUBLE_QUOTES)
         end++;
-    red->filename = str_ncpy(l->cursor, end + 1);
+    red->filename = str_ncpy(l->cursor, end);
     return (end);
 }
 

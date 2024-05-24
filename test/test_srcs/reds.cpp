@@ -109,7 +109,7 @@ TEST_GROUP_BASE(FilenameTest, RedsTest)
         e_filename[files] = NULL;
         for (int i = 0; e_filename[i] != NULL; i++) {
             message = sentence + e_filename[i]->data + "\n" "Value obtained: " + cmd->reds[i].filename->data + "\n";
-            CHECK_TEXT(str_cmp(e_filename[i], cmd->reds[i].filename), message.c_str());
+            CHECK_TEXT(str_cmp(e_filename[i], cmd->reds[i].filename) == -1, message.c_str());
         }
         for (int i = 0; e_filename[i] != NULL; dtor(&e_filename[i++]));
         free(e_filename);
@@ -130,15 +130,15 @@ TEST(FilenameTest, OneOutputNoQ)
 TEST(FilenameTest, Various)
 {
     const char *filesn[] = {
-        "outputfile1",
-        "'simpleherdoc'",
+        "outputfile",
+        "'simpleheredoc'",
         "\"doubleappend\"",
         "\"doubleinput\"",
         "heredoc2",
         NULL
     };
     files = 5;
-    testvalue = "echo Various >outputfile1 <<'simpleheredoc' >>\"doubleappend\" <\"doubleinput\" <<heredoc2";
+    testvalue = "echo Various >outputfile <<'simpleheredoc' >>\"doubleappend\" <\"doubleinput\" <<heredoc2";
     copyFilenames(filesn);
 }
 
@@ -149,7 +149,7 @@ TEST(FilenameTest, SQWithWord)
         NULL
     };
     files = 1;
-    testvalue = "echo SQWithWord > 'hola'hola";
+    testvalue = "echo SQWithWord > 'hola'hola ";
     copyFilenames(filesn);
 }
 
@@ -160,7 +160,7 @@ TEST(FilenameTest, MixedQuotes)
         NULL
     };
     files = 1;
-    testvalue = "echo MixedQuotes> \"hola\"hola'hola'\"'hola'\"";
+    testvalue = "echo MixedQuotes> \"hola\"hola'hola'\"'hola'\" ";
     copyFilenames(filesn);
 }
 

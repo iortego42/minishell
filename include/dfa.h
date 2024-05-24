@@ -5,7 +5,12 @@
 # include "libstrings.h"
 # define NONE -1
 
-typedef void (*t_Action)(void   *);
+typedef enum {
+    SIMPLE,
+    DOUBLE,
+	WORD
+} t_word;
+
 typedef enum {
 	SPACE,
 	DOLLAR,
@@ -17,13 +22,6 @@ typedef enum {
 	NON_SYM,
 	SYM_NUM
 } t_types;
-
-typedef enum {
-    SIMPLE,
-    DOUBLE,
-    QUOTES_NUM
-} t_quotes;
-
 
 typedef enum {
 	DONE,
@@ -44,6 +42,7 @@ typedef enum {
 typedef struct s_redir
 {
 	t_string	filename;
+	// comprobar en ejecución que si el nombre tiene un espacio devolver un error
 	char		type;
 } t_redir;
 
@@ -54,7 +53,22 @@ typedef struct s_cmd {
 	size_t		dq_c;
 	char		expand_mask;
 	t_string	cmd;
+	t_string	*tokens;
+	/* hay que realizar split cuando:
+	 * WORD_AWAIT && S_B_STR
+	 * WORD_AWAIT && REDIR_IN_AWAIT
+	 * WORD_AWAIT && REDIR_OUT_AWAIT
+	 *
+	 * para ello nos guardamos en dichos casos las posiciones, ya que al sustituir
+	 * y quitar las comillas sera imposible ver las separaciones con claridad.
+	 * El array tokens contiene las palabras sin sustituir ni expandir las variables
+	 * Primero expandimos tokens que no tengan comillas dobles, comprobamos si
+	 * se puede splitear y luego quitamos las comillas y expandimos de nuevo.
+	 */
+	t_string	*list;
 	//int			pid;
+	int			std_in;
+	int			std_out;
 } *t_cmd;
 
 typedef struct s_DFA t_DFA;
@@ -99,6 +113,7 @@ void		get_pipe_pos(t_DFA *l);
 // actions_2.c
 size_t		get_filename(t_DFA *l, t_redir *red);
 void		get_red(t_DFA *l);
+void		get_word(t_DFA *l);
 // actions_utils.c
 void		init_trans(t_DFA *l);
 void		upd_trans(t_DFA *l, t_state state, void (*fun)(t_DFA *));

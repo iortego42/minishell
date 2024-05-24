@@ -24,6 +24,7 @@ t_cmd get_cmd(t_string strcmd, t_DFA *l)
     eval(l);
     l->cursor->start = 0;
     cmd->cmd = l->cursor;
+    free(l->transactions);
     return (cmd);
 }
 
@@ -38,6 +39,14 @@ t_string    *get_pipe_list(t_DFA *l)
     l->pipes_c = 0;
     upd_trans_prev_ne(l, OP_AWAIT, get_pipe_pos);
     l->cursor->start = 0;
+/*
+ * ORDEN DE PARSEO
+ * 1. Obtención de las pipes
+ * 2. Recopilación de las redirecciones
+ * 3. Comillas y tokenización
+ * 4. Expansión de variables
+ * 5. Separación en palabras y eliminación de las comillas (tiene que suceder simultaneamente)
+ */
     eval(l);
     pipe_list = nsplit(l->cursor, l->pipes_c, l->pipes_pos);
     if (l->pipes_pos)
@@ -82,6 +91,7 @@ t_cmd   *lexer(t_string sentence)
         return (NULL);
     pipe_list = get_pipe_list(&l);
     dtor(&l.cursor);
+    free(l.transactions);
     if (pipe_list == NULL)
         return (NULL);
     cmd_list = get_cmd_list(pipe_list, &l);

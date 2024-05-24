@@ -95,7 +95,7 @@ TEST_GROUP_BASE(NumberOfPipes, LexerTest)
 //
 TEST(ValidCommand, simpleCommand)
 {
-    testvalue = "echo hola";
+    testvalue = "echo hoña";
 }
 
 TEST(ValidCommand, onePipe)
