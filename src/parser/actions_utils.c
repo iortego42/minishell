@@ -6,6 +6,7 @@ void    init_trans(t_DFA *l)
 
     i = EMPTY_INPUT;
     l->transactions = malloc(sizeof(void(*[STATES][STATES])(t_DFA *)));
+    // se debe cambiar a una reserva de memoria unica en la función lexer
     while (i < STATES)
         upd_trans(l, i++, NULL);
     i = EMPTY_INPUT;

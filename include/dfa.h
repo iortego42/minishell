@@ -90,6 +90,14 @@ typedef enum {
 	HEREDOC,
 	EXPAND = 0b1000
 } t_redtypes;
+typedef struct s_token *t_token;
+struct s_token
+{
+	t_token		left;
+	t_token		right;
+	t_string	str;
+	char		type;
+};
 
 // lexer.c
 t_cmd		get_cmd(t_string strcmd, t_DFA *l);
@@ -118,12 +126,13 @@ void		get_word(t_DFA *l);
 void		init_trans(t_DFA *l);
 void		upd_trans(t_DFA *l, t_state state, void (*fun)(t_DFA *));
 void		upd_trans_prev_ne(t_DFA *l, t_state state, void (*fun)(t_DFA *));
-// quotes.c
+// token.c
 t_string	*remove_quotes(t_string	cmdstr);
 
 // clean.c void    			clean_red(t_redir *red);
 void    	clean_cmd(t_cmd *command);
 void    	clean_cmd_list(t_cmd **command_list);
 void    	clean_cmd_list_rev(t_cmd **command_list, int i);
+void		clean_tokens(t_token *list);
 
 #endif

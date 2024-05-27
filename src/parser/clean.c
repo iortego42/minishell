@@ -1,9 +1,10 @@
 #include "dfa.h"
 
-void    clean_red(t_redir *red)
+static void    clean_red(t_redir *red)
 {
     dtor(&red->filename);
 }
+
 void    clean_cmd(t_cmd *command)
 {
     size_t i;
@@ -38,4 +39,21 @@ void    clean_cmd_list_rev(t_cmd **command_list, int i)
         clean_cmd(&(*command_list)[i--]);
     free(*command_list);
     *command_list = NULL;
+}
+
+void    clean_tokens(t_token *list)
+{
+    t_token aux;
+
+    while ((*list)->left != NULL)
+       (*list) = (*list)->left;
+    aux = (*list);
+    while (aux != NULL)
+    {
+        dtor(&(*list)->str);
+        aux = (*list)->right;
+        free(*list);
+        (*list) = aux;
+    }
+
 }
