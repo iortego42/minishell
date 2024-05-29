@@ -1,18 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: telufulu <telufulu@student.42madrid.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/29 19:46:02 by telufulu          #+#    #+#             */
-/*   Updated: 2024/05/29 19:46:04 by telufulu         ###   ########.fr       */
+/*   Created: 2024/05/29 19:45:08 by telufulu          #+#    #+#             */
+/*   Updated: 2024/05/29 19:45:38 by telufulu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
+# include "libft.h"
 
-int	main(void)
-{
-	return (0);
-}
+#endif
