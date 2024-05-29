@@ -6,7 +6,7 @@
 #    By: nachh <nachh@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 18:43:24 by iortego-          #+#    #+#              #
-#    Updated: 2024/03/24 13:52:37 by nachh            ###   ########.fr        #
+#    Updated: 2024/05/29 19:34:26 by telufulu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,11 +31,7 @@ CFLAGS += -I $(LFTPATH)/include -I $(LSTRINGSPATH)/include
 LDFLAGS += -lreadline -L $(LFTPATH) -l$(LFTNAME) -L $(LSTRINGSPATH) -l$(LSTRINGSNAME) 
 
 SRCS = \
-		minishell.c \
-		env.c
-
-# SRCS += \
-# 		parser/lexer.c
+		minishell.c
 
 SRCS += parser/*.c
 
