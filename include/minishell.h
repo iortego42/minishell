@@ -1,17 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: telufulu <telufulu@student.42madrid.c      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/29 19:45:08 by telufulu          #+#    #+#             */
-/*   Updated: 2024/05/29 19:45:38 by telufulu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
-# define MINISHELL_H
-# include "libft.h"
-
-#endif
+#define MINISHELL_H
+# define TRUE 1
+# define FALSE 0
+#endif //MINISHELL_H

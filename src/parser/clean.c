@@ -55,5 +55,4 @@ void    clean_tokens(t_token *list)
         free(*list);
         (*list) = aux;
     }
-
 }

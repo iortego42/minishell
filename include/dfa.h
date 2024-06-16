@@ -46,6 +46,15 @@ typedef struct s_redir
 	char		type;
 } t_redir;
 
+typedef struct s_token *t_token;
+struct s_token
+{
+	t_token		left;
+	t_token		right;
+	t_string	str;
+	char		type;
+};
+
 typedef struct s_cmd {
 	t_redir		*reds;
 	size_t	    reds_c;
@@ -53,7 +62,7 @@ typedef struct s_cmd {
 	size_t		dq_c;
 	char		expand_mask;
 	t_string	cmd;
-	t_string	*tokens;
+	t_token		*tokens;
 	/* hay que realizar split cuando:
 	 * WORD_AWAIT && S_B_STR
 	 * WORD_AWAIT && REDIR_IN_AWAIT
@@ -90,14 +99,7 @@ typedef enum {
 	HEREDOC,
 	EXPAND = 0b1000
 } t_redtypes;
-typedef struct s_token *t_token;
-struct s_token
-{
-	t_token		left;
-	t_token		right;
-	t_string	str;
-	char		type;
-};
+
 
 // lexer.c
 t_cmd		get_cmd(t_string strcmd, t_DFA *l);
