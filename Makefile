@@ -4,10 +4,9 @@ CC = gcc
 AR = ar
 ARFLAGS = -rc
 RM = rm -rf 
-OBJDIR = build
+OBJSDIR = build
 SRCDIR = src
 INCDIR = include
-
 CFLAGS = -Wall -Wextra -Werror -I./$(INCDIR)
 LFTPATH = libft
 LFTNAME = ft
@@ -16,61 +15,84 @@ LSTRINGSPATH = libstrings
 LSTRINGSNAME = strings
 LSTRINGS = $(LSTRINGSPATH)/lib$(LSTRINGSNAME).a
 CFLAGS += -I./$(LFTPATH)/include -I./$(LSTRINGSPATH)/include
-LDFLAGS += -lreadline -L $(LFTPATH) -l$(LFTNAME) -L $(LSTRINGSPATH) -l$(LSTRINGSNAME) 
+# LDFLAGS += -lreadline
+# LDFLAGS += -L $(LFTPATH) -l$(LFTNAME)
+LDFLAGS += -L./$(LSTRINGSPATH) -l$(LSTRINGSNAME) 
+# INFO: Tester sources
+TESTPATH = test
+UNITYPATH = $(TESTPATH)/unity
+UNITYINC = $(UNITYPATH)/src
+TESTSRCDIR = $(TESTPATH)/src
+TESTBUILD = $(TESTPATH)/build
+UNITYBUILD = $(UNITYPATH)/build
+
+UNITYSRCS = unity.c
+UNITYOBJS := $(addprefix $(TESTBUILD)/unity/,$(UNITYSRCS:%.c=%.o))
+$(UNITYBUILD)/%.o: $(UNITYINC)/%.c | $(TESTBUILD)/unity
+	$(CC) $(CFLAGS) -c $< -o $@ 
+$(TESTBUILD)/unity: | $(TESTBUILD)
+	mkdir $@
+
+# INFO: lexer test sources
+LEXERTESTSRCS = \
+								 test_lexer.c
+LEXERTESTOBJS := $(addprefix $(TESTBUILD)/lexer/,$(LEXERTESTSRCS:%.c=%.o))
+$(TESTBUILD)/lexer/%.o: $(TESTSRCDIR)/lexer/%.c | $(TESTBUILD)/lexer
+	$(CC) $(CFLAGS) -c $< -o $@ 
+$(TESTBUILD)/lexer: | $(TESTBUILD)
+	mkdir $@
 
 SRCS = \
 		minishell.c
 
-SRCS += parser/*.c
+LEXERDIR = $(SRCDIR)/lexer
+LEXERSRCS = \
+						actions.c \
+						actions_2.c \
+						actions_utils.c \
+						clean.c \
+						eval.c \
+						lexer.c
+LEXEROBJS := $(addprefix $(OBJSDIR)/lexer/,$(LEXERSRCS:%.c=%.o))
+$(OBJSDIR)/lexer/%.o: $(LEXERDIR)/%.c | $(OBJSDIR)/lexer
+	$(CC) $(CFLAGS) -c $< -o $@ 
+$(OBJSDIR)/lexer: | $(OBJSDIR)
+	mkdir $@
 
-OBJS := $(addprefix $(OBJDIR)/,$(SRCS:%.c=%.o))
 
-
-#sanitize_mini: CFLAGS += -fsanitize=address -g3
-#sanitize_mini: $(OBJS) $(LFTNAME)sanitize $(LSTRINGS)sanitize banner
-#	@echo "[$(NAME)]->>\033[34m [◊] SANITIZE MODE ON [◊]\033[0m"
-#	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $(NAME)
-
-#debug_mini: CFLAGS += -g3
-#debug_mini: $(OBJS) $(LFTNAME)debug $(LSTRINGS)debug banner
-#	@echo "[$(NAME)]->>\033[33m [∆] DEBUG MODE ON [∆]\033[0m"
-#	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $(NAME)
+# OBJS := $(addprefix $(OBJSDIR)/,$(SRCS:%.c=%.o))
 
 $(NAME): banner $(OBJS) $(LFT) $(LSTRINGS) banner
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $@
+
+all: $(NAME)
+
+$(TESTBUILD):
+	mkdir $@
+
+
+lexertest: CFLAGS += -I $(UNITYINC)
+lexertest: CFLAGS += -fsanitize=address -g3
+lexertest: $(UNITYOBJS) $(LEXEROBJS) $(LEXERTESTOBJS) | $(TESTBUILD)/lexer $(LSTRINGS)
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $(TESTBUILD)/$@
+
 banner:
-	@echo "\033[1;33m [!] WARNING [!]\033[0m\n\tWildcards are enabled\n\n\n"
-
-$(LFTNAME)debug:
-	make -C $(LFTPATH) debug
-
-$(LFTNAME)sanitize:
-	make -C $(LFTPATH) sanitize
+	@echo "\033[1;33m [!] WARNING [!]\033[0m\n\tWildcards are enabled\n\n"
 
 $(LFT):
 	make -C $(LFTPATH)
 
-$(LSTRINGSNAME)debug:
-	make -C $(LSTRINGSPATH) libdebug
-
-$(LSTRINGSNAME)sanitize:
-	make -C $(LSTRINGSPATH) sanitize
-
 $(LSTRINGS):
 	make -C $(LSTRINGSPATH)
 
-$(OBJDIR):
+$(OBJSDIR):
 	mkdir build
-	mkdir build/parser
-
-$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@ 
 
 
 clean:
 	make fclean -C $(LFTPATH)
 	make fclean -C $(LSTRINGSPATH)
-	$(RM) $(OBJDIR)
+	$(RM) $(OBJSDIR)
 
 fclean: clean_mini
 	$(RM) $(NAME)

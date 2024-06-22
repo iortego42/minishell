@@ -1,12 +1,11 @@
-# include "dfa.h"
-# include "minishell.h"
+#include "dfa.h"
 
 // primero se expanden las variables y luego se realiza la sustitucion
 // Para splitear por comas o espacios usaremos contadores de quotes con el lexer.
 // En el momento que uno incrementa al cambiar de estado implica que nos encontramos ante una string
 // Para identificar palabras utilizamos wordawait, ya que al cerrar una comilla seguimos en el estado de word await.
-// Para poder dividir correctamente necesitamos primero ubicar donde se encuentran las comillas y luego donde se encuentran las palabras
-// t_string    *remove_quotes(t_string cmdstr)
+// Para poder dividir correctamente necesitamos primero ubicar donde se encuentran las comillas y luego donde se
+// encuentran las palabras t_string    *remove_quotes(t_string cmdstr)
 // {
 //     t_DFA       l;
 //     t_string    *cmdlist;
@@ -36,32 +35,36 @@
  *
  */
 
-/*
+/* INFO:
  * get_token_list hace uso del cursor del lexer, este debe estar configurado
  * para ser el mismo que el comando (cmd_p->cmd) de modo que get_token_list itera sobre el puntero al comando.
  */
-char    add_token(t_token *list, struct s_token token)
+char add_token(t_token *list, struct s_token stoken)
 {
     t_token token;
 
+    if (list == NULL)
+        return (0);
     token = malloc(sizeof(struct s_token));
     if (token == NULL)
-        return (TRUE);
+        return (FALSE);
+    *token = stoken;
     if ((*list)->right != NULL)
         token->right = (*list)->right;
     else
         token->right = NULL;
     token->left = (*list);
-    return (1);
+    (*list) = token;
+    return (FALSE);
 }
 
-// comprobar fallos de memoria y segfaults
-void    remove_token(t_token *list)
+// TODO: comprobar fallos de memoria y segfaults
+void remove_token(t_token *list)
 {
     t_token aux;
 
     if (list == NULL || *list == NULL)
-        return ;
+        return;
     aux = (*list);
 
     // Enlazamos el lado izquierdo
@@ -69,7 +72,7 @@ void    remove_token(t_token *list)
         (*list)->left->right = (*list)->right;
     else if ((*list)->right != NULL)
         (*list)->right->left = NULL;
-    // Enlacamos el lado derecho
+    // Enlazamos el lado derecho
     if ((*list)->right != NULL)
         (*list)->right->left = (*list)->left;
     else if ((*list)->left != NULL)
@@ -87,19 +90,20 @@ void    remove_token(t_token *list)
 
 // El separador es space between words por lo que lo pueddo usar a mi favor para
 // saber que tokens se fusionan y cuales no
-void    get_token(t_DFA *l)
+//
+void get_token(t_DFA *l)
 {
-    size_t          start;
-    size_t          end;
-    t_state         status;
-    t_string        new_cur;
-    struct s_token  token;
+    size_t start;
+    size_t end;
+    t_state status;
+    t_string new_cur;
+    struct s_token token;
 
     end = 0;
     status = l->state;
     // necesario actualizar la marca en función del estado
     // (comillas dobles, comillas simples o word)
-    start =l->cursor->start;
+    start = l->cursor->start;
     while (l->cursor->start + end < l->cursor->end)
     {
         eval_char(l, get(l->cursor, end));
@@ -108,19 +112,25 @@ void    get_token(t_DFA *l)
         end++;
     }
     token.str = str_ncpy(l->cursor, end);
-    //revisar el -1, puede que no haga falta
     new_cur = str_rmpos(l->cursor, start, start + end);
+    if (token.str == NULL || new_cur == NULL)
+        // TODO: Limpiar
+        // En la llamada a esta función, se debe comprobar errno, si está seteado se
+        // debe de borrar toda la información que exista
+        return;
+    // revisar el -1, puede que no haga falta
+    add_token(l->cmd_p->tokens, token);
     new_cur->start = start;
     l->state = status;
     dtor(&l->cursor);
     l->cursor = new_cur;
 }
 
-void   get_token_list(t_DFA   *l)
+void get_token_list(t_DFA *l)
 {
     l->cmd_p->tokens = malloc(sizeof(t_token *));
     if (l->cmd_p->tokens == NULL)
-
+        return;
     upd_trans_prev_ne(l, WORD_AWAIT, get_token);
     upd_trans_prev_ne(l, OPEN_SIMPLE_QUOTES, get_token);
     upd_trans_prev_ne(l, OPEN_DOUBLE_QUOTES, get_token);
