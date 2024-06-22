@@ -56,14 +56,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# Visual studio
-.vscode/
-
-# Project subject
-*.pdf
 
 # Test files
-test/src
-test/objs
+test/build
 test/lib
-minishell_tests
