@@ -1,9 +1,5 @@
 #include "test_lexer.h"
 
-t_string cmd;
-t_string *pipes;
-t_DFA l;
-
 void setUp(void) {
     l = (t_DFA){.pipes_pos = NULL,
                 .pipes_c = 0,
@@ -30,7 +26,7 @@ void base_count_pipes(const char *cmdstr, const int expected) {
 }
 void test_count_pipes(void) { base_count_pipes("echo hello | world", 2); }
 
-void test_count_pipes_s(void) { base_count_pipes("echo hola", 2); }
+void test_count_pipes_s(void) { base_count_pipes("echo hola", 1); }
 
 int main(void) {
     UNITY_BEGIN();

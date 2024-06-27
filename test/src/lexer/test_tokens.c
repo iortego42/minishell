@@ -1,17 +1,32 @@
-#include "test_tokens.h"
-#include "libstrings.h"
-#include "unity.h"
-#include "unity_internals.h"
-#include <stdio.h>
+#include "test_lexer.h"
 
-void setUp(void) {}
+t_cmd command;
 
-void tearDown(void) { system("leaks test_tokens"); }
+void setUp(void) {
+    command = malloc(sizeof(struct s_cmd));
+    l = (t_DFA){.pipes_pos = NULL,
+                .pipes_c = 0,
+                .state = EMPTY_INPUT,
+                .cmd_p = command,
+                .prev_state = EMPTY_INPUT};
+    init_trans(&l);
+}
 
-void test_tokens(void) {}
+void tearDown(void) {
+    dtor(&cmd);
+    clean_cmd(&l.cmd_p);
+}
+
+void test_tokens(void) {
+    const char *cmdstr;
+    ctor(&cmd, cmdstr);
+    l.cursor = cmd;
+    // get_cmd(cmd, &l);
+    get_tokens_list(&l);
+}
 
 int main(void) {
     UNITY_BEGIN();
-    RUN_TEST_AT_LINE(test_tokens, __LINE__);
+    RUN_TEST(test_tokens);
     return (0);
 }

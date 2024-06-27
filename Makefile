@@ -39,6 +39,7 @@ $(UNITYBUILD): | $(TESTBUILD)
 
 # INFO: lexer test sources
 LEXERTESTSRCS = \
+								 test_tokens.c \
 								 test_lexer.c
 LEXERTESTOBJS := $(addprefix $(TESTBUILD)/lexer/,$(LEXERTESTSRCS:%.c=%.o))
 $(TESTBUILD)/lexer/%.o: $(TESTSRCDIR)/lexer/%.c | $(TESTBUILD)/lexer
@@ -56,6 +57,7 @@ LEXERSRCS = \
 						actions_utils.c \
 						clean.c \
 						eval.c \
+						token.c \
 						lexer.c
 LEXEROBJS := $(addprefix $(OBJSDIR)/lexer/,$(LEXERSRCS:%.c=%.o))
 $(OBJSDIR)/lexer/%.o: $(LEXERDIR)/%.c | $(OBJSDIR)/lexer
@@ -74,16 +76,23 @@ all: $(NAME)
 $(TESTBUILD):
 	mkdir $@
 
+# INFO: Regla para compilar los distintos binarios para los tests
+TESTBINS := $(addprefix $(TESTBUILD)/,$(LEXERTESTSRCS:%.c=%))
+CFLAGS += -I $(UNITYINC)        
+CFLAGS += -fsanitize=address -g3
+$(TESTBUILD)/%: $(TESTBUILD)/lexer/%.o $(UNITYOBJS) $(LEXEROBJS) | $(TESTBUILD) $(LSTRINGS)
+	@echo " \033[32;1m⬣\033[0m Compilando:" $@
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
-lexertest: CFLAGS += -I $(UNITYINC)
-lexertest: CFLAGS += -fsanitize=address -g3
-lexertest: $(UNITYOBJS) $(LEXEROBJS) $(LEXERTESTOBJS) | $(TESTBUILD)/lexer $(LSTRINGS)
-	@echo " \033[32;1m⬣\033[0m Compilando el ejecutable:"
-	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $(TESTBUILD)/$@
-	@echo "\n\n"
 
-test: lexertest
-	$(TESTBUILD)/$^
+
+test: $(TESTBINS)
+	@for executable in $^; do \
+	echo "\n\n\n""TEST" $$executable ;\
+	$$executable ;\
+	done
+
+retest: clean_test test
 
 banner:
 	@echo "\033[1;33m [!] WARNING [!]\033[0m\n\tWildcards are enabled\n\n"
@@ -114,5 +123,5 @@ red: fclean debug_mini
 
 res: fclean sanitize_mini
 
-.PHONY: lexertest test clean_test\
+.PHONY: retest test clean_test\
 				res red re clean_mini fclean all

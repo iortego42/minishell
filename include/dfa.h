@@ -85,7 +85,6 @@ struct s_DFA {
     // INFO: cmd_p es un puntero al comando que se está analizando en este
     // momento. ej: l->cmd_p == l->commands[2]
     t_cmd cmd_p;
-    // muy guay el funcionamiento de la memoria estatica
     void (*(*transactions)[STATES][STATES])(t_DFA *);
     t_cmd *commands;
 };
@@ -118,8 +117,10 @@ void init_trans(t_DFA *l);
 void upd_trans(t_DFA *l, t_state state, void (*fun)(t_DFA *));
 void upd_trans_prev_ne(t_DFA *l, t_state state, void (*fun)(t_DFA *));
 // token.c
-t_string *remove_quotes(t_string cmdstr);
-void get_all_tokens(t_DFA *l);
+void get_tokens_list(t_DFA *l);
+void get_token(t_DFA *l);
+void remove_token(t_token *list);
+char add_token(t_token *list, struct s_token stoken);
 
 // clean.c void    			clean_red(t_redir *red);
 void clean_cmd(t_cmd *command);

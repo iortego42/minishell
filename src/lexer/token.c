@@ -1,11 +1,13 @@
 #include "dfa.h"
 
 // primero se expanden las variables y luego se realiza la sustitucion
-// Para splitear por comas o espacios usaremos contadores de quotes con el lexer.
-// En el momento que uno incrementa al cambiar de estado implica que nos encontramos ante una string
-// Para identificar palabras utilizamos wordawait, ya que al cerrar una comilla seguimos en el estado de word await.
-// Para poder dividir correctamente necesitamos primero ubicar donde se encuentran las comillas y luego donde se
-// encuentran las palabras t_string    *remove_quotes(t_string cmdstr)
+// Para splitear por comas o espacios usaremos contadores de quotes con el
+// lexer. En el momento que uno incrementa al cambiar de estado implica que nos
+// encontramos ante una string Para identificar palabras utilizamos wordawait,
+// ya que al cerrar una comilla seguimos en el estado de word await. Para poder
+// dividir correctamente necesitamos primero ubicar donde se encuentran las
+// comillas y luego donde se encuentran las palabras t_string
+// *remove_quotes(t_string cmdstr)
 // {
 //     t_DFA       l;
 //     t_string    *cmdlist;
@@ -37,10 +39,10 @@
 
 /* INFO:
  * get_token_list hace uso del cursor del lexer, este debe estar configurado
- * para ser el mismo que el comando (cmd_p->cmd) de modo que get_token_list itera sobre el puntero al comando.
+ * para ser el mismo que el comando (cmd_p->cmd) de modo que get_token_list
+ * itera sobre el puntero al comando.
  */
-char add_token(t_token *list, struct s_token stoken)
-{
+char add_token(t_token *list, struct s_token stoken) {
     t_token token;
 
     if (list == NULL)
@@ -49,7 +51,7 @@ char add_token(t_token *list, struct s_token stoken)
     if (token == NULL)
         return (FALSE);
     *token = stoken;
-    if ((*list)->right != NULL)
+    if (*list && (*list)->right != NULL)
         token->right = (*list)->right;
     else
         token->right = NULL;
@@ -59,8 +61,7 @@ char add_token(t_token *list, struct s_token stoken)
 }
 
 // TODO: comprobar fallos de memoria y segfaults
-void remove_token(t_token *list)
-{
+void remove_token(t_token *list) {
     t_token aux;
 
     if (list == NULL || *list == NULL)
@@ -91,8 +92,7 @@ void remove_token(t_token *list)
 // El separador es space between words por lo que lo pueddo usar a mi favor para
 // saber que tokens se fusionan y cuales no
 //
-void get_token(t_DFA *l)
-{
+void get_token(t_DFA *l) {
     size_t start;
     size_t end;
     t_state status;
@@ -104,8 +104,7 @@ void get_token(t_DFA *l)
     // necesario actualizar la marca en función del estado
     // (comillas dobles, comillas simples o word)
     start = l->cursor->start;
-    while (l->cursor->start + end < l->cursor->end)
-    {
+    while (l->cursor->start + end < l->cursor->end) {
         eval_char(l, get(l->cursor, end));
         if (l->prev_state == status && l->state != status)
             break;
@@ -115,10 +114,11 @@ void get_token(t_DFA *l)
     new_cur = str_rmpos(l->cursor, start, start + end);
     if (token.str == NULL || new_cur == NULL)
         // TODO: Limpiar
-        // En la llamada a esta función, se debe comprobar errno, si está seteado se
-        // debe de borrar toda la información que exista
+        // En la llamada a esta función, se debe comprobar errno, si está
+        // seteado se debe de borrar toda la información que exista
         return;
     // revisar el -1, puede que no haga falta
+    // INFO: Comprobar estado despues de add_token
     add_token(l->cmd_p->tokens, token);
     new_cur->start = start;
     l->state = status;
@@ -126,8 +126,11 @@ void get_token(t_DFA *l)
     l->cursor = new_cur;
 }
 
-void get_token_list(t_DFA *l)
-{
+// INFO: La función get_tokens_list requiere que se hayan generado ya una lista
+// del tipo cmd, y por ello el putnero cmd_p apunte a un comando.
+// Tampoco se encargará de actualizar el cursor al cursor de comando al que
+// apunta cmd_p.
+void get_tokens_list(t_DFA *l) {
     l->cmd_p->tokens = malloc(sizeof(t_token *));
     if (l->cmd_p->tokens == NULL)
         return;
