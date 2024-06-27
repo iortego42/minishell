@@ -40,7 +40,7 @@ $(UNITYBUILD): | $(TESTBUILD)
 # INFO: lexer test sources
 LEXERTESTSRCS = \
 								 test_tokens.c \
-								 test_lexer.c
+								 test_pipes.c
 LEXERTESTOBJS := $(addprefix $(TESTBUILD)/lexer/,$(LEXERTESTSRCS:%.c=%.o))
 $(TESTBUILD)/lexer/%.o: $(TESTSRCDIR)/lexer/%.c | $(TESTBUILD)/lexer
 	$(CC) $(CFLAGS) -c $< -o $@ 
