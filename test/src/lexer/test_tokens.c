@@ -14,15 +14,17 @@ void setUp(void) {
 
 void tearDown(void) {
     dtor(&cmd);
-    clean_cmd(&l.cmd_p);
+    clean_cmd(&command);
 }
 
 void test_tokens(void) {
     const char *cmdstr;
     ctor(&cmd, cmdstr);
-    l.cursor = cmd;
+    l.cursor = str_cpy(cmd);
     // get_cmd(cmd, &l);
     get_tokens_list(&l);
+    l.cmd_p->cmd = NULL;
+    l.cmd_p->reds = NULL;
 }
 
 int main(void) {

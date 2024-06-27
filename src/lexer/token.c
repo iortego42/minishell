@@ -51,7 +51,7 @@ char add_token(t_token *list, struct s_token stoken) {
     if (token == NULL)
         return (FALSE);
     *token = stoken;
-    if (*list && (*list)->right != NULL)
+    if (*list != NULL && (*list)->right != NULL)
         token->right = (*list)->right;
     else
         token->right = NULL;
@@ -132,6 +132,7 @@ void get_token(t_DFA *l) {
 // apunta cmd_p.
 void get_tokens_list(t_DFA *l) {
     l->cmd_p->tokens = malloc(sizeof(t_token *));
+    *l->cmd_p->tokens = NULL;
     if (l->cmd_p->tokens == NULL)
         return;
     upd_trans_prev_ne(l, WORD_AWAIT, get_token);

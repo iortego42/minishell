@@ -1,18 +1,14 @@
 #include "dfa.h"
 
-static void    clean_red(t_redir *red)
-{
-    dtor(&red->filename);
-}
+static void clean_red(t_redir *red) { dtor(&red->filename); }
 
-void    clean_cmd(t_cmd *command)
-{
+void clean_cmd(t_cmd *command) {
     size_t i;
 
     i = 0;
-    dtor(&(*command)->cmd);
-    if ((*command)->reds)
-    {
+    if ((*command)->cmd != NULL)
+        dtor(&(*command)->cmd);
+    if ((*command)->reds) {
         while (i < (*command)->reds_c)
             clean_red(&(*command)->reds[i++]);
         free((*command)->reds);
@@ -22,8 +18,7 @@ void    clean_cmd(t_cmd *command)
     *command = NULL;
 }
 
-void    clean_cmd_list(t_cmd **command_list)
-{
+void clean_cmd_list(t_cmd **command_list) {
     int i;
 
     i = 0;
@@ -33,23 +28,20 @@ void    clean_cmd_list(t_cmd **command_list)
     *command_list = NULL;
 }
 
-void    clean_cmd_list_rev(t_cmd **command_list, int i)
-{
+void clean_cmd_list_rev(t_cmd **command_list, int i) {
     while (i >= 0)
         clean_cmd(&(*command_list)[i--]);
     free(*command_list);
     *command_list = NULL;
 }
 
-void    clean_tokens(t_token *list)
-{
+void clean_tokens(t_token *list) {
     t_token aux;
 
     while ((*list)->left != NULL)
-       (*list) = (*list)->left;
+        (*list) = (*list)->left;
     aux = (*list);
-    while (aux != NULL)
-    {
+    while (aux != NULL) {
         dtor(&(*list)->str);
         aux = (*list)->right;
         free(*list);
