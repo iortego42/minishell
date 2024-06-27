@@ -24,13 +24,17 @@ UNITYPATH = $(TESTPATH)/unity
 UNITYINC = $(UNITYPATH)/src
 TESTSRCDIR = $(TESTPATH)/src
 TESTBUILD = $(TESTPATH)/build
-UNITYBUILD = $(UNITYPATH)/build
+UNITYBUILD = $(TESTBUILD)/unity
 
+# INFO: Ruta del unity_config.h
+CFLAGS += -I./$(TESTSRCDIR)
+
+# INFO: Archivos Unity
 UNITYSRCS = unity.c
-UNITYOBJS := $(addprefix $(TESTBUILD)/unity/,$(UNITYSRCS:%.c=%.o))
-$(UNITYBUILD)/%.o: $(UNITYINC)/%.c | $(TESTBUILD)/unity
-	$(CC) $(CFLAGS) -c $< -o $@ 
-$(TESTBUILD)/unity: | $(TESTBUILD)
+UNITYOBJS := $(addprefix $(UNITYBUILD)/,$(UNITYSRCS:%.c=%.o))
+$(UNITYBUILD)/%.o: $(UNITYINC)/%.c | $(UNITYBUILD)
+	$(CC) $(CFLAGS) -c $< -o $@  -DUNITY_INCLUDE_CONFIG_H
+$(UNITYBUILD): | $(TESTBUILD)
 	mkdir $@
 
 # INFO: lexer test sources
@@ -74,7 +78,12 @@ $(TESTBUILD):
 lexertest: CFLAGS += -I $(UNITYINC)
 lexertest: CFLAGS += -fsanitize=address -g3
 lexertest: $(UNITYOBJS) $(LEXEROBJS) $(LEXERTESTOBJS) | $(TESTBUILD)/lexer $(LSTRINGS)
+	@echo " \033[32;1m⬣\033[0m Compilando el ejecutable:"
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $(TESTBUILD)/$@
+	@echo "\n\n"
+
+test: lexertest
+	$(TESTBUILD)/$^
 
 banner:
 	@echo "\033[1;33m [!] WARNING [!]\033[0m\n\tWildcards are enabled\n\n"
@@ -88,13 +97,15 @@ $(LSTRINGS):
 $(OBJSDIR):
 	mkdir build
 
+clean_test: fclean
+	$(RM) $(TESTBUILD) $(UNITYBUILD)
 
 clean:
 	make fclean -C $(LFTPATH)
 	make fclean -C $(LSTRINGSPATH)
 	$(RM) $(OBJSDIR)
 
-fclean: clean_mini
+fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all
@@ -103,4 +114,5 @@ red: fclean debug_mini
 
 res: fclean sanitize_mini
 
-.PHONY: sanitize_mini debug_mini res red re clean_mini fclean all
+.PHONY: lexertest test clean_test\
+				res red re clean_mini fclean all
