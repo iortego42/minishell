@@ -1,8 +1,4 @@
 #include "test_lexer.h"
-#include "unity.h"
-#include "unity_internals.h"
-#define RED "\x1b[31m"
-#define RESET "\x1b[0m"
 
 t_string cmd;
 t_string *pipes;
@@ -30,10 +26,8 @@ void base_count_pipes(const char *cmdstr, const int expected) {
     for (counter = 0; pipes[counter] != NULL; counter++) {
         print(pipes[counter]);
     }
-    TEST_PRINTF(RED "*" RESET " %d", 9);
     TEST_ASSERT_EQUAL_MESSAGE(expected, counter, "test");
 }
-
 void test_count_pipes(void) { base_count_pipes("echo hello | world", 2); }
 
 void test_count_pipes_s(void) { base_count_pipes("echo hola", 2); }
