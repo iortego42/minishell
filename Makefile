@@ -29,6 +29,9 @@ UNITYBUILD = $(TESTBUILD)/unity
 # INFO: Ruta del unity_config.h
 CFLAGS += -I./$(TESTSRCDIR)
 
+CFLAGS += -I $(UNITYINC)        
+CFLAGS += -g3
+
 # INFO: Archivos Unity
 UNITYSRCS = unity.c
 UNITYOBJS := $(addprefix $(UNITYBUILD)/,$(UNITYSRCS:%.c=%.o))
@@ -78,12 +81,10 @@ $(TESTBUILD):
 
 # INFO: Regla para compilar los distintos binarios para los tests
 TESTBINS := $(addprefix $(TESTBUILD)/,$(LEXERTESTSRCS:%.c=%))
-CFLAGS += -I $(UNITYINC)        
-CFLAGS += -fsanitize=address -g3
+# CFLAGS += -fsanitize=address 
 $(TESTBUILD)/%: $(TESTBUILD)/lexer/%.o $(UNITYOBJS) $(LEXEROBJS) | $(TESTBUILD) $(LSTRINGS)
 	@echo " \033[32;1m⬣\033[0m Compilando:" $@
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
-
 
 
 test: $(TESTBINS)
@@ -93,9 +94,6 @@ test: $(TESTBINS)
 	done
 
 retest: clean_test test
-
-banner:
-	@echo "\033[1;33m [!] WARNING [!]\033[0m\n\tWildcards are enabled\n\n"
 
 $(LFT):
 	make -C $(LFTPATH)
@@ -119,9 +117,5 @@ fclean: clean
 
 re: fclean all
 
-red: fclean debug_mini
-
-res: fclean sanitize_mini
-
-.PHONY: retest test clean_test\
-				res red re clean_mini fclean all
+.PHONY: retest test_binaries test clean_test fclean re all
+.PRECIOUS: $(TESTBUILD)/%.o $(UNITYBUILD)/%.o $(TESTBUILD)/lexer/%.o $(OBJSDIR)/lexer/%.o
