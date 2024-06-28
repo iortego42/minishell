@@ -56,6 +56,8 @@ char add_token(t_token *list, struct s_token stoken) {
     else
         token->right = NULL;
     token->left = (*list);
+    if (*list != NULL)
+        (*list)->right = token;
     (*list) = token;
     return (FALSE);
 }
@@ -93,17 +95,14 @@ void remove_token(t_token *list) {
 // saber que tokens se fusionan y cuales no
 //
 void get_token(t_DFA *l) {
-    size_t start;
     size_t end;
     t_state status;
-    t_string new_cur;
     struct s_token token;
 
     end = 0;
     status = l->state;
     // necesario actualizar la marca en función del estado
     // (comillas dobles, comillas simples o word)
-    start = l->cursor->start;
     while (l->cursor->start + end < l->cursor->end) {
         eval_char(l, get(l->cursor, end));
         if (l->prev_state == status && l->state != status)
@@ -111,8 +110,7 @@ void get_token(t_DFA *l) {
         end++;
     }
     token.str = str_ncpy(l->cursor, end);
-    new_cur = str_rmpos(l->cursor, start, start + end);
-    if (token.str == NULL || new_cur == NULL)
+    if (token.str == NULL)
         // TODO: Limpiar
         // En la llamada a esta función, se debe comprobar errno, si está
         // seteado se debe de borrar toda la información que exista
@@ -120,10 +118,8 @@ void get_token(t_DFA *l) {
     // revisar el -1, puede que no haga falta
     // INFO: Comprobar estado despues de add_token
     add_token(l->cmd_p->tokens, token);
-    new_cur->start = start;
+    l->cursor->start += end - 1;
     l->state = status;
-    dtor(&l->cursor);
-    l->cursor = new_cur;
 }
 
 // INFO: La función get_tokens_list requiere que se hayan generado ya una lista
