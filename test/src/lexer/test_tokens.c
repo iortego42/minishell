@@ -25,17 +25,16 @@ void base_test(const char cmdstr[], const char *cmds[]) {
     list = l.cmd_p->tokens;
     while ((*list)->left != NULL)
         (*list) = (*list)->left;
-
     for (int i = 0; (*list) != NULL && cmds[i] != NULL;
          i++, (*list) = (*list)->right)
-        TEST_ASSERT_EQUAL_STRING((*list)->str->data, cmds[i]);
+        TEST_ASSERT_EQUAL_STRING(cmds[i], (*list)->str->data);
     l.cmd_p->cmd = NULL;
     l.cmd_p->reds = NULL;
 }
 
 void test_tokens(void) {
     base_test("echo hello'hola'",
-              (const char *[]){"echo", "hello", "'hola'", NULL});
+              (const char *[]){"echo", "hello", "hola", NULL});
 }
 
 int main(void) {
