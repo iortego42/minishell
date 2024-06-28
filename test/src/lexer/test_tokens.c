@@ -17,21 +17,25 @@ void tearDown(void) {
     clean_cmd(&command);
 }
 
-void test_tokens(void) {
-    const char cmdstr[] = "echo  hello";
+void base_test(const char cmdstr[], const char *cmds[]) {
     t_token *list;
     ctor(&cmd, cmdstr);
     l.cursor = str_cpy(cmd);
-    // get_cmd(cmd, &l);
     get_tokens_list(&l);
     list = l.cmd_p->tokens;
     while ((*list)->left != NULL)
         (*list) = (*list)->left;
 
-    TEST_ASSERT_EQUAL_STRING((*list)->str->data, "echo");
-    TEST_ASSERT_EQUAL_STRING((*list)->right->str->data, "hello");
+    for (int i = 0; (*list) != NULL && cmds[i] != NULL;
+         i++, (*list) = (*list)->right)
+        TEST_ASSERT_EQUAL_STRING((*list)->str->data, cmds[i]);
     l.cmd_p->cmd = NULL;
     l.cmd_p->reds = NULL;
+}
+
+void test_tokens(void) {
+    base_test("echo hello'hola'",
+              (const char *[]){"echo", "hello", "'hola'", NULL});
 }
 
 int main(void) {
