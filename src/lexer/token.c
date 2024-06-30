@@ -101,10 +101,10 @@ void get_token(t_DFA *l) {
 
     end = 0;
     status = l->state;
+    if (l->prev_state == WORD_AWAIT)
+        token.type |= RIGHT_SIBLING;
     if (l->state == OPEN_DOUBLE_QUOTES || l->state == OPEN_SIMPLE_QUOTES)
         l->cursor->start++;
-    // necesario actualizar la marca en función del estado
-    // (comillas dobles, comillas simples o word)
     while (l->cursor->start + end < l->cursor->end) {
         eval_char(l, get(l->cursor, end));
         if (l->prev_state == status && l->state != status)
@@ -117,11 +117,14 @@ void get_token(t_DFA *l) {
         // En la llamada a esta función, se debe comprobar errno, si está
         // seteado se debe de borrar toda la información que exista
         return;
-    // revisar el -1, puede que no haga falta
-    // INFO: Comprobar estado despues de add_token
+    if (status == OPEN_SIMPLE_QUOTES)
+        token.type ^= EXPAND;
+    else if (status == WORD_AWAIT)
+        token.type |= SPLIT;
     if (token.str->end == 0)
         dtor(&token.str);
     else
+        // INFO: Comprobar estado despues de add_token
         add_token(l->cmd_p->tokens, token);
     if (status == OPEN_DOUBLE_QUOTES || status == OPEN_SIMPLE_QUOTES)
         l->cursor->start += end;

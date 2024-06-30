@@ -6,7 +6,9 @@
 #include "minishell.h"
 #define NONE -1
 
-typedef enum { SIMPLE, DOUBLE, WORD } t_word;
+#define RIGHT_SIBLING 0b10
+#define SPLIT 0b100
+#define EXPAND 0b1000
 
 typedef enum {
     SPACE,
@@ -89,8 +91,7 @@ struct s_DFA {
     t_cmd *commands;
 };
 
-typedef enum { INPUT, OUTPUT, APPEND, HEREDOC, EXPAND = 0b1000 } t_redtypes;
-
+typedef enum { INPUT, OUTPUT, APPEND, HEREDOC } t_redtypes;
 // lexer.c
 t_cmd get_cmd(t_string strcmd, t_DFA *l);
 t_cmd *get_cmd_list(t_string *pipe_list, t_DFA *l);
