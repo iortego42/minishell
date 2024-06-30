@@ -32,13 +32,42 @@ void base_test(const char cmdstr[], const char *cmds[]) {
     l.cmd_p->reds = NULL;
 }
 
-void test_tokens(void) {
-    base_test("echo hello'hola'",
-              (const char *[]){"echo", "hello", "hola", NULL});
+void test_simple(void) {
+    const char *tokens[] = {"echo", "hello", NULL};
+    const char cmdstr[] = "echo hello";
+    base_test(cmdstr, tokens);
+}
+
+void test_word_sq(void) {
+    const char *tokens[] = {"echo", "fuera", "dentro", NULL};
+    const char cmdstr[] = "echo fuera'dentro'";
+    base_test(cmdstr, tokens);
+}
+
+void test_sq_word(void) {
+    const char *tokens[] = {"ls", "dentro", "fuera", NULL};
+    const char cmdstr[] = "ls 'dentro'fuera";
+    base_test(cmdstr, tokens);
+}
+
+void test_dq_word(void) {
+    const char *tokens[] = {"ls", "ruta   con  espacios/", "archivo", NULL};
+    const char cmdstr[] = "ls \"ruta   con  espacios/\"archivo";
+    base_test(cmdstr, tokens);
+}
+
+void test_dq_word_sq(void) {
+    const char *tokens[] = {"ping", "-c", "1", "1.", "1.1", ".1", NULL};
+    const char cmdstr[] = "ping -c 1 \"1.\"1.1'.1'";
+    base_test(cmdstr, tokens);
 }
 
 int main(void) {
     UNITY_BEGIN();
-    RUN_TEST(test_tokens);
+    RUN_TEST(test_simple);
+    RUN_TEST(test_word_sq);
+    RUN_TEST(test_sq_word);
+    RUN_TEST(test_dq_word);
+    RUN_TEST(test_dq_word_sq);
     return (0);
 }

@@ -102,7 +102,7 @@ void get_token(t_DFA *l) {
     end = 0;
     status = l->state;
     if (l->state == OPEN_DOUBLE_QUOTES || l->state == OPEN_SIMPLE_QUOTES)
-        l->cursor++;
+        l->cursor->start++;
     // necesario actualizar la marca en función del estado
     // (comillas dobles, comillas simples o word)
     while (l->cursor->start + end < l->cursor->end) {
@@ -119,8 +119,14 @@ void get_token(t_DFA *l) {
         return;
     // revisar el -1, puede que no haga falta
     // INFO: Comprobar estado despues de add_token
-    add_token(l->cmd_p->tokens, token);
-    l->cursor->start += end - 1;
+    if (token.str->end == 0)
+        dtor(&token.str);
+    else
+        add_token(l->cmd_p->tokens, token);
+    if (status == OPEN_DOUBLE_QUOTES || status == OPEN_SIMPLE_QUOTES)
+        l->cursor->start += end;
+    else
+        l->cursor->start += end - 1;
     l->state = status;
 }
 
