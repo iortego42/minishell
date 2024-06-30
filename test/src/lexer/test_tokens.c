@@ -62,6 +62,23 @@ void test_dq_word_sq(void) {
     base_test(cmdstr, tokens);
 }
 
+void test_empty_dq() {
+    const char *tokens[] = {"whoami", NULL};
+    const char cmdstr[] = "whoami \"\"";
+    base_test(cmdstr, tokens);
+}
+
+void test_variable() {
+    const char *tokens[] = {"echo", "$hola", NULL};
+    const char cmdstr[] = "echo $hola";
+    base_test(cmdstr, tokens);
+}
+
+void test_dq_variable() {
+    const char *tokens[] = {"echo", "$hola", "' $mundo", NULL};
+    const char cmdstr[] = "echo $hola\"' $mundo\"  ";
+    base_test(cmdstr, tokens);
+}
 int main(void) {
     UNITY_BEGIN();
     RUN_TEST(test_simple);
@@ -69,5 +86,8 @@ int main(void) {
     RUN_TEST(test_sq_word);
     RUN_TEST(test_dq_word);
     RUN_TEST(test_dq_word_sq);
+    RUN_TEST(test_empty_dq);
+    RUN_TEST(test_variable);
+    RUN_TEST(test_dq_variable);
     return (0);
 }
