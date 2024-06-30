@@ -69,7 +69,7 @@ $(OBJSDIR)/lexer: | $(OBJSDIR)
 	mkdir $@
 
 
-# OBJS := $(addprefix $(OBJSDIR)/,$(SRCS:%.c=%.o))
+# OBJS := $(addptefix $(OBJSDIR)/,$(SRCS:%.c=%.o))
 
 $(NAME): banner $(OBJS) $(LFT) $(LSTRINGS) banner
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $@
@@ -86,11 +86,19 @@ $(TESTBUILD)/%: $(TESTBUILD)/lexer/%.o $(UNITYOBJS) $(LEXEROBJS) | $(TESTBUILD) 
 	@echo " \033[32;1m⬣\033[0m Compilando:" $@
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
+test_binaries: $(TESTBINS)
 
-test: $(TESTBINS)
-	@for executable in $^; do \
-	echo "\n\n\n""TEST" $$executable ;\
-	$$executable ;\
+test:  test_binaries
+	@for executable in $(TESTBUILD)/test_*; do \
+		echo ; \
+		for i in {1..60}; do \
+			/bin/echo -n '–'; \
+		done; echo; \
+		echo  "[\033[94mTESTS\033[0m]\t\t$$executable" ;\
+		for i in {1..60}; do \
+			/bin/echo -n '–'; \
+		done; echo; \
+		$$executable ;\
 	done
 
 retest: clean_test test
